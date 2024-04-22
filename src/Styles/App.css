@@ -1,13 +1,6 @@
 @import url(light.css);
 @import url(dark.css);
 
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
-}
-
 #logo{
   transition: all 0.5s ease;
 }
@@ -30,16 +23,15 @@
 
 
 #logoMain:hover, #logoAi:hover {
-  filter: drop-shadow(0px 0px 100em var(--color-secondary-100));
-  cursor: normal;
+  filter: drop-shadow(0px 0px 10em var(--color-secondary-100));
+  box-shadow: 0px 0px 10em var(--color-secondary-100);
+  cursor: pointer;
 }
-
 
 
 .card {
   padding: 2em;
+  display: flex;
+  flex-direction: column;
 }
 
-.read-the-docs {
-  color: #888;
-}

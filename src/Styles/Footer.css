@@ -1,0 +1,6 @@
+footer{
+    width: 100%;
+    height: 90px;
+    background-color: var(--color-primary-200);
+    align-self: baseline;
+}

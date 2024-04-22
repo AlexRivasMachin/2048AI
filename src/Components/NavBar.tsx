@@ -4,9 +4,9 @@ function NavBar() {
     return (
         <nav>
             <ul>
-                <li>2048AI</li>
-                <li>Classic</li>
-                <li>About</li>
+                <li><a>2048AI</a></li>
+                <li><a>Classic</a></li>
+                <li><a>About</a></li>
             </ul>
         </nav>
     )
