@@ -1,0 +1,25 @@
+nav{
+    display: flex;
+    align-items: center;
+    padding: 1rem 2rem;
+    align-self: center;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+ul{
+    display: flex;
+    align-items: center;
+    list-style: none;
+    justify-content: space-between;
+    width:40%;
+    align-self: center;
+    margin: 0;
+    padding: 0;
+}
+
+li{
+    margin: 0;
+    padding: 0;
+}
