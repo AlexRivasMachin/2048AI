@@ -1,9 +1,11 @@
-export interface The2048 {
+export interface Game {
     grid:        Grid;
     score:       number;
     over:        boolean;
     won:         boolean;
+    waiting:     boolean;
     keepPlaying: boolean;
+    iaPlayer:   boolean;
 }
 
 export interface Grid {
