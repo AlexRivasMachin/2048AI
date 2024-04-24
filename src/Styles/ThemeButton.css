@@ -1,5 +1,9 @@
+.container{
+  align-self: flex-end;
+}
+
 .toggle {
-  background-color: var('--color-primary-200');
+  background-color: var(--color-primary-300);
   width: 56px;
   height: 56px;
   border-radius: 50%;

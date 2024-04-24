@@ -8,13 +8,12 @@ nav{
     justify-content: center;
     color: var(--color--font-primary-100);
 }
-
 ul{
     display: flex;
     align-items: center;
     list-style: none;
     justify-content: space-between;
-    width:40%;
+    width:33%;
     align-self: center;
     margin: 0;
     padding: 0;
@@ -44,4 +43,19 @@ li a:hover{
     padding: 1rem;
     transition: all 0.5s ease;
     cursor: pointer;
+}
+
+.themeButton{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+    margin-left: auto;
+    padding: 1rem;
+    cursor: pointer;
+    color: var(--color--font-primary-100);
+}
+
+.centrar{
+    width: 33%;
 }
