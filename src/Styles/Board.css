@@ -1,0 +1,21 @@
+.board{
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 10px;
+    padding: 10px;
+    min-width: fit-content;
+    border: 2px solid var(--color-font-primary-200);
+}
+.tags{
+    display: flex;
+    flex-direction: row;
+}
+.tag{
+    margin-inline: 50px;
+    background-color: var(--color-primary-200);
+    padding: 50px;
+    padding-bottom: 15px;
+    padding-top: 15px;
+}

@@ -59,3 +59,9 @@ li a:hover{
 .centrar{
     width: 33%;
 }
+
+@media screen and (max-width: 800px) {
+    .centrar {
+        width: 0%;
+    }
+}

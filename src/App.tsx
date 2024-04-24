@@ -2,6 +2,7 @@ import { useState } from 'react'
 import './Styles/App.css'
 import NavBar from './Components/NavBar.tsx'
 import Footer from './Components/Footer.tsx'
+import Game from './Components/Game.tsx'
 
 
 function App() {
@@ -14,14 +15,7 @@ function App() {
         <span id='logoMain'>2048</span>
         <span id='logoAi'>AI</span>
       </h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
+      <Game />
       <Footer />
     </>
   )
