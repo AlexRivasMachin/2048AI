@@ -1,8 +1,9 @@
 .dark{
     --color-primary-100:  #1E1E1E;
     --color-primary-200:  #141414;
+    --color-primary-300:  #383838;
     --color-secondary-100:  #D634FF;
     --color-secondary-200:  #ff00ff;
     --color-font-primary-100:  #FFFFFF;
-    --color-font-primary-100:  #D2D2D2;    
+    --color-font-primary-200:  #D2D2D2;    
 }
