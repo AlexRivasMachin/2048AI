@@ -7,15 +7,20 @@
  * 
  */
 
-import '.././Styles/Board.css'
+import '../Styles/Board.css'
 import Cell from './Cell.tsx';
+import type {Cell as CellType, Position} from '../types'
 
 // Creación del tablero de 2048 (siempre es 16 celdas)
 function Board() {
     // Crear un array de 16 posiciones para representar las celdas
-    const cells = Array.from({ length: 16 }, (_, index) => (
-        <Cell key={index} />
-    ));
+    const cells: CellType[] = Array.from({ length: 16 }, (_, index): Cell => {
+        const position: Position = { x: index % 4, y: Math.floor(index / 4) };
+        return {
+            position: position,
+            value: Math.floor(Math.random() * 100)
+        };
+    });
 
     return (
         <>
@@ -28,7 +33,9 @@ function Board() {
                 </div>
             </div>
             <div className="board">
-                {cells}
+            {cells.map((cell: CellType, index: number) => {
+                    return <Cell key={index} {...cell} />;
+            })}
             </div>
             <div className="tag">
                 PLAYER

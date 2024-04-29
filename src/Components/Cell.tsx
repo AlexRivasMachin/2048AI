@@ -1,11 +1,12 @@
-import '.././Styles/Cell.css'
+import '../Styles/Cell.css'
+import type {Cell} from '../types'
 
 
-function Cell() {
+function Cell(cell: Cell) {
     return (
         <div className="cell">
             <div className="cell-content">
-                <p>Cell</p>
+                <p>{cell.value}</p>
             </div>
         </div>
     );
