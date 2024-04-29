@@ -15,6 +15,7 @@ type AppStatus = typeof APP_STATUS[keyof typeof APP_STATUS];
 function App() {
   return (
     <>
+      
       <NavBar />
       <h1 id='logo'>
         <span id='logoMain'>2048</span>
