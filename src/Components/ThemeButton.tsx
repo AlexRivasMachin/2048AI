@@ -3,14 +3,18 @@ import '../Styles/ThemeButton.css';
 
 function ThemeSwitch() {
 
-    useEffect(() => {
+    const setSwitchState = () => {
         const checkbox : HTMLInputElement | null = document.getElementById('switch') as HTMLInputElement;
-        let theme : String = localStorage.getItem('theme') || 'light';
-
+        const theme : string = localStorage.getItem('theme') || 'light';
+        
         setTheme(theme);
         if(theme === 'light' && checkbox !== null){
             checkbox.checked = true;
         }
+    };
+
+    useEffect(() => {
+        setSwitchState();
     }), [];
 
     const handleClick = () => {
@@ -18,7 +22,7 @@ function ThemeSwitch() {
     };
 
     const changeTheme = () => {
-        let theme : String | null = localStorage.getItem('theme');
+        const theme : string | null = localStorage.getItem('theme');
 
         if(theme === null){
             localStorage.setItem('theme', 'light');
@@ -31,17 +35,19 @@ function ThemeSwitch() {
         }
     };
 
-const setTheme = (theme : String) => {
-    if (theme === 'dark') {
-        localStorage.setItem('theme', 'dark');
-        document.documentElement.classList.remove('light');
-        document.documentElement.classList.add('dark');
-    } else {
-        localStorage.setItem('theme', 'light');
-        document.documentElement.classList.remove('dark');
-        document.documentElement.classList.add('light');
+    const setTheme = (theme : string) => {
+        if (theme === 'dark') {
+            localStorage.setItem('theme', 'dark');
+            document.documentElement.classList.remove('light');
+            document.documentElement.classList.add('dark');
+        } else {
+            localStorage.setItem('theme', 'light');
+            document.documentElement.classList.remove('dark');
+            document.documentElement.classList.add('light');
+        }
     }
-}
+    
+    setSwitchState();
 
     return (
         <div className="container">
