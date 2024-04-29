@@ -12,9 +12,10 @@ import '../Styles/Board.css'
 import Cell from './Cell.tsx';
 import type {Cell as CellType, Position} from '../types'
 import {onLeftKeyDownHandeler, onRighttKeyDownHandeler, onUpKeyDownHandeler, onDownKeyDownHandeler} from '../services/Game.ts';
+import { MoveOptions } from '../App.tsx';
 
 // Creación del tablero de 2048 (siempre es 16 celdas)
-function Board() {
+export const Board = ({move} : {move : MoveOptions}) =>{
     const boardRef = useRef(null);
 
     // Crear un array de 16 posiciones para representar las celdas
