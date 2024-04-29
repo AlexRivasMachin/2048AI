@@ -6,10 +6,9 @@ import Game from './Components/Game.tsx'
 
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
     <>
+      
       <NavBar />
       <h1 id='logo'>
         <span id='logoMain'>2048</span>
