@@ -1,29 +1,30 @@
-"use strict";
+// Antes de ejecutarlo hay que poner export GROQ_API_KEY=laAPIKeydeGroq
+import { config } from 'dotenv';
+config();
+
 import fs from 'fs';
 import  Groq from 'groq-sdk';
+
 const groq = new Groq();
 const schema = {
     $defs: {
         Movement: {
             type: "string",
             enum: ["up", "down", "left", "right"],
-            title: "Movement"
         }
     },
     properties: {
         movement: {
             $ref: "#/$defs/Movement",
-            title: "Game Movement"
         }
     },
     required: ["movement"],
-    title: "2048 Game Movement",
     type: "object"
 };
 
 async function getMovement() {
-    // Pretty printing improves completion results.
     let jsonSchema = JSON.stringify(schema, null, 4);
+    
     const chat_completion = await groq.chat.completions.create({
         messages: [
             {
@@ -52,9 +53,8 @@ What would be the best next move`
 
 async function main() {
     const movement = await getMovement();
-    // Convierte el objeto del movimiento en una cadena JSON.
     const movementJson = JSON.stringify(movement, null, 2);
-    // Escribe la cadena JSON en un archivo.
+
     fs.writeFile('movement.json', movementJson, (err) => {
         if (err) throw err;
         console.log('El movimiento se ha guardado en el archivo movement.json');
