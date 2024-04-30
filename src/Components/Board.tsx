@@ -60,10 +60,10 @@ const Board = ({isIA} : {isIA : boolean}) =>{
     }
 
     const keyMap = {
-        left: 'left',
-        right: 'right',
-        up: 'up',
-        down: 'down',
+        left: ['left', 'a'],
+        right: ['right', 'd'],
+        up: ['up', 'w'],
+        down: ['down', 's'],
       };
       
     const handlers = {
