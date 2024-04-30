@@ -7,9 +7,9 @@ function NavBar() {
             <nav>
                 <div className='centrar'></div>
                 <ul>
-                    <li><a>2048AI</a></li>
-                    <li><a>Classic</a></li>
-                    <li><a>About</a></li>
+                    <li><a href='/'>2048AI</a></li>
+                    <li><a href='/classic'>Classic</a></li>
+                    <li><a href='/about'>About</a></li>
                 </ul>
                 <div className="themeButton">
                     <ThemeButton />
