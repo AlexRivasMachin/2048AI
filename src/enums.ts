@@ -1,17 +1,17 @@
-const APP_STATUS = {
+export const APP_STATUS = {
   PLAYING: "playing",
   GAME_OVER: "game-over",
   GAME_WON: "game-won",
   WAITING: "Waiting",
 } as const;
 
-export type AppStatus = (typeof APP_STATUS)[keyof typeof APP_STATUS];
+export type AppStatusType = (typeof APP_STATUS)[keyof typeof APP_STATUS];
 
-const MOVE_OPTIONS = {
+export const MOVE_OPTIONS = {
   UP: "up",
   DOWN: "down",
   LEFT: "left",
   RIGHT: "right",
 } as const;
 
-export type MoveOptions = (typeof MOVE_OPTIONS)[keyof typeof MOVE_OPTIONS];
+export type MoveOptionsType = (typeof MOVE_OPTIONS)[keyof typeof MOVE_OPTIONS];
