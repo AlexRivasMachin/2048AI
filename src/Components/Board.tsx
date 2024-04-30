@@ -55,7 +55,7 @@ const Board = ({isIA} : {isIA : boolean}) =>{
         });
       }
       
-    if (Game.iaPlayer){
+    if (!Game.iaPlayer){
         setRootOnClickListener();
     }
 
