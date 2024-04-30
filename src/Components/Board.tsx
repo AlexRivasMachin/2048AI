@@ -10,53 +10,41 @@ import React, { useRef, useEffect, useState } from 'react';
 import { HotKeys } from 'react-hotkeys';
 import '../Styles/Board.css'
 import Cell from './Cell.tsx';
-import type {Cell as CellType, Position, Game as GameType} from '../types'
-import {APP_STATUS, MOVE_OPTIONS, AppStatusType, MoveOptionsType} from '../enums.ts'
-import {onLeftKeyDownHandeler, onRighttKeyDownHandeler, onUpKeyDownHandeler, onDownKeyDownHandeler} from '../services/Game.ts';
+import type {Cell as CellType, Game as GameType} from '../types'
+import {APP_STATUS, AppStatusType, MoveOptionsType} from '../enums.ts'
+import {GameHandler} from '../services/Game.ts';
 
 // Creación del tablero de 2048 (siempre es 16 celdas)
 const Board = ({isIA} : {isIA : boolean}) =>{
     const boardRef = useRef(null);
+
+    const [appStatus, setAppStatus] = useState<AppStatusType>(APP_STATUS.PLAYING);
+    const [score, setScore] = useState(0);
+    const [move, setMove] = useState<MoveOptionsType | null>(null);
 
     const Game: GameType = {
         grid: {
             size: 16,
             cells: Array.from({ length: 4 }, (_, index_y) => Array.from({ length: 4 }, (_, index_x) => ({ position: { x: index_y, y: index_x }, value: 0 })))
         },
-        score: 0,
-        appStatus: APP_STATUS.PLAYING,
-        lastMove: null,
+        score: score,
+        appStatus: appStatus,
+        lastMove: move,
         iaPlayer: isIA
     }
 
-    const [appStatus, setAppStatus] = useState<AppStatusType>(Game.appStatus);
-    const [score, setScore] = useState(Game.score);
-    const [move, setMove] = useState<MoveOptionsType | null>(Game.lastMove);
-
-    const handleMove = (lastMove: MoveOptionsType) => {
-
-        if (appStatus !== APP_STATUS.PLAYING) {
-          return;
-        }
-    
-        if(lastMove === move){ // no se puede hacer el mismo movimiento dos veces seguidas
-          return;
-        }
-    
-    
-        setMove(move);
-      }
+    const GameHandeler = new GameHandler(Game, setAppStatus, setScore, setMove);
 
     useEffect(() => {
         // Board is initially focused
         if (boardRef.current){
-            boardRef.current.focus();
+            (boardRef.current as HTMLElement).focus();
         }
     }, []); // Empty dependency array means this effect runs once after the first render
 
     const handleRootClick = () => {
         if (boardRef.current){
-            boardRef.current.focus();
+            (boardRef.current as HTMLElement).focus();
         }
     };
 
@@ -78,20 +66,20 @@ const Board = ({isIA} : {isIA : boolean}) =>{
         down: 'down',
       };
       
-      const handlers = {
+    const handlers = {
         left: (event: React.KeyboardEventHandler) => {
-            onLeftKeyDownHandeler(event);
+            GameHandeler.onLeftKeyDownHandler(event);
         },
         right: (event: React.KeyboardEventHandler) => {
-            onRighttKeyDownHandeler(event);
+            GameHandeler.onRightKeyDownHandler(event);
         },
         up: (event: React.KeyboardEventHandler) => {
-            onUpKeyDownHandeler(event);
+            GameHandeler.onUpKeyDownHandler(event);
         },
         down: (event: React.KeyboardEventHandler) => {
-            onDownKeyDownHandeler(event);
+            GameHandeler.onDownKeyDownHandler(event);
         },
-      };
+    };
 
     return (
         <>
