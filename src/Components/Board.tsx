@@ -6,26 +6,46 @@
  * PARA SABER DONDE ESTA CADA CELDA, SE USARA UNA MATRIZ DE 4X4, Y CADA CELDA TIENE FILA Y COLUMNA
  * 
  */
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { HotKeys } from 'react-hotkeys';
 import '../Styles/Board.css'
 import Cell from './Cell.tsx';
-import type {Cell as CellType, Position} from '../types'
+import type {Cell as CellType, Position, Game as GameType} from '../types'
+import {APP_STATUS, MOVE_OPTIONS, AppStatusType, MoveOptionsType} from '../enums.ts'
 import {onLeftKeyDownHandeler, onRighttKeyDownHandeler, onUpKeyDownHandeler, onDownKeyDownHandeler} from '../services/Game.ts';
-import { MoveOptions } from '../App.tsx';
 
 // Creación del tablero de 2048 (siempre es 16 celdas)
-export const Board = ({move} : {move : MoveOptions}) =>{
+const Board = ({isIA} : {isIA : boolean}) =>{
     const boardRef = useRef(null);
 
-    // Crear un array de 16 posiciones para representar las celdas
-    const cells: CellType[] = Array.from({ length: 16 }, (_, index): Cell => {
-        const position: Position = { x: index % 4, y: Math.floor(index / 4) };
-        return {
-            position: position,
-            value: Math.floor(Math.random() * 100)
-        };
-    });
+    const Game: GameType = {
+        grid: {
+            size: 16,
+            cells: Array.from({ length: 4 }, (_, index_y) => Array.from({ length: 4 }, (_, index_x) => ({ position: { x: index_y, y: index_x }, value: 0 })))
+        },
+        score: 0,
+        appStatus: APP_STATUS.PLAYING,
+        lastMove: null,
+        iaPlayer: isIA
+    }
+
+    const [appStatus, setAppStatus] = useState<AppStatusType>(Game.appStatus);
+    const [score, setScore] = useState(Game.score);
+    const [move, setMove] = useState<MoveOptionsType | null>(Game.lastMove);
+
+    const handleMove = (lastMove: MoveOptionsType) => {
+
+        if (appStatus !== APP_STATUS.PLAYING) {
+          return;
+        }
+    
+        if(lastMove === move){ // no se puede hacer el mismo movimiento dos veces seguidas
+          return;
+        }
+    
+    
+        setMove(move);
+      }
 
     useEffect(() => {
         // Board is initially focused
@@ -47,7 +67,9 @@ export const Board = ({move} : {move : MoveOptions}) =>{
         });
       }
       
-    setRootOnClickListener();
+    if (Game.iaPlayer){
+        setRootOnClickListener();
+    }
 
     const keyMap = {
         left: 'left',
@@ -75,10 +97,10 @@ export const Board = ({move} : {move : MoveOptions}) =>{
         <>
             <div className="tags">
                 <div className="tag">
-                    SCORE
+                    SCORE {Game.score}
                 </div>
                 <div className="tag">
-                    BEST
+                    BEST 0
                 </div>
             </div>
             <HotKeys keyMap={keyMap} handlers={handlers}>
@@ -87,13 +109,13 @@ export const Board = ({move} : {move : MoveOptions}) =>{
                     className="board"
                     tabIndex={0}
                     ref={boardRef}>
-                    {cells.map((cell: CellType, index: number) => {
+                    {Game.grid.cells.flat().map((cell: CellType, index: number) => {
                             return <Cell key={index} {...cell} />;
                     })}
                 </div>
             </HotKeys>
             <div className="tag">
-                PLAYER
+                {Game.iaPlayer ? 'IA' : 'Player'}
             </div>
         </>
     );
