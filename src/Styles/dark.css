@@ -2,8 +2,32 @@
     --color-primary-100:  #1E1E1E;
     --color-primary-200:  #141414;
     --color-primary-300:  #383838;
-    --color-secondary-100:  #D634FF;
+    --color-secondary-100:  #ff00ff;
+    --color-secondary-105:  #ff00ff05;
+    --color-secondary-110:  #ff00ff10;
+    --color-secondary-120:  #ff00ff20;
+    --color-secondary-130:  #ff00ff30;
+    --color-secondary-140:  #ff00ff40;
+    --color-secondary-150:  #ff00ff50;
+    --color-secondary-160:  #ff00ff60;
+    --color-secondary-170:  #ff00ff70;
+    --color-secondary-180:  #ff00ff80;
+    --color-secondary-190:  #ff00ff90;
+    --color-secondary-195:  #ff00ff95;
     --color-secondary-200:  #ff00ff;
     --color-font-primary-100:  #FFFFFF;
     --color-font-primary-200:  #D2D2D2;    
+
+    --color-cell-0: var(--color-secondary-105);
+    --color-cell-2: var(--color-secondary-110);
+    --color-cell-4: var(--color-secondary-120);
+    --color-cell-8: var(--color-secondary-130);
+    --color-cell-16: var(--color-secondary-140);
+    --color-cell-32: var(--color-secondary-150);
+    --color-cell-64: var(--color-secondary-160);
+    --color-cell-128: var(--color-secondary-170);
+    --color-cell-256: var(--color-secondary-180);
+    --color-cell-512: var(--color-secondary-190);
+    --color-cell-1024: var(--color-secondary-195);
+    --color-cell-2048: var(--color-secondary-200);
 }

@@ -6,4 +6,6 @@
     height: 80px;
     border: 2px solid var(--color-font-primary-200);
     transition: all 0.3s ease-in-out;
+    font-size: 2rem;
+    font-weight: 1000;
 }
