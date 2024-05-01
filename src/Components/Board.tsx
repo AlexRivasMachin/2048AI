@@ -96,7 +96,7 @@ const Board = ({isIA} : {isIA : boolean}) =>{
                     className="board"
                     tabIndex={0}
                     ref={boardRef}>
-                    <Grid gridHandler={Game.grid}/>;
+                    <Grid gridHandler={Game.grid}/>
                 </div>
             </HotKeys>
             <div className="tag">

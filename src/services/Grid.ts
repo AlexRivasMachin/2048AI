@@ -64,49 +64,75 @@ export class GridHandler {
   }
 
   moveUp(): void {
-    console.log("moveUp");
     this.grid.cells.forEach((row, i) =>{
       row.forEach((cell, j) => {
         let offset : number = 1;
-        while(this.tryToMove(i, j, i, j - offset)){
+        //Intenta moverlo hasta que no se pueda mover más, en cada iteración incrementa el offset para moverlo más lejos
+        while(this.tryToMove(i, j-offset+1, i, j - offset)){
           offset++;
         }
       });
     });
   }
   moveDown(): void {
-    console.log("moveDown");
+    this.grid.cells.forEach((row, i) =>{
+      row.forEach((cell, j) => {
+        let offset : number = 1;
+        while(this.tryToMove(i, j+offset-1, i, j + offset)){
+          offset++;
+        }
+      });
+    });
   }
   moveLeft(): void {
-    console.log("moveLeft");
+    this.grid.cells.forEach((row, i) =>{
+      row.forEach((cell, j) => {
+        let offset : number = 1;
+        while(this.tryToMove(i-offset+1, j, i-offset, j)){
+          offset++;
+        }
+      });
+    });
   }
   moveRight(): void {
-    console.log("moveRight");
+    this.grid.cells.forEach((row, i) =>{
+      row.forEach((cell, j) => {
+        let offset : number = 1;
+        while(this.tryToMove(i+offset-1, j, i+offset, j)){
+          offset++;
+        }
+      });
+    });
   }
 
   tryToMove(x: number, y: number, x2: number, y2: number): boolean {
-    if(this.grid.cells[x][y].isEmpty()) {
+    if(this.cellIsEmpty(x, y) || this.cellIsOutOfGrid(x2, y2)) {
       return false;
     }
-    if(x2 < 0 || x2 >= this.grid.size || y2 < 0 || y2 >= this.grid.size) {
-      return false;
-    }
-    if(this.grid.cells[x2][y2].isEmpty()) {
+    if(this.cellIsEmpty(x2, y2)) {
       this.moveCell(x, y, x2, y2);
       return true;
     }
-    if(this.grid.cells[x][y].equalsInValue(this.grid.cells[x2][y2])) {
+    if(this.cellEqualInValue(x, y, x2, y2)) {
       this.mergeCells(x, y, x2, y2);
       return true;
     }
   }
 
+  cellIsEmpty(x: number, y: number): boolean {
+    return this.grid.cells[x][y].isEmpty();
+  }
+  cellIsOutOfGrid(x: number, y: number): boolean {
+    return x < 0 || x >= this.grid.size || y < 0 || y >= this.grid.size;
+  }
+  cellEqualInValue(x: number, y: number, x2: number, y2: number): boolean {
+    return this.grid.cells[x][y].equalsInValue(this.grid.cells[x2][y2]);
+  }
+
   moveCell(x: number, y: number, x2: number, y2: number): void {
     this.grid.cells[x2][y2].setValue(this.grid.cells[x][y].getValue());
     this.grid.cells[x][y].emptyValue();
-    console.log(`moveCell from ${x},${y} to ${x2},${y2}`);
   }
-
   mergeCells(x: number, y: number, x2: number, y2: number): void {
     this.grid.cells[x2][y2].doubleValue();
     this.grid.cells[x][y].emptyValue();
