@@ -1,6 +1,6 @@
 import React from "react";
 import "../Styles/Cell.css";
-import {Cell as CellHandler} from '../services/Cell.ts';
+import {CellHandler} from '../services/Cell.ts';
 
 /* TODO
  *  2048 CELL
@@ -38,7 +38,7 @@ interface CellProps {
 }
 
 
-const Cell: React.FC<CellProps> = ({ cellHandler }) => {
+export const Cell: React.FC<CellProps> = ({ cellHandler }) => {
   const [cellValue, setCellValue] = React.useState(cellHandler.cell.value);
 
   const [cellColor, setCellColor] = React.useState<CellColorType>(
@@ -101,7 +101,6 @@ const Cell: React.FC<CellProps> = ({ cellHandler }) => {
   }, [cellValue]);
 
   React.useEffect(() => {
-    handleCreationValue();
   }, []); // Un array de dependencias vacío significa que este efecto se ejecutará una vez cuando el componente se monte
   
 
@@ -111,5 +110,3 @@ const Cell: React.FC<CellProps> = ({ cellHandler }) => {
     </div>
   );
 };
-
-export default Cell;

@@ -1,11 +1,13 @@
 import {GridHandler} from '../services/Grid';
 import { CellHandler } from '../services/Cell';
-import {Cell} from './Cell';
+import {Cell} from './Cell.tsx';
 import React from 'react';
 
-function Grid(){
+interface GridProps {
+    gridHandler: GridHandler;
+}
 
-    const gridHandler : GridHandler = new GridHandler();
+const Grid: React.FC<GridProps> = ({ gridHandler }) => {
 
     
 
@@ -16,10 +18,11 @@ function Grid(){
 
 
     return (
-        <div>
-            {gridHandler.grid.cells.flat().map((cellHandler: CellHandler) => {return <Cell cellHandler/>}}
+        <div className='board'>
+            {gridHandler.grid.cells.flat().map((cellHandler: CellHandler, index) => 
+                <Cell key={index} cellHandler={cellHandler} />
+            )}
         </div>
-        
     )
 }
 

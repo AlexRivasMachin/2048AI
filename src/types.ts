@@ -1,8 +1,9 @@
 import { AppStatusType, MoveOptionsType } from "./enums";
 import { CellHandler } from "./services/Cell";
+import { GridHandler } from "./services/Grid";
 
 export interface Game {
-  grid: Grid;
+  grid: GridHandler;
   score: number;
   appStatus: AppStatusType;
   lastMove: MoveOptionsType | null;

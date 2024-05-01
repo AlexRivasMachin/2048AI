@@ -10,9 +10,11 @@ import React, { useRef, useEffect, useState } from 'react';
 import { HotKeys } from 'react-hotkeys';
 import '../Styles/Board.css'
 import Cell from './Cell.tsx';
+import Grid from './Grid.tsx';
 import type {Cell as CellType, Game as GameType} from '../types'
 import {APP_STATUS, AppStatusType, MoveOptionsType} from '../enums.ts'
 import {GameHandler} from '../services/Game.ts';
+import { GridHandler } from '../services/Grid.ts';
 
 // Creación del tablero de 2048 (siempre es 16 celdas)
 const Board = ({isIA} : {isIA : boolean}) =>{
@@ -23,10 +25,7 @@ const Board = ({isIA} : {isIA : boolean}) =>{
     const [move, setMove] = useState<MoveOptionsType | null>(null);
 
     const Game: GameType = {
-        grid: {
-            size: 16,
-            cells: Array.from({ length: 4 }, (_, index_y) => Array.from({ length: 4 }, (_, index_x) => ({ position: { x: index_y, y: index_x }, value: 0 })))
-        },
+        grid: new GridHandler(),
         score: score,
         appStatus: appStatus,
         lastMove: move,
@@ -97,9 +96,7 @@ const Board = ({isIA} : {isIA : boolean}) =>{
                     className="board"
                     tabIndex={0}
                     ref={boardRef}>
-                    {Game.grid.cells.flat().map((cell: CellType, index: number) => {
-                            return <Cell key={index} {...cell} />;
-                    })}
+                    <Grid gridHandler={Game.grid}/>;
                 </div>
             </HotKeys>
             <div className="tag">
