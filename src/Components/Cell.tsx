@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState, useEffect } from 'react';
 import "../Styles/Cell.css";
 import {CellHandler} from '../services/Cell.ts';
 import { observer } from "mobx-react";
+
 
 /* TODO
  *  2048 CELL
@@ -13,23 +14,6 @@ import { observer } from "mobx-react";
  *
  */
 
-const CELL_COLOR = {
-  0: "#cdc1b4",
-  2: "#eee4da",
-  4: "#ede0c8",
-  8: "#f2b179",
-  16: "#f59563",
-  32: "#f67c5f",
-  64: "#f65e3b",
-  128: "#edcf72",
-  256: "#edcc61",
-  512: "#edc850",
-  1024: "#edc53f",
-  2048: "#edc22e",
-} as const;
-
-export type CellColorType = (typeof CELL_COLOR)[keyof typeof CELL_COLOR];
-
 // QUE CAMBIA EL VALUE, PORQUE SE LE PASA UNO NUEVO
 // O CAMBIA EL CELLVALUE => EL USEEFFECT DEPENDE ESTO
 
@@ -39,13 +23,9 @@ interface CellProps {
 }
 
 
-export const Cell: React.FC<CellProps> = observer(({ cellHandler }) => {
+export const Cell: React.FC<CellProps> = observer(({cellHandler }) => {
 
-  const [cellValue, setCellValue] = React.useState(cellHandler.cell.value);
-
-  const [cellColor, setCellColor] = React.useState<CellColorType>(
-    CELL_COLOR[0]
-  );
+  const [cellValue, setCellValue] = useState(cellHandler.cell.value);
 
   /*TODO => HACER QUE EL VALUE SEA  0, 2 o 4, que el 2 sea un 66 y el 4 un 33, por ota parte hay que tener un método*/
   const handleCreationValue = () => {
@@ -89,17 +69,22 @@ export const Cell: React.FC<CellProps> = observer(({ cellHandler }) => {
   }
 
   const handleChangeValue = (value: number) => {
-    //poner colort
-
+    //poner color
     setCellValue(value);
   };
 
   //handleChangeValue
 
-  React.useEffect(() => {
+  useEffect(() => {
     setCellValue(cellHandler.cell.value);
     //setCellColor(CELL_COLOR[cellValue]);
   }, [cellHandler.cell.value]);
+
+  /*
+  useEffect(() => {
+    handleCreationValue();
+  }, []);
+  */
 
   return (
     <div className="cell" style={{ backgroundColor: `var(--color-cell-${cellValue})` }}>
