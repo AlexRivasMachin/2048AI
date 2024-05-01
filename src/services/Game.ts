@@ -28,19 +28,15 @@ export class GameHandler {
 
   onLeftKeyDownHandler(e: React.KeyboardEventHandler) {
     this.handleMove(MOVE_OPTIONS.LEFT);
-    console.log(e);
   }
   onRightKeyDownHandler(e: React.KeyboardEventHandler) {
     this.handleMove(MOVE_OPTIONS.RIGHT);
-    console.log(e);
   }
   onUpKeyDownHandler(e: React.KeyboardEventHandler) {
     this.handleMove(MOVE_OPTIONS.UP);
-    console.log(e);
   }
   onDownKeyDownHandler(e: React.KeyboardEventHandler) {
     this.handleMove(MOVE_OPTIONS.DOWN);
-    console.log(e);
   }
 
   isValidMove(move: MoveOptionsType): boolean {
@@ -59,11 +55,12 @@ export class GameHandler {
   handleMove(move: MoveOptionsType) {
     const valid = this.isValidMove(move);
     if (valid) {
-      this.game.lastMove = move;
-      this.setMove(this.game.lastMove);
+      //this.game.lastMove = move;
+      //this.setMove(this.game.lastMove);
       this.game.score += 1;
-      this.setScore(this.game.score);
-      console.log("score: " + this.game.score);
+      //this.setScore(this.game.score);
+      //console.log("score: " + this.game.score);
+      this.game.grid.makeMove(move);
     }
   }
 }

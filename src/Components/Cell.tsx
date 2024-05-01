@@ -1,6 +1,7 @@
 import React from "react";
 import "../Styles/Cell.css";
 import {CellHandler} from '../services/Cell.ts';
+import { observer } from "mobx-react";
 
 /* TODO
  *  2048 CELL
@@ -38,7 +39,8 @@ interface CellProps {
 }
 
 
-export const Cell: React.FC<CellProps> = ({ cellHandler }) => {
+export const Cell: React.FC<CellProps> = observer(({ cellHandler }) => {
+
   const [cellValue, setCellValue] = React.useState(cellHandler.cell.value);
 
   const [cellColor, setCellColor] = React.useState<CellColorType>(
@@ -95,18 +97,13 @@ export const Cell: React.FC<CellProps> = ({ cellHandler }) => {
   //handleChangeValue
 
   React.useEffect(() => {
-    setCellValue(cellValue);
-    setCellColor(CELL_COLOR[cellValue]);
-    console.log(cellValue);
-  }, [cellValue]);
-
-  React.useEffect(() => {
-  }, []); // Un array de dependencias vacío significa que este efecto se ejecutará una vez cuando el componente se monte
-  
+    setCellValue(cellHandler.cell.value);
+    //setCellColor(CELL_COLOR[cellValue]);
+  }, [cellHandler.cell.value]);
 
   return (
     <div className="cell" style={{ backgroundColor: `var(--color-cell-${cellValue})` }}>
             <div className="cell-content">{<p>{cellValue}</p>}</div>
     </div>
   );
-};
+});
