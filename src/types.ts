@@ -1,4 +1,5 @@
 import { AppStatusType, MoveOptionsType } from "./enums";
+import { CellHandler } from "./services/Cell";
 
 export interface Game {
   grid: Grid;
@@ -10,7 +11,7 @@ export interface Game {
 
 export interface Grid {
   size: number;
-  cells: Array<Array<Cell>>;
+  cells: Array<Array<CellHandler>>;
   //MATRIZ DE 4X4
 }
 

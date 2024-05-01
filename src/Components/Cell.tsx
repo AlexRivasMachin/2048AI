@@ -1,7 +1,6 @@
 import React from "react";
 import "../Styles/Cell.css";
-import type { Cell } from "../types";
-import { Position } from "../types";
+import {Cell as CellHandler} from '../services/Cell.ts';
 
 /* TODO
  *  2048 CELL
@@ -34,10 +33,14 @@ export type CellColorType = (typeof CELL_COLOR)[keyof typeof CELL_COLOR];
 // O CAMBIA EL CELLVALUE => EL USEEFFECT DEPENDE ESTO
 
 /*TODO => HACER QUE EL VALUE SEA  0, 2 o 4, que el 2 sea un 66 y el 4 un 33, por ota parte hay que tener un método*/
+interface CellProps {
+  cellHandler: CellHandler;
+}
 
 
-const Cell: React.FC<Cell> = ({ position, value }) => {
-  const [cellValue, setCellValue] = React.useState(value | 0);
+const Cell: React.FC<CellProps> = ({ cellHandler }) => {
+  const [cellValue, setCellValue] = React.useState(cellHandler.cell.value);
+
   const [cellColor, setCellColor] = React.useState<CellColorType>(
     CELL_COLOR[0]
   );

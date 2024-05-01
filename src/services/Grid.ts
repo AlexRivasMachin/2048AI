@@ -1,22 +1,20 @@
-import { Cell as CellType, Grid as GridType } from '../types'; // Asegúrate de importar desde la ruta correcta
+import {  Grid as GridType } from '../types'; // Asegúrate de importar desde la ruta correcta
+import {CellHandler as Cell} from './Cell'
 
 export class GridHandler {
   grid: GridType;
   //todo: esto ponerlo en un archivo de configuración
-  initialNumberTwoProbability : Number = 0.75;
 
-  constructor(grid : GridType) {
-    this.grid = grid;
-    this.grid.size = 4;
+  constructor() {
+    this.grid = { size: 4, cells: [] };
     this.initializeGrid(this.grid.size);
     this.initializeRandomCells();
   }
 
   initializeGrid(size: number): void {
-    const cells: Array<Array<CellType>> = Array.from({ length: size }, (_, i) => 
+    const cells: Array<Array<Cell>> = Array.from({ length: size }, (_, i) => 
       Array.from({ length: size }, (_, j) => 
-        //todo: aquí debería ser el constructor si se crea
-        ({ position: { x: i, y: j }, value: 0 })
+        new Cell(i, j, 0)
       )
     );
       this.grid = { size, cells };
@@ -24,8 +22,9 @@ export class GridHandler {
 
   initializeRandomCells(): void {
     const {x, y, x2, y2}: {x: number, y: number, x2: number, y2: number} = this.getRandomPosition();
-    this.grid.cells[x][y].value = this.positionIsTwo() ? 2 : 4; 
-    this.grid.cells[x2][y2].value = this.positionIsTwo() ? 2 : 4;
+
+    this.grid.cells[x][y].initializeValue(this.grid.size);
+    this.grid.cells[x2][y2].initializeValue(this.grid.size);
   }
 
   getRandomPosition(): {x: number, y: number, x2: number, y2: number} {
@@ -46,7 +45,4 @@ export class GridHandler {
     return Math.floor(Math.random() * this.grid.size);
   }
 
-  positionIsTwo(): boolean {
-    return Math.random() < this.initialNumberTwoProbability.valueOf();
-  }
 }
