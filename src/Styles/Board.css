@@ -9,7 +9,12 @@
     max-width: fit-content;
     width: 100%;
     align-self: center;
+    outline: none;
+}
 
+.board :focus{
+    outline: none;
+    
 }
 .tags{
     display: flex;
