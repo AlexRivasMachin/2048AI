@@ -1,6 +1,6 @@
 import { action, makeObservable, observable } from 'mobx';
 import { Cell as CellType } from '../types';
-//prueba
+//prueba2
 export class CellHandler{
     cell: CellType;
 
