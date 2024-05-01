@@ -91,6 +91,7 @@ export class GridHandler {
         }
       });
     });
+    if(this.hasWon()) this.wonBoard();
   }
   moveDown(): void {
     this.grid.cells.forEach((row, i) =>{
@@ -101,6 +102,7 @@ export class GridHandler {
         }
       });
     });
+    if(this.hasWon()) this.wonBoard();
   }
   moveLeft(): void {
     this.grid.cells.forEach((row, i) =>{
@@ -111,6 +113,7 @@ export class GridHandler {
         }
       });
     });
+    if(this.hasWon()) this.wonBoard();
   }
   moveRight(): void {
     this.grid.cells.forEach((row, i) =>{
@@ -121,6 +124,7 @@ export class GridHandler {
         }
       });
     });
+    if(this.hasWon()) this.wonBoard();
   }
 
   
@@ -135,12 +139,10 @@ export class GridHandler {
     }
     if(this.cellIsEmpty(x2, y2)) {
       this.moveCell(x, y, x2, y2);
-      this.hasWon();
       return true;
     }
     if(this.cellEqualInValue(x, y, x2, y2)) {
       this.mergeCells(x, y, x2, y2);
-      this.hasWon();
       return true;
     }else{
       if(this.trytoPushNeighbours(x, y, x2, y2)){
@@ -223,8 +225,16 @@ export class GridHandler {
     return false;
   }
 
+  wonBoard() {
+    this.grid.cells.forEach(row => {
+      row.forEach(cell => {
+        cell.setValue(777);
+      });
+    });
+  }
 
 
+    
   // TODO: MIRAR QUE SI NADA SE MUEVE EN UNA DIRECCIÓN NO SE GENERE UNA NUEVA CELDA
 }
 

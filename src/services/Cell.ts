@@ -1,6 +1,6 @@
 import { action, makeObservable, observable } from 'mobx';
 import { Cell as CellType } from '../types';
-//prueba2
+
 export class CellHandler{
     cell: CellType;
 
@@ -15,7 +15,7 @@ export class CellHandler{
     }
 
     initializeValue(size: number): void {
-        this.cell.value = this.positionIsTwo() ? 2 : 4;
+        this.cell.value = this.positionIsTwo() ? 512 : 1024;
 
     }
 

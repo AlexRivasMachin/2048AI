@@ -49,11 +49,11 @@ export const Cell: React.FC<CellProps> = observer(({cellHandler }) => {
     <div className="cell" style={{ 
       backgroundColor: `var(--color-cell-${cellValue})`, 
       border: cellValue > 1 ? '1px solid transparent' : '1px solid var(--color-font-primary-300)', 
-      borderRadius: cellValue > 0 ? '5px' : '10px' 
+      borderRadius: cellValue > 0 ? '5px' : '5px' 
     }}>
       <div className="cell-content" style={{
          color: cellValue > 4 ? 'var(--color-primary-100)' : 'inherit',
-         display: cellValue > 0 ? 'flex' : 'none'
+         display: (cellValue > 0 && cellValue !== 777) ? 'flex' : 'none'
          }}>
         <p>{cellValue}</p>
       </div>
