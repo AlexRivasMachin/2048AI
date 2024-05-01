@@ -28,6 +28,18 @@ export class GridHandler {
     this.grid.cells[x2][y2].initializeValue(this.grid.size);
   }
 
+
+  getRandomEmptyCellCoords():{x: number, y: number}{
+    const emptyCells: Cell[] = this.getEmptyCells(); 
+
+    const randomIndex = Math.floor(Math.random() * emptyCells.length);
+    return emptyCells[randomIndex].cell.position;
+  }
+
+  getEmptyCells(): Cell[] {
+    return this.grid.cells.flat().filter(cell => cell.isEmpty());
+  }
+
   getRandomPosition(): {x: number, y: number, x2: number, y2: number} {
     const x: number = this.getRandomPositionValue();
     const y: number = this.getRandomPositionValue();
@@ -116,6 +128,14 @@ export class GridHandler {
     if(this.cellEqualInValue(x, y, x2, y2)) {
       this.mergeCells(x, y, x2, y2);
       return true;
+    }else{
+      let offsetX : number = x2 - x;
+      let offsetY : number = y2 - y;
+      while(this.tryToMove(x2, y2, x2 + offsetX, y2 + offsetY)){
+        offsetX++;
+        offsetY++;
+      }
+      this.tryToMove(x, y, x2, y2);
     }
   }
 
@@ -136,5 +156,11 @@ export class GridHandler {
   mergeCells(x: number, y: number, x2: number, y2: number): void {
     this.grid.cells[x2][y2].doubleValue();
     this.grid.cells[x][y].emptyValue();
+  }
+
+  //todo: llamar esto en cada turno
+  initializeRandomCell() : void {
+    const {x, y} = this.getRandomEmptyCellCoords();
+    this.grid.cells[x][y].initializeValue(this.grid.size);
   }
 }
