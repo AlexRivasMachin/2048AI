@@ -1,12 +1,15 @@
 .board{
-    display: grid;
+    display: flex;
+    flex-direction: row;
     align-items: center;
     justify-content: center;
-    grid-template-columns: repeat(4, 1fr);
-    grid-gap: 10px;
+    align-content: center;
+    gap: 10px;
     padding: 10px;
-    min-width: fit-content;
-    border: 2px solid var(--color-font-primary-200);
+    max-width: fit-content;
+    width: 100%;
+    align-self: center;
+
 }
 .tags{
     display: flex;

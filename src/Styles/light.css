@@ -16,18 +16,19 @@
     --color-secondary-195:  #6a18d695;
     --color-secondary-200:  #8c00ff;
     --color-font-primary-100:  #000000;
-    --color-font-primary-200:  #141414;   
+    --color-font-primary-200:  #141414;
+    --color-font-primary-300:  #00000027;      
     
-    --color-cell-0: var(--color-secondary-105);
-    --color-cell-2: var(--color-secondary-110);
-    --color-cell-4: var(--color-secondary-120);
-    --color-cell-8: var(--color-secondary-130);
-    --color-cell-16: var(--color-secondary-140);
-    --color-cell-32: var(--color-secondary-150);
-    --color-cell-64: var(--color-secondary-160);
-    --color-cell-128: var(--color-secondary-170);
-    --color-cell-256: var(--color-secondary-180);
-    --color-cell-512: var(--color-secondary-190);
-    --color-cell-1024: var(--color-secondary-195);
-    --color-cell-2048: var(--color-secondary-200);
+    --color-cell-0: var(--color-primary-100);
+    --color-cell-2: #F9C846;
+    --color-cell-4: #FA9A46;
+    --color-cell-8: #F0583A;
+    --color-cell-16: #F03A3A;
+    --color-cell-32: #FF518E;
+    --color-cell-64: #FF366B;
+    --color-cell-128: #F873E2;
+    --color-cell-256: #FB86FF;
+    --color-cell-512: #BF70FF;
+    --color-cell-1024: #B050FF;
+    --color-cell-2048: #8C00FF;
 }

@@ -87,8 +87,14 @@ export const Cell: React.FC<CellProps> = observer(({cellHandler }) => {
   */
 
   return (
-    <div className="cell" style={{ backgroundColor: `var(--color-cell-${cellValue})` }}>
-            <div className="cell-content">{<p>{cellValue}</p>}</div>
+    <div className="cell" style={{ 
+      backgroundColor: `var(--color-cell-${cellValue})`, 
+      border: cellValue > 1 ? '1px solid transparent' : '1px solid var(--color-font-primary-300)', 
+      borderRadius: cellValue > 0 ? '5px' : '10px' 
+    }}>
+      <div className="cell-content" style={{ color: cellValue > 4 ? 'var(--color-primary-100)' : 'inherit' }}>
+        <p>{cellValue}</p>
+      </div>
     </div>
   );
 });

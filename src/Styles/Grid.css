@@ -1,0 +1,14 @@
+.boardContainer {
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    grid-template-columns: repeat(4, 1fr);
+    padding: 10px;
+    max-width: fit-content;
+    width: 100%;
+    align-self: center;
+}
+
+.cell{
+    margin: 5px;
+}

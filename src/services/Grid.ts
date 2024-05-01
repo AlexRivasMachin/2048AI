@@ -73,6 +73,7 @@ export class GridHandler {
         this.moveRight();
         break;
     }
+    this.assignValueToEmptyCell();
   }
 
   moveUp(): void {
@@ -117,6 +118,8 @@ export class GridHandler {
     });
   }
 
+  
+
   tryToMove(x: number, y: number, x2: number, y2: number): boolean {
     if(this.cellIsEmpty(x, y) || this.cellIsOutOfGrid(x2, y2)) {
       return false;
@@ -129,19 +132,24 @@ export class GridHandler {
       this.mergeCells(x, y, x2, y2);
       return true;
     }else{
-      this.trytoPushNeighbours(x, y, x2, y2);
-      this.tryToMove(x, y, x2, y2);
+      if(this.trytoPushNeighbours(x, y, x2, y2)){
+        this.tryToMove(x, y, x2, y2);
+      };
     }
   }
+  
+
   trytoPushNeighbours(x: number, y: number, x2: number, y2: number): boolean {
+    let moved : boolean = false;
     let offsetX : number = x2 - x;
     let offsetY : number = y2 - y;
     while(this.tryToMove(x2, y2, x2 + offsetX, y2 + offsetY)){
+      moved = true;
       offsetX++;
       offsetY++;
     }
+    return moved;
   }
-
 
   cellIsEmpty(x: number, y: number): boolean {
     return this.grid.cells[x][y].isEmpty();
@@ -153,6 +161,13 @@ export class GridHandler {
     return this.grid.cells[x][y].equalsInValue(this.grid.cells[x2][y2]);
   }
 
+  //MIRAR SI HACIA DONDE SE MUEVE, HAY UNA CELDA CON UN VALOR DISTINTO, ENTONCES SE MUEVE A LA ANTERIOR si hay [][2][4][] que se quede [][][2][4]
+  cellHasDifferentValue(x: number, y: number, x2: number, y2: number): boolean {
+    return this.grid.cells[x][y].getValue() !== this.grid.cells[x2][y2].getValue();
+  }
+
+
+
   moveCell(x: number, y: number, x2: number, y2: number): void {
     this.grid.cells[x2][y2].setValue(this.grid.cells[x][y].getValue());
     this.grid.cells[x][y].emptyValue();
@@ -162,9 +177,13 @@ export class GridHandler {
     this.grid.cells[x][y].emptyValue();
   }
 
-  //todo: llamar esto en cada turno
-  initializeRandomCell() : void {
-    const {x, y} = this.getRandomEmptyCellCoords();
-    this.grid.cells[x][y].initializeValue(this.grid.size);
+  assignValueToEmptyCell(): void {
+    const emptyCells: Cell[] = this.getEmptyCells();
+    const randomIndex = Math.floor(Math.random() * emptyCells.length);
+    emptyCells[randomIndex].initializeValue(this.grid.size);
   }
+  // TODO: Implementar el método que comprueba si el juego ha terminado
+
+  // TODO: MIRAR QUE SI NADA SE MUEVE EN UNA DIRECCIÓN NO SE GENERE UNA NUEVA CELDA
 }
+
