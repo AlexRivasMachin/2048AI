@@ -129,15 +129,19 @@ export class GridHandler {
       this.mergeCells(x, y, x2, y2);
       return true;
     }else{
-      let offsetX : number = x2 - x;
-      let offsetY : number = y2 - y;
-      while(this.tryToMove(x2, y2, x2 + offsetX, y2 + offsetY)){
-        offsetX++;
-        offsetY++;
-      }
+      this.trytoPushNeighbours(x, y, x2, y2);
       this.tryToMove(x, y, x2, y2);
     }
   }
+  trytoPushNeighbours(x: number, y: number, x2: number, y2: number): boolean {
+    let offsetX : number = x2 - x;
+    let offsetY : number = y2 - y;
+    while(this.tryToMove(x2, y2, x2 + offsetX, y2 + offsetY)){
+      offsetX++;
+      offsetY++;
+    }
+  }
+
 
   cellIsEmpty(x: number, y: number): boolean {
     return this.grid.cells[x][y].isEmpty();
