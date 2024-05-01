@@ -31,4 +31,16 @@
     --color-cell-512: #BF70FF;
     --color-cell-1024: #B050FF;
     --color-cell-2048: #8C00FF;
+    --color-cell-4096: #000000;
+    --color-cell-8192: #000000;
+    --color-cell-16384: #000000;
+    --color-cell-32768: #000000;
+    --color-cell-65536: #000000;
+    --color-cell-131072: #000000;
+    --color-cell-262144: #000000;
+    --color-cell-524288: #000000;
+    --color-cell-1048576: #000000;
+    --color-cell-2097152: #000000;
+    --color-cell-4194304: #000000;
+    --color-cell-8388608: #000000;
 }

@@ -73,7 +73,12 @@ export class GridHandler {
         this.moveRight();
         break;
     }
-    this.assignValueToEmptyCell();
+    if(this.areThereAvailableMoves() && this.getEmptyCells().length > 0){
+      this.assignValueToEmptyCell();
+    }
+    if(!this.areThereAvailableMoves()){
+      console.log("No hay movimientos disponibles");
+    }
   }
 
   moveUp(): void {
@@ -120,16 +125,22 @@ export class GridHandler {
 
   
 
-  tryToMove(x: number, y: number, x2: number, y2: number): boolean {
+  tryToMove(x: number, y: number, x2: number, y2: number): undefined | boolean{
+    if(!this.areThereAvailableMoves){
+      console.log("No hay movimientos disponibles");
+      return false;
+    }
     if(this.cellIsEmpty(x, y) || this.cellIsOutOfGrid(x2, y2)) {
       return false;
     }
     if(this.cellIsEmpty(x2, y2)) {
       this.moveCell(x, y, x2, y2);
+      this.hasWon();
       return true;
     }
     if(this.cellEqualInValue(x, y, x2, y2)) {
       this.mergeCells(x, y, x2, y2);
+      this.hasWon();
       return true;
     }else{
       if(this.trytoPushNeighbours(x, y, x2, y2)){
@@ -182,7 +193,37 @@ export class GridHandler {
     const randomIndex = Math.floor(Math.random() * emptyCells.length);
     emptyCells[randomIndex].initializeValue(this.grid.size);
   }
-  // TODO: Implementar el método que comprueba si el juego ha terminado
+
+  areThereAvailableMoves(): boolean {
+    for (let i = 0; i < this.grid.size; i++) {
+      for (let j = 0; j < this.grid.size; j++) {
+        if (this.cellIsEmpty(i, j)) {
+          return true;
+        }
+        if (i < this.grid.size - 1 && this.cellEqualInValue(i, j, i + 1, j)) {
+          return true;
+        }
+        if (j < this.grid.size - 1 && this.cellEqualInValue(i, j, i, j + 1)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  hasWon(): boolean {
+    for (let i = 0; i < this.grid.size; i++) {
+      for (let j = 0; j < this.grid.size; j++) {
+        if (this.grid.cells[i][j].getValue() === 2048) {
+          console.log("Has ganado");
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+
 
   // TODO: MIRAR QUE SI NADA SE MUEVE EN UNA DIRECCIÓN NO SE GENERE UNA NUEVA CELDA
 }
