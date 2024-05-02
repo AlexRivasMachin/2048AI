@@ -42,4 +42,5 @@
     --color-cell-1048576: #e2e2e2;
     --color-cell-2097152: #e2e2e2;
     --color-cell-4194304: #e2e2e2;
+    --color-cell-777: var(--color-secondary-200);
 }

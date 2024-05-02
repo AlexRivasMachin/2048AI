@@ -4,7 +4,7 @@ import { Cell as CellType } from '../types';
 export class CellHandler{
     cell: CellType;
 
-    initialNumberTwoProbability : Number = 0.75;
+    initialNumberTwoProbability : number = 0.75;
 
     constructor(x : number, y : number, value : number){
         makeObservable(this, {
@@ -15,7 +15,7 @@ export class CellHandler{
     }
 
     initializeValue(size: number): void {
-        this.cell.value = this.positionIsTwo() ? 512 : 1024;
+        this.cell.value = this.positionIsTwo() ? 2 : 4;
 
     }
 
