@@ -9,9 +9,8 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { HotKeys } from 'react-hotkeys';
 import '../Styles/Board.css'
-import Cell from './Cell.tsx';
 import Grid from './Grid.tsx';
-import type {Cell as CellType, Game as GameType} from '../types'
+import type {Game as GameType} from '../types'
 import {APP_STATUS, AppStatusType, MoveOptionsType} from '../enums.ts'
 import {GameHandler} from '../services/Game.ts';
 import { GridHandler } from '../services/Grid.ts';
@@ -22,17 +21,21 @@ const Board = ({isIA} : {isIA : boolean}) =>{
 
     const [appStatus, setAppStatus] = useState<AppStatusType>(APP_STATUS.PLAYING);
     const [score, setScore] = useState(0);
+    const [bestScore, setBestScore] = useState(0);
     const [move, setMove] = useState<MoveOptionsType | null>(null);
 
+    const gridHandlerRef = useRef(new GridHandler(setAppStatus, setScore, setBestScore, setMove));
+
     const Game: GameType = {
-        grid: new GridHandler(),
+        grid: gridHandlerRef.current,
         score: score,
+        bestScore: bestScore,
         appStatus: appStatus,
         lastMove: move,
         iaPlayer: isIA
     }
 
-    const GameHandeler = new GameHandler(Game, setAppStatus, setScore, setMove);
+    const gameHandlerRef = useRef(new GameHandler(Game, setAppStatus, setScore, setMove));
 
     useEffect(() => {
         // Board is initially focused
@@ -67,16 +70,16 @@ const Board = ({isIA} : {isIA : boolean}) =>{
       
     const handlers = {
         left: (event: React.KeyboardEventHandler) => {
-            GameHandeler.onLeftKeyDownHandler(event);
+            gameHandlerRef.current.onLeftKeyDownHandler(event);
         },
         right: (event: React.KeyboardEventHandler) => {
-            GameHandeler.onRightKeyDownHandler(event);
+            gameHandlerRef.current.onRightKeyDownHandler(event);
         },
         up: (event: React.KeyboardEventHandler) => {
-            GameHandeler.onUpKeyDownHandler(event);
+            gameHandlerRef.current.onUpKeyDownHandler(event);
         },
         down: (event: React.KeyboardEventHandler) => {
-            GameHandeler.onDownKeyDownHandler(event);
+            gameHandlerRef.current.onDownKeyDownHandler(event);
         },
     };
 
@@ -87,7 +90,7 @@ const Board = ({isIA} : {isIA : boolean}) =>{
                     SCORE {Game.score}
                 </div>
                 <div className="tag">
-                    BEST 0
+                    BEST {bestScore}
                 </div>
             </div>
             <HotKeys keyMap={keyMap} handlers={handlers}>
@@ -96,7 +99,7 @@ const Board = ({isIA} : {isIA : boolean}) =>{
                     className="board"
                     tabIndex={0}
                     ref={boardRef}>
-                    <Grid gridHandler={Game.grid}/>
+                    <Grid gridHandler={gridHandlerRef.current}/>
                 </div>
             </HotKeys>
             <div className="tag">

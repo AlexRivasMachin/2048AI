@@ -5,6 +5,7 @@ import { GridHandler } from "./services/Grid";
 export interface Game {
   grid: GridHandler;
   score: number;
+  bestScore: number;
   appStatus: AppStatusType;
   lastMove: MoveOptionsType | null;
   iaPlayer: boolean;

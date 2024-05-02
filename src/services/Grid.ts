@@ -1,15 +1,30 @@
 import {  Grid as GridType } from '../types'; // Asegúrate de importar desde la ruta correcta
 import {CellHandler as Cell} from './Cell'
-import { MOVE_OPTIONS, MoveOptionsType } from '../enums.ts';
+import { MOVE_OPTIONS, APP_STATUS, MoveOptionsType, AppStatusType } from '../enums.ts';
 
 export class GridHandler {
   grid: GridType;
+  setAppStatus: React.Dispatch<React.SetStateAction<AppStatusType>>;
+  setScore: React.Dispatch<React.SetStateAction<number>>;
+  setBestScore: React.Dispatch<React.SetStateAction<number>>;
+  setMove: React.Dispatch<React.SetStateAction<MoveOptionsType | null>>;
+  currentScore: number;
   //todo: esto ponerlo en un archivo de configuración
 
-  constructor() {
+  constructor(
+    setAppStatus: React.Dispatch<React.SetStateAction<AppStatusType>>,
+    setScore: React.Dispatch<React.SetStateAction<number>>,
+    setBestScore: React.Dispatch<React.SetStateAction<number>>,
+    setMove: React.Dispatch<React.SetStateAction<MoveOptionsType | null>>,
+  ) {
     this.grid = { size: 4, cells: [] };
     this.initializeGrid(this.grid.size);
     this.initializeRandomCells();
+    this.setAppStatus = setAppStatus;
+    this.setScore = setScore;
+    this.setBestScore = setBestScore;
+    this.setMove = setMove;
+    this.currentScore = 0;
   }
 
   initializeGrid(size: number): void {
@@ -59,6 +74,8 @@ export class GridHandler {
   }
 
   makeMove(move: MoveOptionsType): void {
+    // Actualiza el último movimiento
+    this.setMove(move);
     switch (move) {
       case MOVE_OPTIONS.UP:
         this.moveUp();
@@ -147,7 +164,7 @@ export class GridHandler {
     }else{
       if(this.trytoPushNeighbours(x, y, x2, y2)){
         this.tryToMove(x, y, x2, y2);
-      };
+      }
     }
   }
   
@@ -188,6 +205,8 @@ export class GridHandler {
   mergeCells(x: number, y: number, x2: number, y2: number): void {
     this.grid.cells[x2][y2].doubleValue();
     this.grid.cells[x][y].emptyValue();
+    this.currentScore += this.grid.cells[x2][y2].getValue();
+    this.setScore(this.currentScore);
   }
 
   assignValueToEmptyCell(): void {
@@ -218,6 +237,8 @@ export class GridHandler {
       for (let j = 0; j < this.grid.size; j++) {
         if (this.grid.cells[i][j].getValue() === 2048) {
           console.log("Has ganado");
+          this.setBestScore(this.currentScore)
+          this.setAppStatus(APP_STATUS.GAME_WON);
           return true;
         }
       }
