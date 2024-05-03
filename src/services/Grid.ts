@@ -158,13 +158,12 @@ export class GridHandler {
       this.moveCell(x, y, x2, y2);
       return true;
     }
+    if(this.trytoPushNeighbours(x, y, x2, y2)){
+      this.tryToMove(x, y, x2, y2);
+    }
     if(this.cellEqualInValue(x, y, x2, y2)) {
       this.mergeCells(x, y, x2, y2);
       return true;
-    }else{
-      if(this.trytoPushNeighbours(x, y, x2, y2)){
-        this.tryToMove(x, y, x2, y2);
-      }
     }
   }
   
