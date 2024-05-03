@@ -9,6 +9,7 @@ export class GridHandler {
   setBestScore: React.Dispatch<React.SetStateAction<number>>;
   setMove: React.Dispatch<React.SetStateAction<MoveOptionsType | null>>;
   currentScore: number;
+  cellGenerationEnabled: boolean = true;
   //todo: esto ponerlo en un archivo de configuración
 
   constructor(
@@ -39,8 +40,8 @@ export class GridHandler {
   initializeRandomCells(): void {
     const {x, y, x2, y2}: {x: number, y: number, x2: number, y2: number} = this.getRandomPosition();
 
-    this.grid.cells[x][y].initializeValue(this.grid.size);
-    this.grid.cells[x2][y2].initializeValue(this.grid.size);
+    this.grid.cells[x][y].initializeValue();
+    this.grid.cells[x2][y2].initializeValue();
   }
 
 
@@ -90,7 +91,7 @@ export class GridHandler {
         this.moveRight();
         break;
     }
-    if(this.areThereAvailableMoves() && this.getEmptyCells().length > 0){
+    if(this.areThereAvailableMoves() && this.getEmptyCells().length > 0 && this.cellGenerationEnabled){
       this.assignValueToEmptyCell();
     }
     if(!this.areThereAvailableMoves()){
@@ -100,7 +101,7 @@ export class GridHandler {
 
   moveUp(): void {
     this.grid.cells.forEach((row, i) =>{
-      row.forEach((cell, j) => {
+      row.forEach((_, j) => {
         let offset : number = 1;
         //Intenta moverlo hasta que no se pueda mover más, en cada iteración incrementa el offset para moverlo más lejos
         while(this.tryToMove(i, j-offset+1, i, j - offset)){
@@ -112,7 +113,7 @@ export class GridHandler {
   }
   moveDown(): void {
     this.grid.cells.forEach((row, i) =>{
-      row.forEach((cell, j) => {
+      row.forEach((_, j) => {
         let offset : number = 1;
         while(this.tryToMove(i, j+offset-1, i, j + offset)){
           offset++;
@@ -123,7 +124,7 @@ export class GridHandler {
   }
   moveLeft(): void {
     this.grid.cells.forEach((row, i) =>{
-      row.forEach((cell, j) => {
+      row.forEach((_, j) => {
         let offset : number = 1;
         while(this.tryToMove(i-offset+1, j, i-offset, j)){
           offset++;
@@ -134,7 +135,7 @@ export class GridHandler {
   }
   moveRight(): void {
     this.grid.cells.forEach((row, i) =>{
-      row.forEach((cell, j) => {
+      row.forEach((_, j) => {
         let offset : number = 1;
         while(this.tryToMove(i+offset-1, j, i+offset, j)){
           offset++;
@@ -147,10 +148,6 @@ export class GridHandler {
   
 
   tryToMove(x: number, y: number, x2: number, y2: number): undefined | boolean{
-    if(!this.areThereAvailableMoves){
-      console.log("No hay movimientos disponibles");
-      return false;
-    }
     if(this.cellIsEmpty(x, y) || this.cellIsOutOfGrid(x2, y2)) {
       return false;
     }
@@ -159,7 +156,7 @@ export class GridHandler {
       return true;
     }
     if(this.trytoPushNeighbours(x, y, x2, y2)){
-      this.tryToMove(x, y, x2, y2);
+      return this.tryToMove(x, y, x2, y2);
     }
     if(this.cellEqualInValue(x, y, x2, y2)) {
       this.mergeCells(x, y, x2, y2);
@@ -211,7 +208,7 @@ export class GridHandler {
   assignValueToEmptyCell(): void {
     const emptyCells: Cell[] = this.getEmptyCells();
     const randomIndex = Math.floor(Math.random() * emptyCells.length);
-    emptyCells[randomIndex].initializeValue(this.grid.size);
+    emptyCells[randomIndex].initializeValue();
   }
 
   areThereAvailableMoves(): boolean {
@@ -253,6 +250,9 @@ export class GridHandler {
     });
   }
 
+  disableCellGeneration() {
+    this.cellGenerationEnabled = false;
+  }
 
     
   // TODO: MIRAR QUE SI NADA SE MUEVE EN UNA DIRECCIÓN NO SE GENERE UNA NUEVA CELDA

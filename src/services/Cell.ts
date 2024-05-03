@@ -14,9 +14,8 @@ export class CellHandler{
         this.cell = {position: {x, y}, value};
     }
 
-    initializeValue(size: number): void {
+    initializeValue(): void {
         this.cell.value = this.positionIsTwo() ? 2 : 4;
-
     }
 
     positionIsTwo(): boolean {
