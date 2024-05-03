@@ -1,0 +1,22 @@
+.move {
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  .move.start {
+    transform: translate(0, 0);
+  }
+  
+  .move.end {
+    transform: translate(10px, 10px);
+  }
+  
+  
+  .pop {
+    animation: pop 0.3s;
+  }
+  
+  @keyframes pop {
+    0% { transform: scale(0); }
+    100% { transform: scale(1); }
+  }
+  
