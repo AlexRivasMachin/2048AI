@@ -85,25 +85,29 @@ const Board = ({isIA} : {isIA : boolean}) =>{
 
     return (
         <>
-            <div className="tags">
+            <div className="gameBoard">
+                <div 
+                    className="tags" 
+                >
+                    <div className="tag">
+                        SCORE {Game.score}
+                    </div>
+                    <div className="tag" style={isIA ? {display: 'none'} : {}}>
+                        BEST {bestScore}
+                    </div>
+                </div>
+                <HotKeys keyMap={keyMap} handlers={handlers}>
+                    <div  
+                        id='board'
+                        className="board"
+                        tabIndex={0}
+                        ref={boardRef}>
+                        <Grid gridHandler={gridHandlerRef.current}/>
+                    </div>
+                </HotKeys>
                 <div className="tag">
-                    SCORE {Game.score}
+                    {Game.iaPlayer ? 'IA' : 'Player'}
                 </div>
-                <div className="tag">
-                    BEST {bestScore}
-                </div>
-            </div>
-            <HotKeys keyMap={keyMap} handlers={handlers}>
-                <div  
-                    id='board'
-                    className="board"
-                    tabIndex={0}
-                    ref={boardRef}>
-                    <Grid gridHandler={gridHandlerRef.current}/>
-                </div>
-            </HotKeys>
-            <div className="tag">
-                {Game.iaPlayer ? 'IA' : 'Player'}
             </div>
         </>
     );

@@ -1,3 +1,17 @@
+.gameBoard{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+    gap: 10px;
+    padding: 10px;
+    max-width: fit-content;
+    width: 100%;
+    align-self: center;
+    outline: none;
+}
+
 .board{
     display: flex;
     flex-direction: row;
@@ -19,10 +33,14 @@
 .tags{
     display: flex;
     flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+    gap: 40px;
+    width: 100%;
 }
 .tag{
-    margin-inline: 50px;
-    background-color: var(--color-primary-200);
+     background-color: var(--color-primary-200);
     padding: 50px;
     padding-bottom: 15px;
     padding-top: 15px;
