@@ -10,6 +10,7 @@ export class GridHandler {
   setMove: React.Dispatch<React.SetStateAction<MoveOptionsType | null>>;
   currentScore: number;
   cellGenerationEnabled: boolean = true;
+  hasMoved: boolean = false;
   //todo: esto ponerlo en un archivo de configuración
 
   constructor(
@@ -75,7 +76,7 @@ export class GridHandler {
   }
 
   makeMove(move: MoveOptionsType): void {
-    // Actualiza el último movimiento
+    this.hasMoved = false;
     this.setMove(move);
     switch (move) {
       case MOVE_OPTIONS.UP:
@@ -91,7 +92,7 @@ export class GridHandler {
         this.moveRight();
         break;
     }
-    if(this.areThereAvailableMoves() && this.getEmptyCells().length > 0 && this.cellGenerationEnabled){
+    if(this.hasMoved && this.areThereAvailableMoves() && this.getEmptyCells().length > 0 && this.cellGenerationEnabled){
       this.assignValueToEmptyCell();
     }
     if(!this.areThereAvailableMoves()){
@@ -197,12 +198,14 @@ export class GridHandler {
   moveCell(x: number, y: number, x2: number, y2: number): void {
     this.grid.cells[x2][y2].setValue(this.grid.cells[x][y].getValue());
     this.grid.cells[x][y].emptyValue();
+    this.hasMoved = true;
   }
   mergeCells(x: number, y: number, x2: number, y2: number): void {
     this.grid.cells[x2][y2].doubleValue();
     this.grid.cells[x][y].emptyValue();
     this.currentScore += this.grid.cells[x2][y2].getValue();
     this.setScore(this.currentScore);
+    this.hasMoved = true;
   }
 
   assignValueToEmptyCell(): void {
@@ -254,7 +257,7 @@ export class GridHandler {
     this.cellGenerationEnabled = false;
   }
 
-    
   // TODO: MIRAR QUE SI NADA SE MUEVE EN UNA DIRECCIÓN NO SE GENERE UNA NUEVA CELDA
+  
 }
 

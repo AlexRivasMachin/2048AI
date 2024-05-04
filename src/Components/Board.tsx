@@ -105,7 +105,7 @@ const Board = ({isIA} : {isIA : boolean}) =>{
                         <Grid gridHandler={gridHandlerRef.current}/>
                     </div>
                 </HotKeys>
-                <div className="tag">
+                <div className="tag" id='playertag'>
                     {Game.iaPlayer ? 'IA' : 'Player'}
                 </div>
             </div>
