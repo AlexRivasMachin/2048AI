@@ -16,7 +16,10 @@ import {GameHandler} from '../services/Game.ts';
 import { GridHandler } from '../services/Grid.ts';
 
 // Creación del tablero de 2048 (siempre es 16 celdas)
-const Board = ({isIA} : {isIA : boolean}) =>{
+const Board = (
+    {isIA, lastPlayerMove, setLastPlayerMove} : 
+    {isIA : boolean, lastPlayerMove?: MoveOptionsType | null, setLastPlayerMove?: React.Dispatch<React.SetStateAction<MoveOptionsType | null>>}
+) =>{
     const boardRef = useRef(null);
 
     const [appStatus, setAppStatus] = useState<AppStatusType>(APP_STATUS.PLAYING);
@@ -71,17 +74,35 @@ const Board = ({isIA} : {isIA : boolean}) =>{
     const handlers = {
         left: (event: React.KeyboardEventHandler) => {
             gameHandlerRef.current.onLeftKeyDownHandler(event);
+            if (!isIA && setLastPlayerMove){
+                setLastPlayerMove('left');
+            }
         },
         right: (event: React.KeyboardEventHandler) => {
             gameHandlerRef.current.onRightKeyDownHandler(event);
+            if (!isIA && setLastPlayerMove){
+                setLastPlayerMove('right');
+            }
         },
         up: (event: React.KeyboardEventHandler) => {
             gameHandlerRef.current.onUpKeyDownHandler(event);
+            if (!isIA && setLastPlayerMove){
+                setLastPlayerMove('up');
+            }
         },
         down: (event: React.KeyboardEventHandler) => {
             gameHandlerRef.current.onDownKeyDownHandler(event);
+            if (!isIA && setLastPlayerMove){
+                setLastPlayerMove('down');
+            }
         },
     };
+
+    if(isIA && lastPlayerMove){
+        //SI METEMOS EL PUTADA MODE, YA TENEMOS AKI EL MOVIMIENTO DEL JUGADOR DE IA
+        console.log('IA move');
+        console.log(lastPlayerMove);
+    }
 
     return (
         <>
