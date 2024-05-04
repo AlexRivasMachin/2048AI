@@ -16,10 +16,12 @@ import {APP_STATUS, AppStatusType, MoveOptionsType} from '../enums.ts'
 import {GameHandler} from '../services/Game.ts';
 import { GridHandler } from '../services/Grid.ts';
 
-// Creación del tablero de 2048 (siempre es 16 celdas)
 const Board = (
-    {isIA, lastPlayerMove, setLastPlayerMove} : 
-    {isIA : boolean, lastPlayerMove?: MoveOptionsType | null, setLastPlayerMove?: React.Dispatch<React.SetStateAction<MoveOptionsType | null>>}
+    {isIA, lastPlayerMove, setLastPlayerMove, setGameOver} : 
+    {isIA : boolean, 
+    lastPlayerMove?: MoveOptionsType | null,
+    setGameOver: React.Dispatch<React.SetStateAction<boolean>>,
+    setLastPlayerMove?: React.Dispatch<React.SetStateAction<MoveOptionsType | null>>}
 ) =>{
     const boardRef = useRef(null);
     const loseDialogRef = useRef<HTMLDivElement | null>(null);
@@ -136,7 +138,13 @@ const Board = (
                         {Game.appStatus === APP_STATUS.GAME_OVER && !Game.iaPlayer &&
                             <div id="game-over-dialog">
                                 <h1>Game over!</h1>
-                                <button id='try-again-button' onClick={restartGame} autoFocus>Try again</button>
+                                <button 
+                                    id='try-again-button' 
+                                    onClick={()=>{
+                                        restartGame();
+                                        setGameOver(true);
+                                    } } 
+                                    autoFocus>Try again</button>
                             </div>
                         }
                     </div>

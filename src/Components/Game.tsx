@@ -1,18 +1,25 @@
 import Board from "./Board";
 import "../Styles/Game.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MoveOptionsType } from "../enums";
 
 //Craeación del tablero de 2048, es oarte de Game
 export const Game = () =>{
 
     const [lastPlayerMove, setLastPlayerMove] = useState<MoveOptionsType | null>(null);
+    const [gameOver, setGameOver] = useState(false);
+
+    useEffect(() => {
+        if (gameOver) {
+            setGameOver(false);
+        }
+    }, [gameOver]);
 
     return( 
         <>
         <div className="boards">
-            <Board isIA={false} setLastPlayerMove={setLastPlayerMove}/> 
-            <Board isIA={true} lastPlayerMove={lastPlayerMove}/>
+            <Board isIA={false} setLastPlayerMove={setLastPlayerMove} setGameOver={setGameOver} key={gameOver ? 'palyerBoard1' : 'PlayerBoard2'}/> 
+            <Board isIA={true} lastPlayerMove={lastPlayerMove} setGameOver={setGameOver} key={gameOver ? 'iaBoard1' : 'iaBoard2'}/>
         </div>
         </>
     )
