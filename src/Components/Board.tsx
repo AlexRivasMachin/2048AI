@@ -9,6 +9,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { HotKeys } from 'react-hotkeys';
 import '../Styles/Board.css'
+import '../Styles/Dialog.css'
 import Grid from './Grid.tsx';
 import type {Game as GameType} from '../types'
 import {APP_STATUS, AppStatusType, MoveOptionsType} from '../enums.ts'
@@ -21,16 +22,16 @@ const Board = (
     {isIA : boolean, lastPlayerMove?: MoveOptionsType | null, setLastPlayerMove?: React.Dispatch<React.SetStateAction<MoveOptionsType | null>>}
 ) =>{
     const boardRef = useRef(null);
+    const loseDialogRef = useRef<HTMLDivElement | null>(null);
 
     const [appStatus, setAppStatus] = useState<AppStatusType>(APP_STATUS.PLAYING);
     const [score, setScore] = useState(0);
     const [bestScore, setBestScore] = useState(0);
     const [move, setMove] = useState<MoveOptionsType | null>(null);
-
-    const gridHandlerRef = useRef(new GridHandler(setAppStatus, setScore, setBestScore, setMove));
+    const [gridHandler, setGridHandler] = useState<GridHandler>(new GridHandler(setAppStatus, setScore, setBestScore, setMove));
 
     const Game: GameType = {
-        grid: gridHandlerRef.current,
+        grid: gridHandler,
         score: score,
         bestScore: bestScore,
         appStatus: appStatus,
@@ -63,6 +64,16 @@ const Board = (
     if (!Game.iaPlayer){
         setRootOnClickListener();
     }
+
+    const restartGame = () => {
+        if (score > bestScore){
+            setBestScore(score);
+        }
+        setScore(0);
+        setAppStatus(APP_STATUS.PLAYING);
+        loseDialogRef.current?.classList.remove('show');
+        setGridHandler(new GridHandler(setAppStatus, setScore, setBestScore, setMove));
+    };
 
     const keyMap = {
         left: ['left', 'a'],
@@ -107,14 +118,12 @@ const Board = (
     return (
         <>
             <div className="gameBoard">
-                <div 
-                    className="tags" 
-                >
+                <div className="tags">
                     <div className="tag">
                         SCORE {Game.score}
                     </div>
                     <div className="tag" style={isIA ? {display: 'none'} : {}}>
-                        BEST {bestScore}
+                            BEST {bestScore}
                     </div>
                 </div>
                 <HotKeys keyMap={keyMap} handlers={handlers}>
@@ -123,11 +132,17 @@ const Board = (
                         className="board"
                         tabIndex={0}
                         ref={boardRef}>
-                        <Grid gridHandler={gridHandlerRef.current}/>
+                        <Grid gridHandler={gridHandler}/>
+                        {Game.appStatus === APP_STATUS.GAME_OVER && !Game.iaPlayer &&
+                            <div id="game-over-dialog">
+                                <h1>Game over!</h1>
+                                <button id='try-again-button' onClick={restartGame} autoFocus>Try again</button>
+                            </div>
+                        }
                     </div>
                 </HotKeys>
                 <div className="tag" id='playertag'>
-                    {Game.iaPlayer ? 'IA' : 'Player'}
+                        {Game.iaPlayer ? 'IA' : 'Player'}
                 </div>
             </div>
         </>

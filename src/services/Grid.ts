@@ -97,6 +97,7 @@ export class GridHandler {
     }
     if(!this.areThereAvailableMoves()){
       console.log("No hay movimientos disponibles");
+      this.setAppStatus(APP_STATUS.GAME_OVER);
     }
   }
 
