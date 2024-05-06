@@ -5,7 +5,7 @@ import { CellHandler as Cell } from '../Cell';
 describe('GridHandler', () => {
 
     const mockSetState = jest.fn();
-    const gridHandler = new GridHandler(mockSetState, mockSetState, mockSetState, mockSetState);
+    const gridHandler = new GridHandler(mockSetState, mockSetState, mockSetState, mockSetState, 0);
     gridHandler.disableCellGeneration();
 
   it('should move cells up correctly', () => {
