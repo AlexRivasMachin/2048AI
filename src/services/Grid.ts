@@ -11,6 +11,7 @@ export class GridHandler {
   currentScore: number;
   cellGenerationEnabled: boolean = true;
   hasMoved: boolean = false;
+  bestScore: number = 0;
   //todo: esto ponerlo en un archivo de configuración
 
   constructor(
@@ -18,6 +19,7 @@ export class GridHandler {
     setScore: React.Dispatch<React.SetStateAction<number>>,
     setBestScore: React.Dispatch<React.SetStateAction<number>>,
     setMove: React.Dispatch<React.SetStateAction<MoveOptionsType | null>>,
+    bestScore: number
   ) {
     this.grid = { size: 4, cells: [] };
     this.initializeGrid(this.grid.size);
@@ -27,6 +29,7 @@ export class GridHandler {
     this.setBestScore = setBestScore;
     this.setMove = setMove;
     this.currentScore = 0;
+    this.bestScore;
   }
 
   initializeGrid(size: number): void {
@@ -97,6 +100,9 @@ export class GridHandler {
     }
     if(!this.areThereAvailableMoves()){
       console.log("No hay movimientos disponibles");
+      if(this.currentScore > this.bestScore){
+        this.setBestScore(this.currentScore);
+      }
       this.setAppStatus(APP_STATUS.GAME_OVER);
     }
     if(this.hasWon()) this.wonBoard();

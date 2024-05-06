@@ -8,6 +8,7 @@ export const Game = () =>{
 
     const [lastPlayerMove, setLastPlayerMove] = useState<MoveOptionsType | null>(null);
     const [gameOver, setGameOver] = useState(false);
+    const [bestScore, setBestScore] = useState(0);
 
     useEffect(() => {
         if (gameOver) {
@@ -18,8 +19,8 @@ export const Game = () =>{
     return( 
         <>
         <div className="boards">
-            <Board isIA={false} setLastPlayerMove={setLastPlayerMove} setGameOver={setGameOver} key={gameOver ? 'palyerBoard1' : 'PlayerBoard2'}/> 
-            <Board isIA={true} lastPlayerMove={lastPlayerMove} setGameOver={setGameOver} key={gameOver ? 'iaBoard1' : 'iaBoard2'}/>
+            <Board isIA={false} setLastPlayerMove={setLastPlayerMove} setGameOver={setGameOver} setBestScore={setBestScore} bestScore={bestScore} key={gameOver ? 'palyerBoard1' : 'PlayerBoard2'}/> 
+            <Board isIA={true} lastPlayerMove={lastPlayerMove} setGameOver={setGameOver} setBestScore={setBestScore} bestScore={bestScore} key={gameOver ? 'iaBoard1' : 'iaBoard2'}/>
         </div>
         </>
     )

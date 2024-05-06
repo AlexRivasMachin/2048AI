@@ -17,9 +17,11 @@ import {GameHandler} from '../services/Game.ts';
 import { GridHandler } from '../services/Grid.ts';
 
 const Board = (
-    {isIA, lastPlayerMove, setLastPlayerMove, setGameOver} : 
+    {isIA, lastPlayerMove, bestScore, setLastPlayerMove, setGameOver, setBestScore} : 
     {isIA : boolean, 
     lastPlayerMove?: MoveOptionsType | null,
+    bestScore: number,
+    setBestScore: React.Dispatch<React.SetStateAction<number>>,
     setGameOver: React.Dispatch<React.SetStateAction<boolean>>,
     setLastPlayerMove?: React.Dispatch<React.SetStateAction<MoveOptionsType | null>>}
 ) =>{
@@ -28,9 +30,8 @@ const Board = (
 
     const [appStatus, setAppStatus] = useState<AppStatusType>(APP_STATUS.PLAYING);
     const [score, setScore] = useState(0);
-    const [bestScore, setBestScore] = useState(0);
     const [move, setMove] = useState<MoveOptionsType | null>(null);
-    const [gridHandler, setGridHandler] = useState<GridHandler>(new GridHandler(setAppStatus, setScore, setBestScore, setMove));
+    const [gridHandler, setGridHandler] = useState<GridHandler>(new GridHandler(setAppStatus, setScore, setBestScore, setMove, bestScore));
 
     const Game: GameType = {
         grid: gridHandler,
@@ -74,7 +75,7 @@ const Board = (
         setScore(0);
         setAppStatus(APP_STATUS.PLAYING);
         loseDialogRef.current?.classList.remove('show');
-        setGridHandler(new GridHandler(setAppStatus, setScore, setBestScore, setMove));
+        setGridHandler(new GridHandler(setAppStatus, setScore, setBestScore, setMove, bestScore));
     };
 
     const keyMap = {
