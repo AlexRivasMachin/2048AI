@@ -99,6 +99,7 @@ export class GridHandler {
       console.log("No hay movimientos disponibles");
       this.setAppStatus(APP_STATUS.GAME_OVER);
     }
+    if(this.hasWon()) this.wonBoard();
   }
 
   moveUp(): void {
@@ -111,7 +112,6 @@ export class GridHandler {
         }
       });
     });
-    if(this.hasWon()) this.wonBoard();
   }
   moveDown(): void {
     this.grid.cells.forEach((row, i) =>{
@@ -122,7 +122,6 @@ export class GridHandler {
         }
       });
     });
-    if(this.hasWon()) this.wonBoard();
   }
   moveLeft(): void {
     this.grid.cells.forEach((row, i) =>{
@@ -133,7 +132,6 @@ export class GridHandler {
         }
       });
     });
-    if(this.hasWon()) this.wonBoard();
   }
   moveRight(): void {
     this.grid.cells.forEach((row, i) =>{
@@ -144,7 +142,6 @@ export class GridHandler {
         }
       });
     });
-    if(this.hasWon()) this.wonBoard();
   }
 
   
@@ -189,12 +186,9 @@ export class GridHandler {
     return this.grid.cells[x][y].equalsInValue(this.grid.cells[x2][y2]);
   }
 
-  //MIRAR SI HACIA DONDE SE MUEVE, HAY UNA CELDA CON UN VALOR DISTINTO, ENTONCES SE MUEVE A LA ANTERIOR si hay [][2][4][] que se quede [][][2][4]
   cellHasDifferentValue(x: number, y: number, x2: number, y2: number): boolean {
     return this.grid.cells[x][y].getValue() !== this.grid.cells[x2][y2].getValue();
   }
-
-
 
   moveCell(x: number, y: number, x2: number, y2: number): void {
     this.grid.cells[x2][y2].setValue(this.grid.cells[x][y].getValue());
@@ -258,7 +252,6 @@ export class GridHandler {
     this.cellGenerationEnabled = false;
   }
 
-  // TODO: MIRAR QUE SI NADA SE MUEVE EN UNA DIRECCIÓN NO SE GENERE UNA NUEVA CELDA
   
 }
 
