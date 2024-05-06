@@ -26,16 +26,16 @@ export class GameHandler {
     this.setMove = setMove;
   }
 
-  onLeftKeyDownHandler(e: React.KeyboardEventHandler) {
+  onLeftKeyDownHandler(_e: KeyboardEvent) {
     this.handleMove(MOVE_OPTIONS.LEFT);
   }
-  onRightKeyDownHandler(e: React.KeyboardEventHandler) {
+  onRightKeyDownHandler(_e: KeyboardEvent) {
     this.handleMove(MOVE_OPTIONS.RIGHT);
   }
-  onUpKeyDownHandler(e: React.KeyboardEventHandler) {
+  onUpKeyDownHandler(_e: KeyboardEvent) {
     this.handleMove(MOVE_OPTIONS.UP);
   }
-  onDownKeyDownHandler(e: React.KeyboardEventHandler) {
+  onDownKeyDownHandler(_e: KeyboardEvent) {
     this.handleMove(MOVE_OPTIONS.DOWN);
   }
 

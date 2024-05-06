@@ -29,7 +29,7 @@ export class GridHandler {
     this.setBestScore = setBestScore;
     this.setMove = setMove;
     this.currentScore = 0;
-    this.bestScore;
+    this.bestScore = bestScore;
   }
 
   initializeGrid(size: number): void {

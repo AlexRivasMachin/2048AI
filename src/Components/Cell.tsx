@@ -3,8 +3,6 @@ import "../Styles/Cell.css";
 import "../Styles/animations.css";
 import {CellHandler} from '../services/Cell.ts';
 import { observer } from "mobx-react";
-import { transform } from 'typescript';
-
 
 
 interface CellProps {
