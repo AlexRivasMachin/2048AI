@@ -86,25 +86,25 @@ const Board = (
       };
       
     const handlers = {
-        left: (event: React.KeyboardEventHandler) => {
+        left: (event: KeyboardEvent) => {
             gameHandlerRef.current.onLeftKeyDownHandler(event);
             if (!isIA && setLastPlayerMove){
                 setLastPlayerMove('left');
             }
         },
-        right: (event: React.KeyboardEventHandler) => {
+        right: (event: KeyboardEvent) => {
             gameHandlerRef.current.onRightKeyDownHandler(event);
             if (!isIA && setLastPlayerMove){
                 setLastPlayerMove('right');
             }
         },
-        up: (event: React.KeyboardEventHandler) => {
+        up: (event: KeyboardEvent) => {
             gameHandlerRef.current.onUpKeyDownHandler(event);
             if (!isIA && setLastPlayerMove){
                 setLastPlayerMove('up');
             }
         },
-        down: (event: React.KeyboardEventHandler) => {
+        down: (event: KeyboardEvent) => {
             gameHandlerRef.current.onDownKeyDownHandler(event);
             if (!isIA && setLastPlayerMove){
                 setLastPlayerMove('down');
