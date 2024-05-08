@@ -61,12 +61,17 @@ COPY package.json .
 
 # Copy the production dependencies from the deps stage and also
 # the built application from the build stage into the image.
-COPY --from=deps /usr/src/app/node_modules ./node_modules
 COPY --from=build /usr/src/app/dist ./dist
 
+################################################################################
+# Add Nginx server
+FROM nginx:1.21-alpine as nginx
 
-# Expose the port that the application listens on.
-EXPOSE 5173
+# Copy Nginx configuration
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Run the application.
-CMD npm run preview
+# Copy static files from build stage
+COPY --from=build /usr/src/app/dist /usr/share/nginx/html
+
+# Expose Nginx server port
+EXPOSE 80
