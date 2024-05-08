@@ -11,6 +11,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "@langchain/groq": "^0.0.9",
     "dotenv": "^16.4.5",
     "mobx": "^6.12.3",
     "mobx-react": "^9.1.1",
