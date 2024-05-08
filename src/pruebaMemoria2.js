@@ -2,10 +2,19 @@ import { BufferMemory, ChatMessageHistory } from "langchain/memory";
 import { HumanMessage, AIMessage } from "langchain/schema";
 import { ChatGroq } from "@langchain/groq";
 import { ConversationChain } from "langchain/chains";
+import {
+  ChatPromptTemplate,
+  HumanMessagePromptTemplate,
+  SystemMessagePromptTemplate,
+  MessagesPlaceholder,
+} from "langchain/prompts";
+
 
 const model = new ChatGroq({
   temperature: 0,
-  model: "llama3-70b-8192"
+  model: "llama3-70b-8192",
+  //para ver los tokens de respuesta
+  verbose: true
 });
 
 const pastMessages = [
@@ -13,14 +22,37 @@ const pastMessages = [
   new AIMessage("Nice to meet you, Jonas!"),
 ];
 
+//crear prompt que se usa en el primer mensaje sólo, pero como se le manda toda la memoria en verdad se manda en todos los mensajes
+const chatPrompt = ChatPromptTemplate.fromPromptMessages([
+    SystemMessagePromptTemplate.fromTemplate(
+      "act like a angry chatbot, be rude, brief and provide no information. But show that you remember the user's name."
+    ),
+    new MessagesPlaceholder("history"),
+    HumanMessagePromptTemplate.fromTemplate("{input}"),
+  ]);
+
 const memory = new BufferMemory({
+//iniciar la memoria con unos mensajes ya puestos
   chatHistory: new ChatMessageHistory(pastMessages),
+    returnMessages: true, memoryKey: "history"
 });
 
-const chain = new ConversationChain({ llm: model, memory: memory });
+const chain = new ConversationChain({ 
+    llm: model,
+    memory: memory,
+    prompt: chatPrompt
+ });
 
-const res1 = await chain.call({ input: "Hi! I'm Jim." });
-console.log({ res1 });
 
-const res2 = await chain.call({ input: "What's my name?" });
+const res2 = await chain.call({ input: "what's my name?" });
 console.log({ res2 });
+
+const res3 = await chain.call({ input: "what's the weather today?" });
+console.log({ res3 });
+
+const res4 = await chain.call({ input: "what day is today?" });
+console.log({ res4 });
+
+const res5 = await chain.call({ input: "what's my name?" });
+console.log({ res5 });
+
