@@ -8,28 +8,7 @@ import {
   SystemMessagePromptTemplate,
   MessagesPlaceholder,
 } from "langchain/prompts";
-import { StructuredOutputParser } from "langchain/output_parsers";
 
-
-const schema = {
-    $defs: {
-        Movement: {
-            type: "string",
-            enum: ["up", "down", "left", "right"],
-        }
-    },
-    properties: {
-        movement: {
-            $ref: "#/$defs/Movement",
-        }
-    },
-    required: ["movement"],
-    type: "object"
-};
-
-
-//from json schema
-const parser = new StructuredOutputParser(schema);
 
 const model = new ChatGroq({
   temperature: 0,
@@ -55,24 +34,24 @@ const chatPrompt = ChatPromptTemplate.fromPromptMessages([
 const memory = new BufferMemory({
 //iniciar la memoria con unos mensajes ya puestos
   chatHistory: new ChatMessageHistory(pastMessages),
-    returnMessages: true, memoryKey: "history"
+    returnMessages: false, memoryKey: "history"
 });
 
 const chain = new ConversationChain({ 
     llm: model,
     memory: memory,
-    prompt: chatPrompt,
-    parser
+    prompt: chatPrompt
  });
 
 
-const res2 = await chain.call({ input: "what's my name?",
-  formatInstructions: parser.getFormatInstructions() });
+const res2 = await chain.call({ input: "what's my name?" });
 console.log({ res2 });
 
 const res3 = await chain.call({ input: "what's the weather today?" });
 console.log({ res3 });
 
-const res4 = await chain.call({ input: "what's my name?" });
+const res4 = await chain.call({ input: "what day is today?" });
 console.log({ res4 });
 
+const res5 = await chain.call({ input: "what's my name?" });
+console.log({ res5 });
