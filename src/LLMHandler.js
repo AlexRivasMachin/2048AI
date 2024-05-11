@@ -83,7 +83,7 @@ const chatPrompt = ChatPromptTemplate.fromPromptMessages([
 const memory = new BufferMemory({
 //iniciar la memoria con unos mensajes ya puestos
   chatHistory: new ChatMessageHistory(pastMessages),
-    returnMessages: true, memoryKey: "history"
+    returnMessages: false, memoryKey: "history"
 });
 
 const chain = new ConversationChain({ 
@@ -93,6 +93,12 @@ const chain = new ConversationChain({
  });
 
 
-const res = await chain.call({ input: tablero });
+const res = await chain.invoke({ input: tablero });
 const move = JSON.parse(res.response);
 console.log(move);
+const res2 = await chain.invoke({ input: tablero });
+const move2 = JSON.parse(res2.response);
+console.log(move2);
+const res3 = await chain.invoke({ input: tablero });
+const move3 = JSON.parse(res3.response);
+console.log(move3);
