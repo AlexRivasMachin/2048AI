@@ -43,11 +43,9 @@ What would be the best next move`
         ],
         model: "mixtral-8x7b-32768",
         temperature: 0,
-        stream: false,
-        response_format: {
-            type: "json_object"
-        }
+        stream: false
     });
+    console.log(chat_completion.choices[0]);
     return JSON.parse(chat_completion.choices[0].message.content);
 }
 
