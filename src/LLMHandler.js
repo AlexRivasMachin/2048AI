@@ -1,3 +1,4 @@
+import {config} from "dotenv";
 import { BufferMemory, ChatMessageHistory } from "langchain/memory";
 import { HumanMessage, AIMessage } from "langchain/schema";
 import { ChatGroq } from "@langchain/groq";
@@ -8,6 +9,8 @@ import {
   SystemMessagePromptTemplate,
   MessagesPlaceholder,
 } from "langchain/prompts";
+
+config();
 
 function stringifyTablero(tablero) {
   return tablero.map(fila => fila.join(' ')).join('\n');
@@ -74,21 +77,18 @@ const chatPrompt = ChatPromptTemplate.fromPromptMessages([
      `Game goal is get 2048 tile combining in 4 directions in 4x4 board, each turn spawn new 2 or 4 tile 
       Each tile one integer, when moved they combine if same number or/and move, tiles moved recursively until board bound, tile in move direction move first
       Strategy: keep highest tile in a corner, trap high tiles in selected pivot direction while combine low tiles in other direction
-      Best move in example format?`
+      Best move in example format?
+      Examples
+      Human: 4 0 0 0\n4 0 0 0\n4 0 0 0\n16 4 4 4 Incorrect:[up, right](bottom left corner loses high value), down(miss oportunity combine pivot row) Correct: left(high value remains corner and combine in pivot row) 
+      AI: ["move": "Left"]     `
     ),
-    new MessagesPlaceholder("history"),
-    HumanMessagePromptTemplate.fromTemplate("{input}"),
+    HumanMessagePromptTemplate.fromTemplate("Board:{input}"),
   ]);
 
-const memory = new BufferMemory({
-//iniciar la memoria con unos mensajes ya puestos
-  chatHistory: new ChatMessageHistory(pastMessages),
-    returnMessages: false, memoryKey: "history"
-});
+
 
 const chain = new ConversationChain({ 
     llm: model,
-    memory: memory,
     prompt: chatPrompt
  });
 
