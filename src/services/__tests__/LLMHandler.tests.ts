@@ -1,4 +1,4 @@
-import { LLMHandler } from "../../LLMHandler";
+import { LLMHandler } from "../LLMHandler";
 
 describe("LLMHandler", () => {
 
