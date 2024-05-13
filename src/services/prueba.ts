@@ -5,7 +5,7 @@ const tablero = [
     [0, 4, 4, 0],
     [2, 2, 2, 2],
     [8, 0, 8, 0],
-    [0, 0, 0, 2]
+    [64, 8, 4, 2]
 ];
-const movimiento = handler.getBestMove(tablero);
+const movimiento =  await handler.getBestMove(tablero);
 console.log(movimiento);
