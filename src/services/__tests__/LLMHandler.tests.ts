@@ -63,7 +63,7 @@ describe("LLMHandler", () => {
   it("should return Left", async () => {
 
     const tablero = [
-        [4, 0, 8, 2],
+        [4, 0, 8, 0],
         [0, 0, 4, ],
         [0, 0, 2, 0],
         [128, 128, 2, 4]
@@ -78,8 +78,8 @@ describe("LLMHandler", () => {
 
     const tablero = [
         [4, 0, 0, 2],
-        [4, 0, 0, 2],
-        [0, 0, 2, 2],
+        [0, 0, 0, 4],
+        [0, 0, 2, 0],
         [2, 64, 128, 128]
     ];
 

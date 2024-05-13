@@ -72,8 +72,8 @@ const examples = [
     "output": "{{'move': 'Left'}}"
   },
   {
-    "input": "0 4 4 0\n2 2 2 2\n8 0 8 0\n64 8 4 2",
-    "output": "{{'move': 'Left'}}"
+    "input": "8 0 0 0\n0 0 0 0\n0 2 0 2\n8 4 128 128 Incorrect: Up(high value miss pivot), Left(lose high value corner), Correct: Right(combine high value in pivot and corner), Down(combine low tiles and keep opportunity to combine high value)",
+    "output": "{{'move': 'Right'}}"
   },
   {
     "input": "16 4 2 128\n2 2 0 0\n8 0 8 0\n0 0 0 0",
@@ -82,7 +82,7 @@ const examples = [
   {
     "input": "64 32 16 2\n4 0 0 0\n4 0 0 0\n2 0 0 0",
     "output": "{{'move': 'Up'}}"
-  }
+  },
 ]
 
 const examplePrompt = ChatPromptTemplate.fromTemplate(`Human: {input} {output}`);
@@ -94,8 +94,6 @@ const fewShotPrompt = new FewShotChatMessagePromptTemplate({
   examples,
   inputVariables: ["input"]
 });
-
-
 
 export class LLMHandler {
   private model: any;
