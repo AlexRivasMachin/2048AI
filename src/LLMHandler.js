@@ -1,14 +1,7 @@
 import {config} from "dotenv";
-import { BufferMemory, ChatMessageHistory } from "langchain/memory";
-import { HumanMessage, AIMessage } from "langchain/schema";
 import { ChatGroq } from "@langchain/groq";
-import { ConversationChain } from "langchain/chains";
-import {
-  ChatPromptTemplate,
-  HumanMessagePromptTemplate,
-  SystemMessagePromptTemplate,
-  MessagesPlaceholder,
-} from "langchain/prompts";
+import { LLMChain } from "langchain/chains";
+import { ChatPromptTemplate } from "@langchain/core/prompts";
 
 config();
 
@@ -66,39 +59,34 @@ const model = new ChatGroq({
   verbose: true
 });
 
-const pastMessages = [
-  new HumanMessage("4 0 0 0\n4 0 0 0\n4 0 0 0\n16 4 4 4 Incorrect:{up, right}(bottom left corner loses high value), down(miss oportunity combine pivot row) Correct: left(high value in corner and combine in pivot row)"),
-  new AIMessage(`{"move": "Left"}`),
-];
-
+const chatPrompt = ChatPromptTemplate.fromMessages([
+  [
+    "system",
+   `Game goal is get 2048 tile combining in 4 directions in 4x4 board, each turn spawn new 2 or 4 tile 
+    Each tile one integer, when moved they combine if same number or/and move, tiles moved recursively until board bound, tile in move direction move first
+    Strategy: keep highest tile in a corner, trap high tiles in selected pivot direction while combine low tiles in other direction
+    Examples
+    Human: 4 0 0 0\n4 0 0 0\n4 0 0 0\n16 4 4 4 Incorrect:[up, right](bottom left corner loses high value), down(miss oportunity combine pivot row) Correct: left(high value remains corner and combine in pivot row) 
+    answer: {{'move': 'Left'}}
+    Human: 2 2 0 2\n0 0 0 0\n0 0 0 0\n32 16 2 0 Incorrect:up(high value row lose pivot), right(corner high value lose pivot), left(combine low values but miss oportunity to fill pivot row) Correct: down(fill pivot row) 
+    answer: {{'move': 'Down'}}
+    Answer best move in example format for given board, only the move`
+  ],
+  [
+    "human", "{input}"
+  ]
+]);
 //crear prompt que se usa en el primer mensaje sólo, pero como se le manda toda la memoria en verdad se manda en todos los mensajes
-const chatPrompt = ChatPromptTemplate.fromPromptMessages([
-    SystemMessagePromptTemplate.fromTemplate(
-     `Game goal is get 2048 tile combining in 4 directions in 4x4 board, each turn spawn new 2 or 4 tile 
-      Each tile one integer, when moved they combine if same number or/and move, tiles moved recursively until board bound, tile in move direction move first
-      Strategy: keep highest tile in a corner, trap high tiles in selected pivot direction while combine low tiles in other direction
-      Best move in example format?
-      Examples
-      Human: 4 0 0 0\n4 0 0 0\n4 0 0 0\n16 4 4 4 Incorrect:[up, right](bottom left corner loses high value), down(miss oportunity combine pivot row) Correct: left(high value remains corner and combine in pivot row) 
-      AI: ["move": "Left"]     `
-    ),
-    HumanMessagePromptTemplate.fromTemplate("Board:{input}"),
-  ]);
 
-
-
-const chain = new ConversationChain({ 
+const chain = new LLMChain({ 
     llm: model,
     prompt: chatPrompt
  });
 
 
 const res = await chain.invoke({ input: tablero });
-const move = JSON.parse(res.response);
+const move = JSON.parse(res.text.replace(/'/g, '"'));
 console.log(move);
 const res2 = await chain.invoke({ input: tablero });
-const move2 = JSON.parse(res2.response);
+const move2 = JSON.parse(res2.text.replace(/'/g, '"'));
 console.log(move2);
-const res3 = await chain.invoke({ input: tablero });
-const move3 = JSON.parse(res3.response);
-console.log(move3);
