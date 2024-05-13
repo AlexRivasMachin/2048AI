@@ -3,17 +3,16 @@ import { ChatGroq } from "@langchain/groq";
 import { LLMChain } from "langchain/chains";
 import { ChatPromptTemplate } from "@langchain/core/prompts";
 
-config();
-
-function stringifyTablero(tablero) {
-  return tablero.map(fila => fila.join(' ')).join('\n');
+/*
+Ejemplo de movimiento:
+{
+  "movement": "Left"
 }
-
 const schemaMovimiento = {
   $defs: {
       Movement: {
           type: "string",
-          enum: ["up", "down", "left", "right"],
+          enum: ["Up", "Down", "Left", "Right"],
       }
   },
   properties: {
@@ -24,6 +23,16 @@ const schemaMovimiento = {
   required: ["movement"],
   type: "object"
 };
+*/
+
+/*
+Ejemplo de tablero:
+const tableroObject = [
+  [2, 0, 2, 0],
+  [0, 4, 0, 0],
+  [0, 0, 2, 0],
+  [0, 0, 0, 2]
+];
 const schemaTablero = {
   "type": "object",
   "properties": {
@@ -43,21 +52,7 @@ const schemaTablero = {
   },
   "required": ["tablero"]
 };
-
-const tableroObject = [
-  [2, 0, 2, 0],
-  [0, 4, 0, 0],
-  [0, 0, 2, 0],
-  [0, 0, 0, 2]
-];
-const tablero = stringifyTablero(tableroObject);
-
-const model = new ChatGroq({
-  temperature: 0,
-  model: "llama3-70b-8192",
-  //para ver los tokens de respuesta
-  verbose: true
-});
+*/
 
 const chatPrompt = ChatPromptTemplate.fromMessages([
   [
@@ -68,25 +63,48 @@ const chatPrompt = ChatPromptTemplate.fromMessages([
     Examples
     Human: 4 0 0 0\n4 0 0 0\n4 0 0 0\n16 4 4 4 Incorrect:[up, right](bottom left corner loses high value), down(miss oportunity combine pivot row) Correct: left(high value remains corner and combine in pivot row) 
     answer: {{'move': 'Left'}}
-    Human: 2 2 0 2\n0 0 0 0\n0 0 0 0\n32 16 2 0 Incorrect:up(high value row lose pivot), right(corner high value lose pivot), left(combine low values but miss oportunity to fill pivot row) Correct: down(fill pivot row) 
-    answer: {{'move': 'Down'}}
+    Human: 2 2 0 2\n0 0 0 0\n0 0 0 0\n32 16 2 4 Incorrect:up(high value row lose pivot), down(miss opportunity combine tiles) Correct: [left, right](combine low cells while mantain pivot) 
+    answer: {{'move': 'Left'}}
     Answer best move in example format for given board, only the move`
   ],
   [
-    "human", "{input}"
+    "human", "Given board: {input}"
   ]
 ]);
-//crear prompt que se usa en el primer mensaje sólo, pero como se le manda toda la memoria en verdad se manda en todos los mensajes
 
-const chain = new LLMChain({ 
-    llm: model,
-    prompt: chatPrompt
- });
+export class LLMHandler {
+  private model: any;
+  private chain: any;
 
+  constructor() {
+    config();
+    this.model = this.createGroqModel();   
+    this.chain = this.createChain();
+  }  
 
-const res = await chain.invoke({ input: tablero });
-const move = JSON.parse(res.text.replace(/'/g, '"'));
-console.log(move);
-const res2 = await chain.invoke({ input: tablero });
-const move2 = JSON.parse(res2.text.replace(/'/g, '"'));
-console.log(move2);
+  createGroqModel() {
+    return new ChatGroq({
+      temperature: 0,
+      model: "llama3-70b-8192",
+      //para ver los tokens de respuesta
+      verbose: true
+    });
+  }
+
+  createChain() {
+    return new LLMChain({ 
+      llm: this.model,
+      prompt: chatPrompt
+    });
+  }
+
+  async getBestMove(tablero: number[][]) {
+    const res = await this.chain.invoke({ input: this.stringifyTablero(tablero) });
+    const move = JSON.parse(res.text.replace(/'/g, '"'));
+    return move;
+  }
+
+  stringifyTablero(tablero: number[][]) {
+    return tablero.map(fila => fila.join(' ')).join('\n');
+  }
+}
