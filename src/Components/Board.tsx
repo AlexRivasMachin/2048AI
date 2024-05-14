@@ -129,7 +129,8 @@ const Board = (
                             BEST {bestScore}
                     </div>
                 </div>
-                <HotKeys keyMap={keyMap} handlers={handlers}>
+                {!Game.iaPlayer &&
+                    <HotKeys keyMap={keyMap} handlers={handlers}>
                     <div  
                         id='board'
                         className="board"
@@ -149,7 +150,17 @@ const Board = (
                             </div>
                         }
                     </div>
-                </HotKeys>
+                    </HotKeys>
+                }
+                {Game.iaPlayer &&
+                    <div  
+                        id='boardIA'
+                        className="board"
+                        tabIndex={-1}
+                        onClick={handleRootClick}>
+                        <Grid gridHandler={gridHandler}/>
+                    </div>
+                }
                 <div className="tag" id='playertag'>
                         {Game.iaPlayer ? 'IA' : 'Player'}
                 </div>
