@@ -1,3 +1,4 @@
+import { appConfig } from "@base/config/app";
 import { Service } from "typedi";
 import { ICallConfig } from "../models/call-config.model";
 import { ChatGroq } from "@langchain/groq";
@@ -18,6 +19,7 @@ export class LMMService {
         model: config?.modelName || this.DEFAULT_MODEL_NAME,
         //para ver los tokens gastados
         verbose: true,
+        apiKey: appConfig.groqAPIKey
       });
 
       // call the model

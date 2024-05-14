@@ -11,13 +11,13 @@ export const appConfig = {
   isStaging: env('NODE_ENV') === 'staging',
   isDevelopment: env('NODE_ENV') === 'development',
   name: env('APP_NAME'),
-  port: Number(env('APP_PORT')) || 3001,
-  routePrefix: env('APP_ROUTE_PREFIX') || '/api',
+  port: Number(env('APP_PORT', '3001')),
+  routePrefix: env('APP_ROUTE_PREFIX', '/api'),
   groqAPIKey: env('GROQ_API_KEY'),
   appPath: getAppPath(),
 
   entitiesDir: env('TYPEORM_ENTITIES_DIR'),
-  controllersDir: env('CONTROLLERS_DIR') || '/api/services',
+  controllersDir: env('CONTROLLERS_DIR'),
   middlewaresDir: env('MIDDLEWARES_DIR'),
 
 };

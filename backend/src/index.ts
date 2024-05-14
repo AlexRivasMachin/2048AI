@@ -1,11 +1,10 @@
 import 'reflect-metadata';
-import path from 'path';
 import { fixModuleAlias } from './utils/fix-module-alias';
 fixModuleAlias(__dirname);
 import { appConfig } from '@base/config/app';
 import { Container } from 'typedi';
 import express from 'express';
-import { useContainer as routingControllersUseContainer, useExpressServer, getMetadataArgsStorage, createExpressServer } from 'routing-controllers';
+import { useContainer as routingControllersUseContainer, useExpressServer, getMetadataArgsStorage } from 'routing-controllers';
 import * as swaggerUiExpress from 'swagger-ui-express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
@@ -18,7 +17,6 @@ const compression = require("compression");
 export class App {
   private port: Number = appConfig.port;
   private app: express.Application = express();
-  private app2: express.Application;
 
   public constructor() {
     this.bootstrap();
@@ -28,9 +26,9 @@ export class App {
     this.useContainers();
     this.setupMiddlewares();
     this.setupSwagger();
-    this.registerRoutingControllers();
     this.registerServices();
     this.setUpCompression();
+    this.registerRoutingControllers();
   }
 
 
@@ -61,7 +59,7 @@ export class App {
       classTransformer: true,
       defaultErrorHandler: false,
       routePrefix: appConfig.routePrefix,
-      controllers: [path.join(__dirname + appConfig.controllersDir)],
+      controllers: [LLMController],
     });
 
     console.log('🚀️ Registered controllers: ', getMetadataArgsStorage().controllers.map(c => c.target.name).join(', '));
