@@ -18,13 +18,8 @@ import { GridHandler } from '../services/Grid.ts';
 import { useSub, usePub } from '../utils/usePubSub';
 
 const Board = (
-    {isIA, lastPlayerMove, bestScore, setLastPlayerMove, setGameOver, setBestScore} : 
-    {isIA : boolean, 
-    lastPlayerMove?: MoveOptionsType | null,
-    bestScore: number,
-    setBestScore: React.Dispatch<React.SetStateAction<number>>,
-    setGameOver: React.Dispatch<React.SetStateAction<boolean>>,
-    setLastPlayerMove?: React.Dispatch<React.SetStateAction<MoveOptionsType | null>>}
+    {isIA} : 
+    {isIA : boolean}
 ) =>{
     const boardRef = useRef(null);
     const publish = usePub();
@@ -33,7 +28,11 @@ const Board = (
     const [appStatus, setAppStatus] = useState<AppStatusType>(isIA? APP_STATUS.WAITING : APP_STATUS.PLAYING);
     const [score, setScore] = useState(0);
     const [move, setMove] = useState<MoveOptionsType | null>(null);
+    const [lastPlayerMove, setLastPlayerMove] = useState<MoveOptionsType | null>(null);
+    const [gameOver, setGameOver] = useState(false);
+    const [bestScore, setBestScore] = useState(0);
     const [gridHandler, setGridHandler] = useState<GridHandler>(new GridHandler(setAppStatus, setScore, setBestScore, setMove, bestScore));
+    
 
     const Game: GameType = {
         grid: gridHandler,
@@ -121,20 +120,24 @@ const Board = (
     useSub('playerHasMoved', (data) => {
         if(isIA){
             setAppStatus(APP_STATUS.PLAYING);
+            console.log("IA is playing", appStatus);
             gridHandler.requestMoveFromLLM();
             publish('iaHasMoved', "hola");
         }
         if(!isIA){
             setAppStatus(APP_STATUS.WAITING);
+            console.log("Player is waiting", appStatus);
         }
     });
 
     useSub('iaHasMoved', (data) => {
         if(isIA){
             setAppStatus(APP_STATUS.WAITING);
+            console.log("IA is waiting", appStatus);
         }
         if(!isIA){
             setAppStatus(APP_STATUS.PLAYING);
+            console.log("Player is playing", appStatus);
         }
     });
 
