@@ -8,8 +8,8 @@ describe("LLMHandler", () => {
 
     const tablero = [
         [2, 0, 0, 0],
-        [2, 4, 0, 0],
-        [0, 0, 2, 0],
+        [2, 0, 4, 0],
+        [0, 0, 4, 0],
         [0, 0, 0, 2]
     ];
 
@@ -23,8 +23,8 @@ describe("LLMHandler", () => {
     const tablero = [
         [0, 4, 4, 0],
         [2, 2, 2, 2],
-        [8, 0, 2, 0],
-        [0, 0, 0, 2]
+        [0, 0, 0, 0],
+        [0, 0, 0, 0]
     ];
 
     const result = await handler.getBestMove(tablero);
