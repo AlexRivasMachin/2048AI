@@ -17,7 +17,7 @@ export class LLMController {
     @Post('/call')
     public async call(@Body() request: ICallRequest): Promise<string> {
         try {
-            const response = await this.service.call(request.prompt, request.historyId, request.config);
+            const response = await this.service.call(request.prompt);
             return response;
         } catch (err) {
             throw new HttpError(500, err);

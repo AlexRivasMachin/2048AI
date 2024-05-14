@@ -3,7 +3,7 @@ import { Service } from "typedi";
 import glob from 'glob';
 import fs from 'fs'
 import { CharacterTextSplitter } from "langchain/text_splitter";
-import { HNSWLib } from "langchain/vectorstores/hnswlib";
+import { HNSWLib } from "@langchain/community/vectorstores/hnswlib";
 import { OpenAIEmbeddings } from 'langchain/embeddings/openai';
 
 @Service()
