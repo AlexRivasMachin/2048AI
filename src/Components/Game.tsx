@@ -19,8 +19,8 @@ export const Game = () =>{
     return( 
         <>
         <div className="boards">
-            <Board isIA={false} setLastPlayerMove={setLastPlayerMove} setGameOver={setGameOver} setBestScore={setBestScore} bestScore={bestScore} key={gameOver ? 'palyerBoard1' : 'PlayerBoard2'}/> 
-            <Board isIA={true} lastPlayerMove={lastPlayerMove} setGameOver={setGameOver} setBestScore={setBestScore} bestScore={bestScore} key={gameOver ? 'iaBoard1' : 'iaBoard2'}/>
+            <Board isIA={false} setLastPlayerMove={setLastPlayerMove} setGameOver={setGameOver} setBestScore={setBestScore} bestScore={bestScore} key={'playerGame'}/> 
+            <Board isIA={true} lastPlayerMove={lastPlayerMove} setGameOver={setGameOver} setBestScore={setBestScore} bestScore={bestScore} key={'IAGame'}/>
         </div>
         </>
     )

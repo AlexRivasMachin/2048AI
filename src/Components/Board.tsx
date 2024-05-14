@@ -15,6 +15,7 @@ import type {Game as GameType} from '../types'
 import {APP_STATUS, AppStatusType, MoveOptionsType} from '../enums.ts'
 import {GameHandler} from '../services/Game.ts';
 import { GridHandler } from '../services/Grid.ts';
+import { useSub, usePub } from '../utils/usePubSub';
 
 const Board = (
     {isIA, lastPlayerMove, bestScore, setLastPlayerMove, setGameOver, setBestScore} : 
@@ -26,9 +27,10 @@ const Board = (
     setLastPlayerMove?: React.Dispatch<React.SetStateAction<MoveOptionsType | null>>}
 ) =>{
     const boardRef = useRef(null);
+    const publish = usePub();
     const loseDialogRef = useRef<HTMLDivElement | null>(null);
 
-    const [appStatus, setAppStatus] = useState<AppStatusType>(APP_STATUS.PLAYING);
+    const [appStatus, setAppStatus] = useState<AppStatusType>(isIA? APP_STATUS.WAITING : APP_STATUS.PLAYING);
     const [score, setScore] = useState(0);
     const [move, setMove] = useState<MoveOptionsType | null>(null);
     const [gridHandler, setGridHandler] = useState<GridHandler>(new GridHandler(setAppStatus, setScore, setBestScore, setMove, bestScore));
@@ -89,34 +91,52 @@ const Board = (
         left: (event: KeyboardEvent) => {
             gameHandlerRef.current.onLeftKeyDownHandler(event);
             if (!isIA && setLastPlayerMove){
-                setLastPlayerMove('left');
+                //setLastPlayerMove('left');
+                publish('playerHasMoved', lastPlayerMove);
             }
         },
         right: (event: KeyboardEvent) => {
             gameHandlerRef.current.onRightKeyDownHandler(event);
             if (!isIA && setLastPlayerMove){
-                setLastPlayerMove('right');
+                //setLastPlayerMove('right');
+                publish('playerHasMoved', lastPlayerMove);
             }
         },
         up: (event: KeyboardEvent) => {
             gameHandlerRef.current.onUpKeyDownHandler(event);
             if (!isIA && setLastPlayerMove){
-                setLastPlayerMove('up');
+                //setLastPlayerMove('up');
+                publish('playerHasMoved', lastPlayerMove);
             }
         },
         down: (event: KeyboardEvent) => {
             gameHandlerRef.current.onDownKeyDownHandler(event);
             if (!isIA && setLastPlayerMove){
-                setLastPlayerMove('down');
+                //setLastPlayerMove('down');
+                publish('playerHasMoved', lastPlayerMove);
             }
         },
     };
 
-    if(isIA && lastPlayerMove){
-        //SI METEMOS EL PUTADA MODE, YA TENEMOS AKI EL MOVIMIENTO DEL JUGADOR DE IA
-        console.log('IA move');
-        console.log(lastPlayerMove);
-    }
+    useSub('playerHasMoved', (data) => {
+        if(isIA){
+            setAppStatus(APP_STATUS.PLAYING);
+            gridHandler.requestMoveFromLLM();
+            publish('iaHasMoved', "hola");
+        }
+        if(!isIA){
+            setAppStatus(APP_STATUS.WAITING);
+        }
+    });
+
+    useSub('iaHasMoved', (data) => {
+        if(isIA){
+            setAppStatus(APP_STATUS.WAITING);
+        }
+        if(!isIA){
+            setAppStatus(APP_STATUS.PLAYING);
+        }
+    });
 
     return (
         <>
@@ -170,7 +190,7 @@ const Board = (
                     </div>
                 }
                 <div className="tag" id='playertag'>
-                        {Game.iaPlayer ? 'IA' : 'Player'}
+                        {Game.iaPlayer ? 'IA' : 'Player'} {appStatus}
                 </div>
             </div>
         </>
