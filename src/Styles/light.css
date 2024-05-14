@@ -19,6 +19,7 @@
     --color-font-primary-100:  #000000;
     --color-font-primary-200:  #141414;
     --color-font-primary-300:  #00000027;      
+    --color-try-again-button: #9a5ceb;
     
     --color-cell-0: var(--color-primary-100);
     --color-cell-2: #F9C846;
