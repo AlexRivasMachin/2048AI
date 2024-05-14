@@ -139,7 +139,7 @@ const Board = (
                         <Grid gridHandler={gridHandler}/>
                         {Game.appStatus === APP_STATUS.GAME_OVER && !Game.iaPlayer &&
                             <div id="game-over-dialog">
-                                <h1>Game over!</h1>
+                                <span>Game over!</span>
                                 <button 
                                     id='try-again-button' 
                                     onClick={()=>{
@@ -147,6 +147,14 @@ const Board = (
                                         setGameOver(true);
                                     } } 
                                     autoFocus>Try again</button>
+                            </div>
+                        }
+                        {Game.appStatus === APP_STATUS.WAITING && !Game.iaPlayer &&
+                            <div id="waiting-dialog">
+                                <span>IA is palying, wait!</span>
+                                <div className="loader">
+                                    <div className="jimu-primary-loading"></div>
+                                </div>
                             </div>
                         }
                     </div>
