@@ -14,6 +14,7 @@
     "@langchain/core": "^0.1.62",
     "@langchain/groq": "^0.0.9",
     "dotenv": "^16.4.5",
+    "express-list-endpoints": "^7.1.0",
     "langchain": "^0.1.36",
     "mobx": "^6.12.3",
     "mobx-react": "^9.1.1",
@@ -21,6 +22,7 @@
     "react-dom": "^18.2.0",
     "react-hotkeys": "^2.0.0",
     "react-router-dom": "^6.23.0",
+    "swagger-ui-express": "^5.0.0",
     "ts-node": "^10.9.2"
   },
   "devDependencies": {
@@ -29,6 +31,7 @@
     "@types/jest": "^29.5.12",
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",
+    "@types/swagger-ui-express": "^4.1.6",
     "@typescript-eslint/eslint-plugin": "^7.2.0",
     "@typescript-eslint/parser": "^7.2.0",
     "@vitejs/plugin-react-swc": "^3.5.0",
