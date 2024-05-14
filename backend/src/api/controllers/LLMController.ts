@@ -4,7 +4,7 @@ import { LMMService } from "../services/lmm.service";
 import { ICallRequest } from "../models/call.request.model";
 
 @Service()
-@JsonController()
+@JsonController('/llm')
 export class LLMController {
 
     constructor(private service: LMMService) { }

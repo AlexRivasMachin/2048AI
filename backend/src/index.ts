@@ -6,14 +6,19 @@ import { appConfig } from '@base/config/app';
 import { Container } from 'typedi';
 import express from 'express';
 import { useContainer as routingControllersUseContainer, useExpressServer, getMetadataArgsStorage, createExpressServer } from 'routing-controllers';
+import * as swaggerUiExpress from 'swagger-ui-express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
+import listEndpoints from 'express-list-endpoints';
 import { LMMService } from "./api/services/lmm.service";
+import { LLMController } from './api/controllers/LLMController';
+import { routingControllersToSpec } from 'routing-controllers-openapi';
 const compression = require("compression");
 
 export class App {
   private port: Number = appConfig.port;
   private app: express.Application = express();
+  private app2: express.Application;
 
   public constructor() {
     this.bootstrap();
@@ -22,6 +27,7 @@ export class App {
   public async bootstrap() {
     this.useContainers();
     this.setupMiddlewares();
+    this.setupSwagger();
     this.registerRoutingControllers();
     this.registerServices();
     this.setUpCompression();
@@ -30,6 +36,7 @@ export class App {
 
   private registerServices() {
     Container.get(LMMService)
+    Container.get(LLMController)
   }
 
   private useContainers() {
@@ -57,12 +64,27 @@ export class App {
       controllers: [path.join(__dirname + appConfig.controllersDir)],
     });
 
-    console.log([path.join(__dirname + appConfig.controllersDir)]);
-
     console.log('🚀️ Registered controllers: ', getMetadataArgsStorage().controllers.map(c => c.target.name).join(', '));
 
     const server = require('http').Server(this.app);
     server.listen(this.port, () => console.log(`🚀 Server started at http://localhost:${this.port}\n🚨️ Environment: ${process.env.NODE_ENV}`));
+
+    console.log(listEndpoints(this.app));
+  }
+
+  private setupSwagger() {
+    const storage = getMetadataArgsStorage();
+    const spec = routingControllersToSpec(
+      storage,
+      { routePrefix: appConfig.routePrefix },
+      {
+        components: {
+          securitySchemes: {
+          },
+        },
+      },
+    );
+    this.app.use('/docs', swaggerUiExpress.serve, swaggerUiExpress.setup(spec));
   }
 
 }
