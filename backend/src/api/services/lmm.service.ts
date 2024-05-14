@@ -1,41 +1,24 @@
-import { appConfig } from "@base/config/app";
 import { Service } from "typedi";
-import { HistoryService } from "./history.service";
-import { HNSWLib } from "@langchain/community/vectorstores/hnswlib";
-import { OpenAIEmbeddings } from "langchain/embeddings/openai";
 import { ICallConfig } from "../models/call-config.model";
 import { ChatGroq } from "@langchain/groq";
 import { ChatPromptTemplate } from "@langchain/core/prompts";
-import { FewShotChatMessagePromptTemplate } from "langchain/prompts";
+import { FewShotChatMessagePromptTemplate } from "@langchain/core/prompts";
 
 @Service()
 export class LMMService {
   readonly DEFAULT_TEMPRATURE = 0.7;
   readonly DEFAULT_MODEL_NAME = "llama3-70b-8192";
 
-  constructor(private readonly historyService: HistoryService) {}
+  constructor() {}
 
-  public async call(
-    initalInput: string,
-    historyKey?: string,
-    config?: ICallConfig
-  ) {
+  public async call(initalInput: string, config?: ICallConfig) {
     try {
-      let input = `Human:${initalInput}\n Ai:`;
       let model = new ChatGroq({
-        temperature: this.DEFAULT_TEMPRATURE,
-        model: this.DEFAULT_MODEL_NAME,
+        temperature:  config?.temperature || this.DEFAULT_TEMPRATURE,
+        model: config?.modelName || this.DEFAULT_MODEL_NAME,
         //para ver los tokens gastados
         verbose: true,
       });
-
-      if (config?.useVectorStore) {
-        input = await this.includeVectorStore(input);
-      }
-
-      if (config?.useHistory) {
-        input = this.includeHistory(historyKey, input);
-      }
 
       // call the model
       const formattedPrompt = await fewShotPrompt.format({
@@ -49,34 +32,6 @@ export class LMMService {
       console.log(err);
       throw err;
     }
-  }
-
-  private includeHistory(historyKey: string, input: string): string {
-    const history = this.historyService.getHistory();
-    const myHistory = history[historyKey];
-    if (!myHistory) {
-      return input;
-    }
-
-    const historyText = history[historyKey].join("\n");
-    return `History:\n${historyText}\n\n ${input}`;
-  }
-
-  private async includeVectorStore(input: string): Promise<string> {
-    const store = await HNSWLib.load(
-      appConfig.vectorStorePath,
-      new OpenAIEmbeddings({
-        openAIApiKey: appConfig.openAIApiKey,
-      })
-    );
-
-    const data = await store.similaritySearch(input, 1);
-    const context: string[] = [];
-    data.forEach((item, i) => {
-      context.push(`${item.pageContent}`);
-    });
-
-    return `Metadata:\n${context.join("\n")}\n\n${input}`;
   }
 }
 

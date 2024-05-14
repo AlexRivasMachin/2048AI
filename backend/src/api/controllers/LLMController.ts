@@ -4,7 +4,7 @@ import { LMMService } from "../services/lmm.service";
 import { ICallRequest } from "../models/call.request.model";
 
 @Service()
-@JsonController('/llm')
+@JsonController()
 export class LLMController {
 
     constructor(private service: LMMService) { }
@@ -17,7 +17,7 @@ export class LLMController {
     @Post('/call')
     public async call(@Body() request: ICallRequest): Promise<string> {
         try {
-            const response = await this.service.call(request.prompt);
+            const response = await this.service.call(request.prompt, request.config);
             return response;
         } catch (err) {
             throw new HttpError(500, err);

@@ -8,8 +8,8 @@
   },
   "scripts": {
     "build": "npx tsc",
-    "start": "npm run build && set NODE_ENV=production node ./dist/index.js",
-    "dev": "set NODE_ENV=development && nodemon --exec ts-node src/index.ts"
+    "start": "npm run build && export NODE_ENV=production node ./dist/index.js",
+    "dev": "export NODE_ENV=development && nodemon --exec ts-node src/index.ts"
   },
   "author": "SERTIS",
   "dependencies": {
