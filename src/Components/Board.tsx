@@ -12,26 +12,29 @@ import '../Styles/Board.css'
 import '../Styles/Dialog.css'
 import Grid from './Grid.tsx';
 import type {Game as GameType} from '../types'
-import {APP_STATUS, AppStatusType, MoveOptionsType} from '../enums.ts'
-import {GameHandler} from '../services/Game.ts';
+import {APP_STATUS, AppStatusType, MoveOptionsType, MOVE_OPTIONS} from '../enums.ts'
 import { GridHandler } from '../services/Grid.ts';
 
 const Board = (
-    {isIA, lastPlayerMove, bestScore, setLastPlayerMove, setGameOver, setBestScore} : 
+    {isIA, lastMove, bestScore, appStatus, setLastPlayerMove, setGameOver, setBestScore, setAppStatus, setPlayerAppStatus} : 
     {isIA : boolean, 
-    lastPlayerMove?: MoveOptionsType | null,
+    lastMove: MoveOptionsType | null,
     bestScore: number,
+    appStatus: AppStatusType,
     setBestScore: React.Dispatch<React.SetStateAction<number>>,
     setGameOver: React.Dispatch<React.SetStateAction<boolean>>,
-    setLastPlayerMove?: React.Dispatch<React.SetStateAction<MoveOptionsType | null>>}
+    setLastPlayerMove?: React.Dispatch<React.SetStateAction<MoveOptionsType | null>>,
+    setAppStatus: React.Dispatch<React.SetStateAction<AppStatusType>>,
+    setPlayerAppStatus?: React.Dispatch<React.SetStateAction<AppStatusType>>}
 ) =>{
     const boardRef = useRef(null);
     const loseDialogRef = useRef<HTMLDivElement | null>(null);
 
-    const [appStatus, setAppStatus] = useState<AppStatusType>(APP_STATUS.PLAYING);
     const [score, setScore] = useState(0);
     const [move, setMove] = useState<MoveOptionsType | null>(null);
     const [gridHandler, setGridHandler] = useState<GridHandler>(new GridHandler(setAppStatus, setScore, setBestScore, setMove, bestScore));
+
+    const blockMoves = useRef(false)
 
     const Game: GameType = {
         grid: gridHandler,
@@ -41,8 +44,6 @@ const Board = (
         lastMove: move,
         iaPlayer: isIA
     }
-
-    const gameHandlerRef = useRef(new GameHandler(Game, setAppStatus, setScore, setMove));
 
     useEffect(() => {
         // Board is initially focused
@@ -73,7 +74,7 @@ const Board = (
             setBestScore(score);
         }
         setScore(0);
-        setAppStatus(APP_STATUS.PLAYING);
+        setAppStatus(isIA? APP_STATUS.WAITING : APP_STATUS.PLAYING);
         loseDialogRef.current?.classList.remove('show');
         setGridHandler(new GridHandler(setAppStatus, setScore, setBestScore, setMove, bestScore));
     };
@@ -87,36 +88,66 @@ const Board = (
       
     const handlers = {
         left: (event: KeyboardEvent) => {
-            gameHandlerRef.current.onLeftKeyDownHandler(event);
-            if (!isIA && setLastPlayerMove){
-                setLastPlayerMove('left');
-            }
+            handleMove(MOVE_OPTIONS.LEFT);
         },
         right: (event: KeyboardEvent) => {
-            gameHandlerRef.current.onRightKeyDownHandler(event);
-            if (!isIA && setLastPlayerMove){
-                setLastPlayerMove('right');
-            }
+            handleMove(MOVE_OPTIONS.RIGHT);
         },
         up: (event: KeyboardEvent) => {
-            gameHandlerRef.current.onUpKeyDownHandler(event);
-            if (!isIA && setLastPlayerMove){
-                setLastPlayerMove('up');
-            }
+            handleMove(MOVE_OPTIONS.UP);
         },
         down: (event: KeyboardEvent) => {
-            gameHandlerRef.current.onDownKeyDownHandler(event);
-            if (!isIA && setLastPlayerMove){
-                setLastPlayerMove('down');
-            }
+            handleMove(MOVE_OPTIONS.DOWN);
         },
     };
 
-    if(isIA && lastPlayerMove){
-        //SI METEMOS EL PUTADA MODE, YA TENEMOS AKI EL MOVIMIENTO DEL JUGADOR DE IA
-        console.log('IA move');
-        console.log(lastPlayerMove);
+    function isValidMove(move: MoveOptionsType): boolean {
+        if (appStatus !== APP_STATUS.PLAYING) {
+          return false;
+        }
+    
+        return true;
+      }
+    
+    function handleMove(move: MoveOptionsType) {
+        const valid = isValidMove(move);
+        if (valid && !blockMoves.current) {
+            if (!isIA && setLastPlayerMove){
+                setLastPlayerMove(move);
+            }
+            gridHandler.makeMove(move);
+        }
     }
+
+    /**
+     * WHEN THE PLAYER MOVES, THIS BLOCK IS TRIGGERS
+     * THE PLAYER GAME WILL BE IN WAITING STATUS UNTIL THE IA MAKES A MOVE
+     * THEN THE IA GAME WILL BE IN WAITING STATUS UNTIL THE PLAYER MAKES A MOVE
+     */
+    useEffect(() => {
+        if(lastMove !== null && lastMove !== undefined){
+            setAppStatus(isIA ? APP_STATUS.PLAYING : APP_STATUS.WAITING);
+            blockMoves.current = isIA ? false : true;
+            // IF is necessary, otherwise it would call two times the IA
+            if(isIA){
+                gridHandler.requestMoveFromLLM().then((iaMove) => {
+                    gridHandler.makeMove(iaMove);
+                    setAppStatus(APP_STATUS.WAITING);
+                    setPlayerAppStatus(APP_STATUS.PLAYING);
+                }).catch(() => {
+                    setAppStatus(APP_STATUS.GAME_OVER);
+                    setPlayerAppStatus(APP_STATUS.GAME_OVER);
+                });
+            } 
+        }
+    }, [gridHandler, lastMove, setAppStatus, setPlayerAppStatus, isIA]);
+
+    // WHEN THE IA callback is finished, the player will be able to play
+    useEffect(() => {
+        if(!isIA && appStatus === APP_STATUS.PLAYING){
+            blockMoves.current = false;
+        }
+    }, [appStatus, isIA]);
 
     return (
         <>
@@ -133,7 +164,7 @@ const Board = (
                     <HotKeys keyMap={keyMap} handlers={handlers}>
                     <div  
                         id='board'
-                        className="board"
+                        className={`board ${appStatus === APP_STATUS.PLAYING ? 'playing' : ''}`}
                         tabIndex={0}
                         ref={boardRef}>
                         <Grid gridHandler={gridHandler}/>
@@ -163,7 +194,7 @@ const Board = (
                 {Game.iaPlayer &&
                     <div  
                         id='boardIA'
-                        className="board"
+                        className={`board ${appStatus === APP_STATUS.PLAYING ? 'playing' : ''}`}
                         tabIndex={-1}
                         onClick={handleRootClick}>
                         <Grid gridHandler={gridHandler}/>

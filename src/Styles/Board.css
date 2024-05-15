@@ -47,6 +47,11 @@
     padding-top: 15px;
 }
 
+.playing {
+    outline: 5px solid rgba(var(--color-secondary-200-rgb), 0.4);
+    outline-offset: -10px;
+}
+
 #playertag{
     display: flex;
     width: 80%;

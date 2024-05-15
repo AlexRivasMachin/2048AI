@@ -258,6 +258,35 @@ export class GridHandler {
     this.cellGenerationEnabled = false;
   }
 
+  stringifyTablero(tablero: number[][]) {
+    return tablero.map(fila => fila.join(' ')).join('\n');
+  }
+
+  /**
+   * 
+   * @returns Promise<MoveOptionsType | null>, MoveOptionsType is the move to be made by the AI, null if there was an error
+   */
+  public async requestMoveFromLLM(): Promise<MoveOptionsType | null> {
+    let result: MoveOptionsType | null = null;
+    const tableContext = this.stringifyTablero(this.grid.cells.map(row => row.map(cell => cell.getValue())));
+    await fetch('http://localhost:3001/api/llm/call', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ prompt : tableContext})
+    })
+      .then(response => response.json())
+      .then((data) => {
+        const moveKey = (data.move as string).toUpperCase() as keyof typeof MOVE_OPTIONS;
+        console.log('Success:', MOVE_OPTIONS[moveKey]);
+        result = MOVE_OPTIONS[moveKey];
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+      return result;
+  }
   
 }
 

@@ -7,11 +7,11 @@ export const APP_STATUS = {
 
 export type AppStatusType = (typeof APP_STATUS)[keyof typeof APP_STATUS];
 
-export const MOVE_OPTIONS = {
-  UP: "up",
-  DOWN: "down",
-  LEFT: "left",
-  RIGHT: "right",
-} as const;
+export enum MOVE_OPTIONS {
+  UP = "up",
+  DOWN = "down",
+  LEFT = "left",
+  RIGHT = "right",
+}
 
 export type MoveOptionsType = (typeof MOVE_OPTIONS)[keyof typeof MOVE_OPTIONS];
