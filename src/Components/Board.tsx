@@ -118,11 +118,6 @@ const Board = (
           return false;
         }
     
-        if (lastMove === move) {
-          // no se puede hacer el mismo movimiento dos veces seguidas
-          return false;
-        }
-    
         return true;
       }
     
