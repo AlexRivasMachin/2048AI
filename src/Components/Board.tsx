@@ -141,6 +141,7 @@ const Board = (
             if(isIA){
                 gridHandler.requestMoveFromLLM().then((iaMove) => {
                     gridHandler.makeMove(iaMove);
+                    setAppStatus(APP_STATUS.WAITING);
                     setPlayerAppStatus(APP_STATUS.PLAYING);
                 }).catch(() => {
                     setAppStatus(APP_STATUS.GAME_OVER);
@@ -172,7 +173,7 @@ const Board = (
                     <HotKeys keyMap={keyMap} handlers={handlers}>
                     <div  
                         id='board'
-                        className="board"
+                        className={`board ${appStatus === APP_STATUS.PLAYING ? 'playing' : ''}`}
                         tabIndex={0}
                         ref={boardRef}>
                         <Grid gridHandler={gridHandler}/>
@@ -202,14 +203,14 @@ const Board = (
                 {Game.iaPlayer &&
                     <div  
                         id='boardIA'
-                        className="board"
+                        className={`board ${appStatus === APP_STATUS.PLAYING ? 'playing' : ''}`}
                         tabIndex={-1}
                         onClick={handleRootClick}>
                         <Grid gridHandler={gridHandler}/>
                     </div>
                 }
                 <div className="tag" id='playertag'>
-                        {Game.iaPlayer ? 'IA' : 'Player'} {appStatus}
+                        {Game.iaPlayer ? 'IA' : 'Player'}
                 </div>
             </div>
         </>
