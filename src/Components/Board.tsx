@@ -12,28 +12,29 @@ import '../Styles/Board.css'
 import '../Styles/Dialog.css'
 import Grid from './Grid.tsx';
 import type {Game as GameType} from '../types'
-import {APP_STATUS, AppStatusType, MoveOptionsType} from '../enums.ts'
-import {GameHandler} from '../services/Game.ts';
+import {APP_STATUS, AppStatusType, MoveOptionsType, MOVE_OPTIONS} from '../enums.ts'
 import { GridHandler } from '../services/Grid.ts';
-import { useSub, usePub } from '../utils/usePubSub';
 
 const Board = (
-    {isIA, lastPlayerMove, bestScore, setLastPlayerMove, setGameOver, setBestScore} : 
+    {isIA, lastMove, bestScore, appStatus, setLastPlayerMove, setGameOver, setBestScore, setAppStatus, setPlayerAppStatus} : 
     {isIA : boolean, 
-    lastPlayerMove?: MoveOptionsType | null,
+    lastMove: MoveOptionsType | null,
     bestScore: number,
+    appStatus: AppStatusType,
     setBestScore: React.Dispatch<React.SetStateAction<number>>,
     setGameOver: React.Dispatch<React.SetStateAction<boolean>>,
-    setLastPlayerMove?: React.Dispatch<React.SetStateAction<MoveOptionsType | null>>}
+    setLastPlayerMove?: React.Dispatch<React.SetStateAction<MoveOptionsType | null>>,
+    setAppStatus: React.Dispatch<React.SetStateAction<AppStatusType>>,
+    setPlayerAppStatus?: React.Dispatch<React.SetStateAction<AppStatusType>>}
 ) =>{
     const boardRef = useRef(null);
-    const publish = usePub();
     const loseDialogRef = useRef<HTMLDivElement | null>(null);
 
-    const [appStatus, setAppStatus] = useState<AppStatusType>(isIA? APP_STATUS.WAITING : APP_STATUS.PLAYING);
     const [score, setScore] = useState(0);
     const [move, setMove] = useState<MoveOptionsType | null>(null);
     const [gridHandler, setGridHandler] = useState<GridHandler>(new GridHandler(setAppStatus, setScore, setBestScore, setMove, bestScore));
+
+    const blockMoves = useRef(false)
 
     const Game: GameType = {
         grid: gridHandler,
@@ -43,8 +44,6 @@ const Board = (
         lastMove: move,
         iaPlayer: isIA
     }
-
-    const gameHandlerRef = useRef(new GameHandler(Game, setAppStatus, setScore, setMove));
 
     useEffect(() => {
         // Board is initially focused
@@ -89,54 +88,79 @@ const Board = (
       
     const handlers = {
         left: (event: KeyboardEvent) => {
-            gameHandlerRef.current.onLeftKeyDownHandler(event);
+            handleMove(MOVE_OPTIONS.LEFT);
             if (!isIA && setLastPlayerMove){
-                //setLastPlayerMove('left');
-                publish('playerHasMoved', lastPlayerMove);
+                setLastPlayerMove(MOVE_OPTIONS.LEFT);
             }
         },
         right: (event: KeyboardEvent) => {
-            gameHandlerRef.current.onRightKeyDownHandler(event);
+            handleMove(MOVE_OPTIONS.RIGHT);
             if (!isIA && setLastPlayerMove){
-                //setLastPlayerMove('right');
-                publish('playerHasMoved', lastPlayerMove);
+                setLastPlayerMove(MOVE_OPTIONS.RIGHT);
             }
         },
         up: (event: KeyboardEvent) => {
-            gameHandlerRef.current.onUpKeyDownHandler(event);
+            handleMove(MOVE_OPTIONS.UP);
             if (!isIA && setLastPlayerMove){
-                //setLastPlayerMove('up');
-                publish('playerHasMoved', lastPlayerMove);
+                setLastPlayerMove(MOVE_OPTIONS.UP);
             }
         },
         down: (event: KeyboardEvent) => {
-            gameHandlerRef.current.onDownKeyDownHandler(event);
+            handleMove(MOVE_OPTIONS.DOWN);
             if (!isIA && setLastPlayerMove){
-                //setLastPlayerMove('down');
-                publish('playerHasMoved', lastPlayerMove);
+                setLastPlayerMove(MOVE_OPTIONS.DOWN);
             }
         },
     };
 
-    useSub('playerHasMoved', (data) => {
-        if(isIA){
-            setAppStatus(APP_STATUS.PLAYING);
-            gridHandler.requestMoveFromLLM();
-            publish('iaHasMoved', "hola");
+    function isValidMove(move: MoveOptionsType): boolean {
+        if (appStatus !== APP_STATUS.PLAYING) {
+          return false;
         }
-        if(!isIA){
-            setAppStatus(APP_STATUS.WAITING);
+    
+        if (lastMove === move) {
+          // no se puede hacer el mismo movimiento dos veces seguidas
+          return false;
         }
-    });
+    
+        return true;
+      }
+    
+    function handleMove(move: MoveOptionsType) {
+        const valid = isValidMove(move);
+        if (valid && !blockMoves.current) {
+            gridHandler.makeMove(move);
+        }
+    }
 
-    useSub('iaHasMoved', (data) => {
-        if(isIA){
-            setAppStatus(APP_STATUS.WAITING);
+    /**
+     * WHEN THE PLAYER MOVES, THIS BLOCK IS TRIGGERS
+     * THE PLAYER GAME WILL BE IN WAITING STATUS UNTIL THE IA MAKES A MOVE
+     * THEN THE IA GAME WILL BE IN WAITING STATUS UNTIL THE PLAYER MAKES A MOVE
+     */
+    useEffect(() => {
+        if(lastMove !== null && lastMove !== undefined){
+            setAppStatus(isIA ? APP_STATUS.PLAYING : APP_STATUS.WAITING);
+            blockMoves.current = isIA ? false : true;
+            // IF is necessary, otherwise it would call two times the IA
+            if(isIA){
+                gridHandler.requestMoveFromLLM().then((iaMove) => {
+                    gridHandler.makeMove(iaMove);
+                    setPlayerAppStatus(APP_STATUS.PLAYING);
+                }).catch(() => {
+                    setAppStatus(APP_STATUS.GAME_OVER);
+                    setPlayerAppStatus(APP_STATUS.GAME_OVER);
+                });
+            } 
         }
-        if(!isIA){
-            setAppStatus(APP_STATUS.PLAYING);
+    }, [gridHandler, lastMove, setAppStatus, setPlayerAppStatus, isIA]);
+
+    // WHEN THE IA callback is finished, the player will be able to play
+    useEffect(() => {
+        if(!isIA && appStatus === APP_STATUS.PLAYING){
+            blockMoves.current = false;
         }
-    });
+    }, [appStatus, isIA]);
 
     return (
         <>

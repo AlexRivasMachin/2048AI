@@ -262,9 +262,14 @@ export class GridHandler {
     return tablero.map(fila => fila.join(' ')).join('\n');
   }
 
-  public requestMoveFromLLM(): boolean {
+  /**
+   * 
+   * @returns Promise<MoveOptionsType | null>, MoveOptionsType is the move to be made by the AI, null if there was an error
+   */
+  public async requestMoveFromLLM(): Promise<MoveOptionsType | null> {
+    let result: MoveOptionsType | null = null;
     const tableContext = this.stringifyTablero(this.grid.cells.map(row => row.map(cell => cell.getValue())));
-    fetch('http://localhost:3001/api/llm/call', {
+    await fetch('http://localhost:3001/api/llm/call', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -272,16 +277,15 @@ export class GridHandler {
       body: JSON.stringify({ prompt : tableContext})
     })
       .then(response => response.json())
-      .then(data => {
-        console.log('Success:', data.move);
-        //this.makeMove(data.move);
+      .then((data) => {
+        const moveKey = (data.move as string).toUpperCase() as keyof typeof MOVE_OPTIONS;
+        console.log('Success:', MOVE_OPTIONS[moveKey]);
+        result = MOVE_OPTIONS[moveKey];
       })
       .catch(error => {
         console.error('Error:', error);
-        return false;
       });
-
-    return true;
+      return result;
   }
   
 }

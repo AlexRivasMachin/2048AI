@@ -10,18 +10,18 @@ import React from "react";
 
 export class GameHandler {
   game: GameType;
-  setAppStatus: React.Dispatch<React.SetStateAction<AppStatusType>>;
+  appStatus: AppStatusType;
   setScore: React.Dispatch<React.SetStateAction<number>>;
   setMove: React.Dispatch<React.SetStateAction<MoveOptionsType | null>>;
 
   constructor(
     game: GameType,
-    setAppStatus: React.Dispatch<React.SetStateAction<AppStatusType>>,
+    appStatus: AppStatusType,
     setScore: React.Dispatch<React.SetStateAction<number>>,
     setMove: React.Dispatch<React.SetStateAction<MoveOptionsType | null>>
   ) {
     this.game = game;
-    this.setAppStatus = setAppStatus;
+    this.appStatus = appStatus;
     this.setScore = setScore;
     this.setMove = setMove;
   }
@@ -40,7 +40,8 @@ export class GameHandler {
   }
 
   isValidMove(move: MoveOptionsType): boolean {
-    if (this.game.appStatus !== APP_STATUS.PLAYING) {
+    console.log("GAME.ts", this.appStatus);
+    if (this.appStatus !== APP_STATUS.PLAYING) {
       return false;
     }
 
@@ -55,11 +56,6 @@ export class GameHandler {
   handleMove(move: MoveOptionsType) {
     const valid = this.isValidMove(move);
     if (valid) {
-      //this.game.lastMove = move;
-      //this.setMove(this.game.lastMove);
-      this.game.score += 1;
-      //this.setScore(this.game.score);
-      //console.log("score: " + this.game.score);
       this.game.grid.makeMove(move);
     }
   }
