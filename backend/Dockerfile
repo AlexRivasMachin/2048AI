@@ -1,5 +1,7 @@
 # Common build stage
-FROM node:21.7.3 as common-build-stage
+ARG NODE_VERSION=21.7.3
+
+FROM node:${NODE_VERSION}-alpine as common-build-stage
 
 COPY . ./app
 
