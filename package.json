@@ -14,7 +14,6 @@
     "@langchain/core": "^0.1.62",
     "@langchain/groq": "^0.0.9",
     "dotenv": "^16.4.5",
-    "eventemitter3": "^5.0.1",
     "express-list-endpoints": "^7.1.0",
     "langchain": "^0.1.36",
     "mobx": "^6.12.3",
