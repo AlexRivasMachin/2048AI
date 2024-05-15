@@ -88,7 +88,6 @@ export class GridHandler {
 
   makeMove(move: MoveOptionsType): void {
     this.hasMoved = false;
-    this.changeUseEffectMove(move);
     switch (move) {
       case MOVE_OPTIONS.UP:
         this.moveUp();
@@ -105,6 +104,7 @@ export class GridHandler {
     }
     if(this.hasMoved && this.areThereAvailableMoves() && this.getEmptyCells().length > 0 && this.cellGenerationEnabled){
       this.assignValueToEmptyCell();
+      this.changeUseEffectMove(move);
     }
     if(!this.areThereAvailableMoves()){
       console.log("No hay movimientos disponibles");
