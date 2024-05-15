@@ -133,7 +133,6 @@ const Board = (
             // IF is necessary, otherwise it would call two times the IA
             if(isIA){
                 gridHandler.requestMoveFromLLM().then((iaMove) => {
-                    gridHandler.makeMove(iaMove);
                     setAppStatus(APP_STATUS.WAITING);
                     setPlayerAppStatus(APP_STATUS.PLAYING);
                 }).catch(() => {

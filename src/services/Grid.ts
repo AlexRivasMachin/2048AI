@@ -309,8 +309,13 @@ export class GridHandler {
       .catch(error => {
         console.error('Error:', error);
       });
+
+      this.makeMove(result);
+      //por si la IA devuelve un movimiento no válido que se repita hasta que sea válido
+      while(!this.hasMoved){
+       return this.requestMoveFromLLM();
+      }
       return result;
   }
-  
 }
 
