@@ -8,7 +8,7 @@ import { FewShotChatMessagePromptTemplate } from "@langchain/core/prompts";
 @Service()
 export class LMMService {
   readonly DEFAULT_TEMPRATURE = 0.7;
-  readonly DEFAULT_MODEL_NAME = "llama3-70b-8192";
+  readonly DEFAULT_MODEL_NAME = "llama3-8b-8192";
   count = 0;
 
   constructor() {}
@@ -77,6 +77,18 @@ const examples = [
     "output": `{{"move": "down"}}`,
     "explanation": `There is not a clear high value to mantain in a corner, thus, down or up moves combines '4' values in second column and '2' values in third row`,
     "result": "0 0 0 8\n0 0 0 4\n0 0 0 0\n0 0 0 2"
+  },
+  {
+    "input": "0 4 2 0\n0 0 2 0\n0 0 0 0\n0 0 0 0",
+    "output": `{{"move": "Left"}}`,
+    "explanation": `Up move is not valid. If up tried, no cells will move because first row cells can not go any higher, whereas second row 2 can not combine with first row 4`,
+    "result": "4 2 0 0\n2 0 0 0\n0 0 0 0\n0 0 0 0"
+  },
+  {
+    "input": "0 0 0 2\n0 0 0 0\n0 0 0 0\n0 0 0 4",
+    "output": `{{"move": "Down"}}`,
+    "explanation": `Right move is not valid. If right tried, no cell will move because all cells are in the last columns and can not go any further`,
+    "result": "0 0 0 0\n0 0 0 0\n0 0 0 2\n0 0 0 4"
   }
 
 ]
@@ -84,7 +96,7 @@ const examples = [
 const examplePrompt = ChatPromptTemplate.fromTemplate(`<example><input>{input}</input><move>{output}</move><explanation>{explanation}</explanation><result>{result}</result></example>`);
 
 const fewShotPrompt = new FewShotChatMessagePromptTemplate({
-  prefix: `<query><instructions>Best move for input board? Output must ONLY contain move in JSON provided format, not any explanation or greeting</instructions><context>Game goal is get 2048 cell in 4x4 board.  Each turn spawn new 2 or 4 cell. Each cell one integer, when move, they combine if collided cell's value equal . Cells moved recursively until board bound or collide cell with different number, Left/Right move columns and Up/Down move rows in given direction. Example board represent 4 rows, top to bottom. In "16 4 2 128\n2 2 2 0\n2 0 4 0\n4 2 2 0" board if right moved "16 4 2 128\n0 0 2 4\n0 0 2 4\n0 0 0 8" resulted<strategy>keep highest cell in a corner, trap high cells in selected row pivot direction while combine low cells in other direction</strategy></context><moves><move>{{"move": "up"}}</move><move>{{"move": "down"}}</move><move>{{"move": "left"}}</move><move>{{"move": "right"}}</move></moves>`,
+  prefix: `<query><instructions>Best move for input board? Output must ONLY contain move in JSON provided format, not any explanation or greeting</instructions><context>Game goal is get 2048 cell in 4x4 board. Each turn spawn new 2 or 4 cell. Each cell one integer, when move, they combine if collided cell's value equal . Cells moved recursively until board bound or collide cell with different number, Left/Right move columns and Up/Down move rows in given direction If movement does not move any cell, then it is not a valid move. Example board represent 4 rows, top to bottom. In "16 4 2 128\n2 2 2 0\n2 0 4 0\n4 2 2 0" board if right moved "16 4 2 128\n0 0 2 4\n0 0 2 4\n0 0 0 8" resulted<strategy>keep highest cell in a corner, trap high cells in selected row pivot direction while combine low cells in other direction</strategy></context><moves><move>{{"move": "up"}}</move><move>{{"move": "down"}}</move><move>{{"move": "left"}}</move><move>{{"move": "right"}}</move></moves>`,
   suffix: "<input>{input}</input></query>",
   examplePrompt,
   examples,
