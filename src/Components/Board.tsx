@@ -74,7 +74,7 @@ const Board = (
             setBestScore(score);
         }
         setScore(0);
-        setAppStatus(APP_STATUS.PLAYING);
+        setAppStatus(isIA? APP_STATUS.WAITING : APP_STATUS.PLAYING);
         loseDialogRef.current?.classList.remove('show');
         setGridHandler(new GridHandler(setAppStatus, setScore, setBestScore, setMove, bestScore));
     };
@@ -89,27 +89,15 @@ const Board = (
     const handlers = {
         left: (event: KeyboardEvent) => {
             handleMove(MOVE_OPTIONS.LEFT);
-            if (!isIA && setLastPlayerMove){
-                setLastPlayerMove(MOVE_OPTIONS.LEFT);
-            }
         },
         right: (event: KeyboardEvent) => {
             handleMove(MOVE_OPTIONS.RIGHT);
-            if (!isIA && setLastPlayerMove){
-                setLastPlayerMove(MOVE_OPTIONS.RIGHT);
-            }
         },
         up: (event: KeyboardEvent) => {
             handleMove(MOVE_OPTIONS.UP);
-            if (!isIA && setLastPlayerMove){
-                setLastPlayerMove(MOVE_OPTIONS.UP);
-            }
         },
         down: (event: KeyboardEvent) => {
             handleMove(MOVE_OPTIONS.DOWN);
-            if (!isIA && setLastPlayerMove){
-                setLastPlayerMove(MOVE_OPTIONS.DOWN);
-            }
         },
     };
 
@@ -124,6 +112,9 @@ const Board = (
     function handleMove(move: MoveOptionsType) {
         const valid = isValidMove(move);
         if (valid && !blockMoves.current) {
+            if (!isIA && setLastPlayerMove){
+                setLastPlayerMove(move);
+            }
             gridHandler.makeMove(move);
         }
     }
