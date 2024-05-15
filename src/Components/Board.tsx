@@ -16,7 +16,7 @@ import {APP_STATUS, AppStatusType, MoveOptionsType, MOVE_OPTIONS} from '../enums
 import { GridHandler } from '../services/Grid.ts';
 
 const Board = (
-    {isIA, lastMove, bestScore, appStatus, setLastPlayerMove, setGameOver, setBestScore, setAppStatus, setPlayerAppStatus} : 
+    {isIA, lastMove, bestScore, appStatus, setLastPlayerMove, forcedUpdate, setForcedUpdate, setGameOver, setBestScore, setAppStatus, setPlayerAppStatus} : 
     {isIA : boolean, 
     lastMove: MoveOptionsType | null,
     bestScore: number,
@@ -24,6 +24,8 @@ const Board = (
     setBestScore: React.Dispatch<React.SetStateAction<number>>,
     setGameOver: React.Dispatch<React.SetStateAction<boolean>>,
     setLastPlayerMove?: React.Dispatch<React.SetStateAction<MoveOptionsType | null>>,
+    forcedUpdate: number,
+    setForcedUpdate: React.Dispatch<React.SetStateAction<number>>,
     setAppStatus: React.Dispatch<React.SetStateAction<AppStatusType>>,
     setPlayerAppStatus?: React.Dispatch<React.SetStateAction<AppStatusType>>}
 ) =>{
@@ -32,7 +34,7 @@ const Board = (
 
     const [score, setScore] = useState(0);
     const [move, setMove] = useState<MoveOptionsType | null>(null);
-    const [gridHandler, setGridHandler] = useState<GridHandler>(new GridHandler(setAppStatus, setScore, setBestScore, setMove, bestScore));
+    const [gridHandler, setGridHandler] = useState<GridHandler>(new GridHandler(setAppStatus, setScore, setBestScore, setMove, setForcedUpdate, bestScore, isIA));
 
     const blockMoves = useRef(false)
 
@@ -76,7 +78,7 @@ const Board = (
         setScore(0);
         setAppStatus(isIA? APP_STATUS.WAITING : APP_STATUS.PLAYING);
         loseDialogRef.current?.classList.remove('show');
-        setGridHandler(new GridHandler(setAppStatus, setScore, setBestScore, setMove, bestScore));
+        setGridHandler(new GridHandler(setAppStatus, setScore, setBestScore, setMove, setForcedUpdate, bestScore, isIA));
     };
 
     const keyMap = {
@@ -140,7 +142,7 @@ const Board = (
                 });
             } 
         }
-    }, [gridHandler, lastMove, setAppStatus, setPlayerAppStatus, isIA]);
+    }, [gridHandler, lastMove, forcedUpdate, setAppStatus, setPlayerAppStatus, isIA]);
 
     // WHEN THE IA callback is finished, the player will be able to play
     useEffect(() => {

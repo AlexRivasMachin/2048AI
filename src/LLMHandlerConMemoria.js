@@ -13,41 +13,6 @@ function stringifyTablero(tablero) {
   return tablero.map(fila => fila.join(' ')).join('\n');
 }
 
-const schemaMovimiento = {
-  $defs: {
-      Movement: {
-          type: "string",
-          enum: ["up", "down", "left", "right"],
-      }
-  },
-  properties: {
-      movement: {
-          $ref: "#/$defs/Movement",
-      }
-  },
-  required: ["movement"],
-  type: "object"
-};
-const schemaTablero = {
-  "type": "object",
-  "properties": {
-    "tablero": {
-      "type": "array",
-      "items": {
-        "type": "array",
-        "minItems": 4,
-        "maxItems": 4,
-        "items": {
-          "type": "integer"
-        }
-      },
-      "minItems": 4,
-      "maxItems": 4
-    }
-  },
-  "required": ["tablero"]
-};
-
 const tableroObject = [
   [2, 0, 2, 0],
   [0, 4, 0, 0],

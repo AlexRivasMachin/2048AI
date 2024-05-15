@@ -8,10 +8,13 @@ export class GridHandler {
   setScore: React.Dispatch<React.SetStateAction<number>>;
   setBestScore: React.Dispatch<React.SetStateAction<number>>;
   setMove: React.Dispatch<React.SetStateAction<MoveOptionsType | null>>;
+  setForcedUpdate: React.Dispatch<React.SetStateAction<number>>;
+  lastMove: MoveOptionsType | null;
   currentScore: number;
   cellGenerationEnabled: boolean = true;
   hasMoved: boolean = false;
   bestScore: number = 0;
+  isAI: boolean;
   //todo: esto ponerlo en un archivo de configuración
 
   constructor(
@@ -19,7 +22,9 @@ export class GridHandler {
     setScore: React.Dispatch<React.SetStateAction<number>>,
     setBestScore: React.Dispatch<React.SetStateAction<number>>,
     setMove: React.Dispatch<React.SetStateAction<MoveOptionsType | null>>,
-    bestScore: number
+    setForcedUpdate: React.Dispatch<React.SetStateAction<number>>,
+    bestScore: number,
+    isAI: boolean
   ) {
     this.grid = { size: 4, cells: [] };
     this.initializeGrid(this.grid.size);
@@ -28,8 +33,11 @@ export class GridHandler {
     this.setScore = setScore;
     this.setBestScore = setBestScore;
     this.setMove = setMove;
+    this.setForcedUpdate = setForcedUpdate;
+    this.lastMove = null;
     this.currentScore = 0;
     this.bestScore = bestScore;
+    this.isAI = isAI;
   }
 
   initializeGrid(size: number): void {
@@ -80,7 +88,7 @@ export class GridHandler {
 
   makeMove(move: MoveOptionsType): void {
     this.hasMoved = false;
-    this.setMove(move);
+    this.changeUseEffectMove(move);
     switch (move) {
       case MOVE_OPTIONS.UP:
         this.moveUp();
@@ -106,6 +114,15 @@ export class GridHandler {
       this.setAppStatus(APP_STATUS.GAME_OVER);
     }
     if(this.hasWon()) this.wonBoard();
+  }
+
+  changeUseEffectMove(move: MoveOptionsType): void {
+    if(move == this.lastMove && !this.isAI){
+      this.setForcedUpdate(prev => prev + 1);
+    }else{
+      this.setMove(move);
+      this.lastMove = move;
+    }
   }
 
   moveUp(): void {
