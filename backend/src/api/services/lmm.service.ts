@@ -8,7 +8,8 @@ import { FewShotChatMessagePromptTemplate } from "@langchain/core/prompts";
 @Service()
 export class LMMService {
   readonly DEFAULT_TEMPRATURE = 0.7;
-  readonly DEFAULT_MODEL_NAME = "llama3-8b-8192";
+  readonly DEFAULT_MODEL_NAME = "llama3-70b-8192";
+  count = 0;
 
   constructor() {}
 
@@ -29,6 +30,9 @@ export class LMMService {
 
       const res = await model.invoke(formattedPrompt);
       const move = JSON.parse(res.text.replace(/'/g, '"'));
+      console.log(move);
+      console.log(`count: ${this.count}`);
+      this.count++;
       return move;
     } catch (err) {
       console.log(err);

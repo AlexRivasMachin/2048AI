@@ -275,6 +275,9 @@ export class GridHandler {
     this.cellGenerationEnabled = false;
   }
 
+  transposeGrid(grid: Cell[][]): Cell[][] {
+    return grid[0].map((_, i) => grid.map(row => row[i]));
+  }
   stringifyTablero(tablero: number[][]) {
     return tablero.map(fila => fila.join(' ')).join('\n');
   }
@@ -285,7 +288,11 @@ export class GridHandler {
    */
   public async requestMoveFromLLM(): Promise<MoveOptionsType | null> {
     let result: MoveOptionsType | null = null;
-    const tableContext = this.stringifyTablero(this.grid.cells.map(row => row.map(cell => cell.getValue())));
+
+    // Transpose the grid to match the format expected by the LLM
+    const transposedGrid = this.transposeGrid(this.grid.cells);
+    const tableContext = this.stringifyTablero(transposedGrid.map(row => row.map(cell => cell.getValue())));
+
     await fetch('http://localhost:3001/api/llm/call', {
       method: 'POST',
       headers: {
