@@ -1,6 +1,7 @@
 import {  Grid as GridType } from '../types'; // Asegúrate de importar desde la ruta correcta
 import {CellHandler as Cell} from './Cell'
 import { MOVE_OPTIONS, APP_STATUS, MoveOptionsType, AppStatusType } from '../enums.ts';
+import { API_HOST } from '../config.ts'
 
 export class GridHandler {
   grid: GridType;
@@ -293,7 +294,9 @@ export class GridHandler {
     const transposedGrid = this.transposeGrid(this.grid.cells);
     const tableContext = this.stringifyTablero(transposedGrid.map(row => row.map(cell => cell.getValue())));
 
-    await fetch('http://localhost:3001/api/llm/call', {
+    
+
+    await fetch(`http://${API_HOST}/api/llm/call`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
