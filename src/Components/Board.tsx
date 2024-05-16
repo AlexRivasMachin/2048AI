@@ -121,6 +121,45 @@ const Board = (
         }
     }
 
+    const playerBoard = document.getElementById('board');
+
+    let startX, startY, endX, endY;
+
+    playerBoard?.addEventListener('touchstart', function(event) {
+        startX = event.touches[0].clientX;
+        startY = event.touches[0].clientY;
+    });
+
+    playerBoard?.addEventListener('touchmove', function(event) {
+        event.preventDefault(); // Evita el desplazamiento de la página mientras se arrastra
+        endX = event.touches[0].clientX;
+        endY = event.touches[0].clientY;
+    });
+
+    playerBoard?.addEventListener('touchend', function(event) {
+        const deltaX = endX - startX;
+        const deltaY = endY - startY;
+        const threshold = 50; // Umbral para considerar un desplazamiento como un movimiento válido
+
+        if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > threshold) {
+            if (deltaX > 0) {
+                // Deslizamiento hacia la derecha
+                handleMove(MOVE_OPTIONS.RIGHT);
+            } else {
+                // Deslizamiento hacia la izquierda
+                handleMove(MOVE_OPTIONS.LEFT);
+            }
+        } else if (Math.abs(deltaY) > Math.abs(deltaX) && Math.abs(deltaY) > threshold) {
+            if (deltaY > 0) {
+                // Deslizamiento hacia abajo
+                handleMove(MOVE_OPTIONS.DOWN);
+            } else {
+                // Deslizamiento hacia arriba
+                handleMove(MOVE_OPTIONS.UP);
+            }
+        }
+    });
+
     /**
      * WHEN THE PLAYER MOVES, THIS BLOCK IS TRIGGERS
      * THE PLAYER GAME WILL BE IN WAITING STATUS UNTIL THE IA MAKES A MOVE

@@ -3,5 +3,12 @@
     justify-content: center;
     align-items: center;
     margin-top: 0px;
+    width: 100vw;
     flex-direction: row;
+}
+
+@media (max-width: 600px) {
+    .boards{
+        flex-direction: column;
+    }
 }
