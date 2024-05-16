@@ -222,7 +222,7 @@ const Board = (
                         }
                         {Game.appStatus === APP_STATUS.WAITING && !Game.iaPlayer &&
                             <div id="waiting-dialog">
-                                <span>IA is palying, wait!</span>
+                                <span>IA is playing, wait!</span>
                                 <div className="loader">
                                     <div className="jimu-primary-loading"></div>
                                 </div>
