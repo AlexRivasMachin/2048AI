@@ -5,6 +5,8 @@ import { ChatGroq } from "@langchain/groq";
 import { ChatPromptTemplate } from "@langchain/core/prompts";
 import { FewShotChatMessagePromptTemplate } from "@langchain/core/prompts";
 
+const VERBOSE = appConfig.isProduction ? false : true;
+
 @Service()
 export class LMMService {
   readonly DEFAULT_TEMPRATURE = 0.7;
@@ -19,7 +21,7 @@ export class LMMService {
         temperature:  config?.temperature || this.DEFAULT_TEMPRATURE,
         model: config?.modelName || this.DEFAULT_MODEL_NAME,
         //para ver los tokens gastados
-        verbose: true,
+        verbose: VERBOSE,
         apiKey: appConfig.groqAPIKey
       });
 
