@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client'
 import App from './routes/App.tsx'
 import Game from './Components/Game.tsx'
 import GameClassic from './Components/GameClassic.tsx'
+import About from './Components/About.tsx'
 import ErrorPage from "./error-page";
 import './Styles/index.css'
 import {
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
         element: <GameClassic />,
       },
     ],
+  },
+  {
+    path: "/about",
+    element: <About />,
   },
 ]);
 
