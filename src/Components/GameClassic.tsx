@@ -5,8 +5,8 @@ import { MoveOptionsType, APP_STATUS, AppStatusType} from "../enums.ts";
 
 export const GameClassic = () =>{
 
-    const [lastMove, setLastMove] = useState<MoveOptionsType | null>(null);
-    const [forcedUpdate, setForcedUpdate] = useState(0);
+    const [_lastMove, setLastMove] = useState<MoveOptionsType | null>(null);
+    const [_forcedUpdate, setForcedUpdate] = useState(0);
     const [gameOver, setGameOver] = useState(false);
     const [bestScore, setBestScore] = useState(0);
     const [appStatus, setAppStatus] = useState<AppStatusType>(APP_STATUS.PLAYING);
