@@ -17,6 +17,11 @@ export const Game = () =>{
     //Si el movimiento es el mismo, se actualizará con el counter
     const [putadaMove, setPutadaMove] = useState<putadaMove>({move: null, counter: 0});
 
+    const [putadaMode, setPutadaMode] = useState(true);
+    const handleCheckboxChange = (event) => {
+        setPutadaMode(event.target.checked);
+      };
+
     useEffect(() => {
         if (gameOver) {
             setGameOver(false);
@@ -25,9 +30,15 @@ export const Game = () =>{
 
     return( 
         <>
+        <div className="putadaModeDiv">
+            <label id='putadaModeSwitch' className="switch">
+                <input type="checkbox" checked={putadaMode} onChange={handleCheckboxChange}/>
+                <span className="slider"></span>
+            </label>
+        </div>
         <div className="boards">
-            <Board isIA={false} lastMove={lastMove} forcedUpdate={forcedUpdate} setForcedUpdate={setForcedUpdate} setLastPlayerMove={setLastMove} setGameOver={setGameOver} setBestScore={setBestScore} bestScore={bestScore} appStatus={appStatus} setAppStatus={setAppStatus} key={gameOver ? 'palyerGame1' : 'PlayerGame2'} putadaMove={putadaMove} setPutadaMove={setPutadaMove}/> 
-            <Board isIA={true} lastMove={lastMove} forcedUpdate={forcedUpdate} setForcedUpdate={setForcedUpdate} setGameOver={setGameOver} setBestScore={setBestScore} bestScore={bestScore} appStatus={appStatusIA} setAppStatus={setAppStatusIA} setPlayerAppStatus={setAppStatus} key={gameOver ? 'IAGame1' : 'IAGame2'} putadaMove={putadaMove} setPutadaMove={setPutadaMove}/>
+            <Board isIA={false} lastMove={lastMove} forcedUpdate={forcedUpdate} setForcedUpdate={setForcedUpdate} setLastPlayerMove={setLastMove} setGameOver={setGameOver} setBestScore={setBestScore} bestScore={bestScore} appStatus={appStatus} setAppStatus={setAppStatus} key={gameOver ? 'palyerGame1' : 'PlayerGame2'} putadaMove={putadaMove} setPutadaMove={setPutadaMove} putadaMode={putadaMode}/> 
+            <Board isIA={true} lastMove={lastMove} forcedUpdate={forcedUpdate} setForcedUpdate={setForcedUpdate} setGameOver={setGameOver} setBestScore={setBestScore} bestScore={bestScore} appStatus={appStatusIA} setAppStatus={setAppStatusIA} setPlayerAppStatus={setAppStatus} key={gameOver ? 'IAGame1' : 'IAGame2'} putadaMove={putadaMove} setPutadaMove={setPutadaMove} putadaMode={putadaMode}/>
         </div>
         </>
     )

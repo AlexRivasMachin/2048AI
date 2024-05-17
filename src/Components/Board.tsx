@@ -17,7 +17,7 @@ import { GridHandler } from '../services/Grid.ts';
 import {putadaMove} from '../types.ts'
 
 const Board = (
-    {isIA, lastMove, bestScore, appStatus, setLastPlayerMove, forcedUpdate, setForcedUpdate, setGameOver, setBestScore, setAppStatus, setPlayerAppStatus, putadaMove, setPutadaMove} : 
+    {isIA, lastMove, bestScore, appStatus, setLastPlayerMove, forcedUpdate, setForcedUpdate, setGameOver, setBestScore, setAppStatus, setPlayerAppStatus, putadaMove, setPutadaMove, putadaMode} : 
     {isIA : boolean, 
     lastMove: MoveOptionsType | null,
     bestScore: number,
@@ -30,9 +30,10 @@ const Board = (
     setAppStatus: React.Dispatch<React.SetStateAction<AppStatusType>>,
     setPlayerAppStatus?: React.Dispatch<React.SetStateAction<AppStatusType>>,
     putadaMove: putadaMove,
-    setPutadaMove: React.Dispatch<React.SetStateAction<putadaMove>>
+    setPutadaMove: React.Dispatch<React.SetStateAction<putadaMove>>,
+    putadaMode: boolean
 }
-) =>{
+) =>{   
     const boardRef = useRef(null);
     const loseDialogRef = useRef<HTMLDivElement | null>(null);
 
@@ -190,7 +191,7 @@ const Board = (
     }, [gridHandler, lastMove, forcedUpdate, setAppStatus, setPlayerAppStatus, isIA]);
 
     useEffect(() => {
-        if(isIA){
+        if(isIA && putadaMode){
             gridHandler.makeMove(putadaMove.move);
         }
     }, [putadaMove]);
