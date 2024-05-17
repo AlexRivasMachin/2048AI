@@ -1,9 +1,8 @@
 import './Styles/App.css'
 import NavBar from './Components/NavBar.tsx'
 import Footer from './Components/Footer.tsx'
-import Game from './Components/Game.tsx'
 
-function App() {
+function ErrorPage() {
 
   return (
     <>
@@ -12,11 +11,11 @@ function App() {
         <span id='logoMain'>2048</span>
         <span id='logoAi'>AI</span>
       </h1>
-      <Game />
+      <h2>404 Page not found</h2>
       <Footer />
     </>
   )
 }
 
 
-export default App
+export default ErrorPage

@@ -35,3 +35,19 @@
   flex-direction: column;
 }
 
+.about {
+  height: 100%;
+  max-width: 760px;
+  position: relative;
+  margin-top: 0;
+}
+
+.about p {
+  font-size: large;
+}
+
+.about a {
+  text-decoration: underline;
+  padding: 0.4em;
+  color: var(--color-secondary-100);
+}
