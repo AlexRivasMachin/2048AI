@@ -39,6 +39,7 @@ footer{
         flex-direction: column;
         width: 30%;
         align-items: center;
+        padding: 5px;
     }
 
     .content a {
@@ -93,6 +94,10 @@ footer{
         width: 100%;
         display: flex;
         flex-direction: column;
+    }
+    .copy p {
+        margin: 0;
+        padding: 0;
     }
 
     @media screen and (max-width: 800px){
