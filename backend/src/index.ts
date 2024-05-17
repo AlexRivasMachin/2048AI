@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { appConfig } from '@base/config/app';
+import { appConfig } from './config/app';
 import { Container } from 'typedi';
 import express from 'express';
 import { useContainer as routingControllersUseContainer, useExpressServer, getMetadataArgsStorage } from 'routing-controllers';

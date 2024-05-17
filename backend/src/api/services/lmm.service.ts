@@ -1,4 +1,4 @@
-import { appConfig } from "@base/config/app";
+import { appConfig } from "../../config/app";
 import { Service } from "typedi";
 import { ICallConfig } from "../models/call-config.model";
 import { ChatGroq } from "@langchain/groq";
