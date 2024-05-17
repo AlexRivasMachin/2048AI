@@ -40,7 +40,9 @@ export class App {
   }
 
   private setupMiddlewares() {
-    this.app.use(cors());
+    this.app.use(cors({
+      origin: 'https://2048.borjagomez.eus/'
+    }));
 
     // For file upload
     this.app.use(bodyParser.urlencoded({ extended: true }));
