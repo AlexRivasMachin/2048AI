@@ -14,9 +14,10 @@ import Grid from './Grid.tsx';
 import type {Game as GameType} from '../types'
 import {APP_STATUS, AppStatusType, MoveOptionsType, MOVE_OPTIONS} from '../enums.ts'
 import { GridHandler } from '../services/Grid.ts';
+import {putadaMove} from '../types.ts'
 
 const Board = (
-    {isIA, lastMove, bestScore, appStatus, setLastPlayerMove, forcedUpdate, setForcedUpdate, setGameOver, setBestScore, setAppStatus, setPlayerAppStatus} : 
+    {isIA, lastMove, bestScore, appStatus, setLastPlayerMove, forcedUpdate, setForcedUpdate, setGameOver, setBestScore, setAppStatus, setPlayerAppStatus, putadaMove, setPutadaMove, putadaMode} : 
     {isIA : boolean, 
     lastMove: MoveOptionsType | null,
     bestScore: number,
@@ -27,8 +28,12 @@ const Board = (
     forcedUpdate: number,
     setForcedUpdate: React.Dispatch<React.SetStateAction<number>>,
     setAppStatus: React.Dispatch<React.SetStateAction<AppStatusType>>,
-    setPlayerAppStatus?: React.Dispatch<React.SetStateAction<AppStatusType>>}
-) =>{
+    setPlayerAppStatus?: React.Dispatch<React.SetStateAction<AppStatusType>>,
+    putadaMove: putadaMove,
+    setPutadaMove: React.Dispatch<React.SetStateAction<putadaMove>>,
+    putadaMode: boolean
+}
+) =>{   
     const boardRef = useRef(null);
     const loseDialogRef = useRef<HTMLDivElement | null>(null);
 
@@ -185,9 +190,17 @@ const Board = (
                     setAppStatus(APP_STATUS.GAME_OVER);
                     setPlayerAppStatus(APP_STATUS.GAME_OVER);
                 });
-            } 
+            }else{
+                setPutadaMove({move: lastMove, counter: putadaMove.counter + 1});
+            }
         }
     }, [gridHandler, lastMove, forcedUpdate, setAppStatus, setPlayerAppStatus, isIA]);
+
+    useEffect(() => {
+        if(isIA && putadaMode){
+            gridHandler.makeMove(putadaMove.move);
+        }
+    }, [putadaMove]);
 
     // WHEN THE IA callback is finished, the player will be able to play
     useEffect(() => {

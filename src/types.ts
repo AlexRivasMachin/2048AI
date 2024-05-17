@@ -27,4 +27,9 @@ export interface Position {
   y: number;
 }
 
+export interface putadaMove{
+  move: any;
+  counter: number;
+}
+
 
