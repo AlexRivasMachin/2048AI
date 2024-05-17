@@ -30,3 +30,12 @@ Please note that these instructions assume you have Node.js and npm installed on
 + [AlexRivasMachín's Portfolio](http://alexdev.eus)
 + [gomezbc's Portfolio](https://borjagomez.eus/)
 + [MartinLopezDeIpina's Portfolio](https://lopezdeipina.eus/)
+
+## TechStack 🧰
+#### Backend ⚙️
+- Node.js
+- Express
+- Typescript
+### Frontend 💻
+- React
+- Typescript
