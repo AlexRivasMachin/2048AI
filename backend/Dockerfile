@@ -9,7 +9,11 @@ WORKDIR /app
 
 RUN npm install
 
-EXPOSE 3000
+RUN npm run build
+
+ENV PORT 3001
+
+EXPOSE 3001
 
 # Dvelopment build stage
 FROM common-build-stage as development-build-stage
@@ -23,4 +27,4 @@ FROM common-build-stage as production-build-stage
 
 ENV NODE_ENV production
 
-CMD ["npm", "run", "start"]
+CMD ["npm", "run", "start-no-build"]
