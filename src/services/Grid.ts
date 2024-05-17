@@ -112,7 +112,6 @@ export class GridHandler {
       this.changeUseEffectMove(move);
     }
     if(!this.areThereAvailableMoves()){
-      console.log("No hay movimientos disponibles");
       if(this.currentScore > this.bestScore){
         this.setBestScore(this.currentScore);
       }
@@ -261,7 +260,6 @@ export class GridHandler {
     for (let i = 0; i < this.grid.size; i++) {
       for (let j = 0; j < this.grid.size; j++) {
         if (this.grid.cells[i][j].getValue() === 2048) {
-          console.log("Has ganado");
           this.setBestScore(this.currentScore)
           this.setAppStatus(APP_STATUS.GAME_WON);
           return true;
@@ -319,7 +317,6 @@ export class GridHandler {
       .then(response => response.json())
       .then((data) => {
         const moveKey = (data.move as string).toUpperCase() as keyof typeof MOVE_OPTIONS;
-        console.log('Success:', MOVE_OPTIONS[moveKey]);
         result = MOVE_OPTIONS[moveKey];
       })
       .catch(error => {

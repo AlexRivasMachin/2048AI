@@ -52,7 +52,6 @@ const Board = (
     function setRootOnClickListener() {
         document.getElementById('root')!.addEventListener('click', () => {
             handleRootClick();
-            console.log('root clicked');
         });
       }
       

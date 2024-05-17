@@ -32,7 +32,6 @@ export class CellHandler{
 
     setValue(value: number): void {
         this.cell = {position: this.cell.position, value};
-        console.log(`Position: ${this.cell.position.x}, ${this.cell.position.y} Value: ${this.cell.value}`);
     }
     emptyValue(): void {
         this.setValue(0);
