@@ -182,7 +182,7 @@ const Board = (
             blockMoves.current = isIA ? false : true;
             // IF is necessary, otherwise it would call two times the IA
             if(isIA){
-                gridHandler.requestMoveFromLLM().then((iaMove) => {
+                gridHandler.requestMoveFromLLM(selectedLLM).then((iaMove) => {
                     setAppStatus(APP_STATUS.WAITING);
                     setPlayerAppStatus(APP_STATUS.PLAYING);
                 }).catch((exception) => {
