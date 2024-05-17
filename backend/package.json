@@ -9,6 +9,7 @@
   "scripts": {
     "build": "tsc",
     "start": "npm run build && NODE_ENV=production node ./dist/index.js",
+    "start-no-build": "NODE_ENV=production node ./dist/index.js",
     "dev": "NODE_ENV=development && nodemon --exec ts-node src/index.ts"
   },
   "author": "SERTIS",
