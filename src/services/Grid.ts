@@ -294,7 +294,7 @@ export class GridHandler {
    * 
    * @returns Promise<MoveOptionsType | null>, MoveOptionsType is the move to be made by the AI, null if there was an error
    */
-  public async requestMoveFromLLM(modelName: string): Promise<MoveOptionsType | null> {
+  public async requestMoveFromLLM(modelName?: string): Promise<MoveOptionsType | null> {
     let result: MoveOptionsType | null = null;
 
     // Transpose the grid to match the format expected by the LLM
@@ -312,7 +312,7 @@ export class GridHandler {
         input: tableContext,
         moves: possibleMoves,
         config: {
-          modelName: modelName,
+          modelName: modelName? modelName : 'llama3-8b-8192',
         }
       })
     })
