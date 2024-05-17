@@ -236,7 +236,7 @@ const Board = (
                         tabIndex={0}
                         ref={boardRef}>
                         <Grid gridHandler={gridHandler}/>
-                        {Game.appStatus === APP_STATUS.GAME_OVER && !Game.iaPlayer &&
+                        {Game.appStatus === APP_STATUS.GAME_OVER &&
                             <div id="game-over-dialog">
                                 <span>Game over!</span>
                                 <button 
@@ -260,7 +260,7 @@ const Board = (
                                     autoFocus>Play Again</button>
                             </div>
                         }
-                        {Game.appStatus === APP_STATUS.WAITING && !Game.iaPlayer &&
+                        {Game.appStatus === APP_STATUS.WAITING &&
                             <div id="waiting-dialog">
                                 <span>AI is playing, wait!</span>
                                 <div className="loader">

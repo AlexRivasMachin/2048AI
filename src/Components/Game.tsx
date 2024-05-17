@@ -3,7 +3,6 @@ import "../Styles/Game.css";
 import { useEffect, useState } from "react";
 import { MoveOptionsType, APP_STATUS, AppStatusType} from "../enums.ts";
 import { putadaMove } from "../types.ts";
-import { PunctuationSyntaxKind } from "typescript";
 
 //Craeación del tablero de 2048, es oarte de Game
 export const Game = () =>{
@@ -17,7 +16,7 @@ export const Game = () =>{
     //Si el movimiento es el mismo, se actualizará con el counter
     const [putadaMove, setPutadaMove] = useState<putadaMove>({move: null, counter: 0});
 
-    const [putadaMode, setPutadaMode] = useState(true);
+    const [putadaMode, setPutadaMode] = useState(false);
     const handleCheckboxChange = (event) => {
         setPutadaMode(event.target.checked);
       };
