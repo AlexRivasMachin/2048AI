@@ -21,8 +21,8 @@ export class App {
   }
 
   public async bootstrap() {
-    this.useContainers();
     this.setupMiddlewares();
+    this.useContainers();
     this.setupSwagger();
     this.registerServices();
     this.setUpCompression();
@@ -40,9 +40,7 @@ export class App {
   }
 
   private setupMiddlewares() {
-    this.app.use(cors({
-      origin: 'https://2048.borjagomez.eus/'
-    }));
+    this.app.use(cors());
 
     // For file upload
     this.app.use(bodyParser.urlencoded({ extended: true }));
