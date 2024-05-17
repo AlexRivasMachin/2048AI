@@ -24,7 +24,7 @@ function Footer() {
                     <div className="content">
                         <p><strong>Link to the repository</strong></p>
                         <ul>
-                            <li>Repository: <a> 2048-AI</a></li>
+                            <li>Repository: <a target='_blank' href='https://github.com/AlexRivasMachin/2048AI'> 2048-AI</a></li>
                         </ul>
                     </div>
                 </div>
