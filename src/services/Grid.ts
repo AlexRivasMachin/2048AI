@@ -2,6 +2,7 @@ import {  Grid as GridType } from '../types'; // Asegúrate de importar desde la
 import {CellHandler as Cell} from './Cell'
 import { MOVE_OPTIONS, APP_STATUS, MoveOptionsType, AppStatusType } from '../enums.ts';
 import { API_HOST } from '../config.ts'
+import { GridHelper } from './GridHelper.ts';
 
 export class GridHandler {
   grid: GridType;
@@ -293,15 +294,18 @@ export class GridHandler {
     // Transpose the grid to match the format expected by the LLM
     const transposedGrid = this.transposeGrid(this.grid.cells);
     const tableContext = this.stringifyTablero(transposedGrid.map(row => row.map(cell => cell.getValue())));
+    const possibleMoves = this.getPossibleMoves();
 
-    
 
     await fetch(`http://${API_HOST}/api/llm/call`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ prompt : tableContext})
+      body: JSON.stringify({ 
+        input: tableContext,
+        moves: possibleMoves
+      })
     })
       .then(response => response.json())
       .then((data) => {
@@ -313,12 +317,30 @@ export class GridHandler {
         console.error('Error:', error);
       });
 
+
       this.makeMove(result);
       //por si la IA devuelve un movimiento no válido que se repita hasta que sea válido
       while(!this.hasMoved){
        return this.requestMoveFromLLM();
       }
       return result;
+  }
+
+  getPossibleMoves(): string[] {
+    let gridCopy: GridType = this.cloneGrid();
+    let gridHelper = new GridHelper(gridCopy);
+    let possibleMoves = gridHelper.getPossibleMoves();
+    return possibleMoves;
+  }
+
+  cloneGrid(): GridType {
+    const size = this.grid.size;
+    const cells: Array<Array<Cell>> = Array.from({ length: this.grid.size }, (_, i) => 
+      Array.from({ length: this.grid.size }, (_, j) => 
+        new Cell(i, j, this.grid.cells[i][j].getValue())
+      )
+    );
+    return { size, cells };
   }
 }
 

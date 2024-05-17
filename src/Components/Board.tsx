@@ -174,7 +174,8 @@ const Board = (
                 gridHandler.requestMoveFromLLM().then((iaMove) => {
                     setAppStatus(APP_STATUS.WAITING);
                     setPlayerAppStatus(APP_STATUS.PLAYING);
-                }).catch(() => {
+                }).catch((exception) => {
+                    console.error(exception);
                     setAppStatus(APP_STATUS.GAME_OVER);
                     setPlayerAppStatus(APP_STATUS.GAME_OVER);
                 });
@@ -222,7 +223,7 @@ const Board = (
                         }
                         {Game.appStatus === APP_STATUS.WAITING && !Game.iaPlayer &&
                             <div id="waiting-dialog">
-                                <span>IA is playing, wait!</span>
+                                <span>AI is playing, wait!</span>
                                 <div className="loader">
                                     <div className="jimu-primary-loading"></div>
                                 </div>
