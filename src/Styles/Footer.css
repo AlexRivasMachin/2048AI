@@ -96,6 +96,7 @@ footer{
         flex-direction: column;
     }
     .copy p {
+        font-family: monospace;
         margin: 0;
         padding: 0;
     }
