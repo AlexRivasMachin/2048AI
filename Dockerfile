@@ -43,7 +43,11 @@ RUN --mount=type=bind,source=package.json,target=package.json \
 # Copy the rest of the source files into the image.
 COPY . .
 # Run the build script.
-RUN npm run build
+
+ARG VITE_API_HOST
+
+# Build the application with the provided API host.
+RUN VITE_API_HOST=${VITE_API_HOST} npm run build
 
 ################################################################################
 # Create a new stage to run the application with minimal runtime dependencies

@@ -2,6 +2,8 @@ services:
   front-end:
     build:
       context: .
+      args:
+        - VITE_API_HOST=localhost:3001
     environment:
       NODE_ENV: production
     ports:
@@ -15,7 +17,7 @@ services:
       APP_NAME: 2048-Backend
       APP_PORT: 3001
       APP_ROUTE_PREFIX: /api
-      GROQ_API_KEY: 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
+      GROQ_API_KEY: GROQ_API_KEY
     ports:
       - 3001:3001
 
