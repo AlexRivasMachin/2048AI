@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import '.././Styles/NavBar.css'
 import ThemeButton from './ThemeButton';
 
@@ -7,9 +8,9 @@ function NavBar() {
             <nav>
                 <div className='centrar'></div>
                 <ul>
-                    <li><a href='/'>2048AI</a></li>
-                    <li><a href='/classic'>Classic</a></li>
-                    <li><a href='/about'>About</a></li>
+                    <li><Link to="/">2048AI</Link></li>
+                    <li><Link to="/classic">Classic</Link></li>
+                    <li><Link to="/about">About</Link></li>
                 </ul>
                 <div className="themeButton">
                     <ThemeButton />

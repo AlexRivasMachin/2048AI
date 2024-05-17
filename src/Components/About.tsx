@@ -1,11 +1,5 @@
-import '../Styles/App.css'
-import NavBar from '../Components/NavBar.tsx'
-import Footer from '../Components/Footer.tsx'
-
 const About = () => {
     return (
-            <>
-        <NavBar />
         <div className='about'>
             <h1>About</h1>
             <p>In this project, we've developed a software that recreates the game 2048 with additional features. The original 2048 challenges players to sequentially match numbers that are powers of 2 until reaching 2048.</p>
@@ -17,8 +11,6 @@ const About = () => {
             <p>Last but not least, our web application features a custom design and the option to switch between light and dark modes, allowing users to personalize the aesthetic according to their preferences.</p>
             <p>Created by <a href='https://alexdev.eus/' target='_blank'>Alex</a>, <a href='https://lopezdeipina.eus/' target='_blank'>Martin</a> and <a href='https://borjagomez.eus/' target='_blank'>Borja</a>.</p>
         </div>
-        <Footer />
-        </>
     );
 };
 
