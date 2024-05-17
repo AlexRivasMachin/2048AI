@@ -43,6 +43,8 @@ const Board = (
 
     const blockMoves = useRef(false)
 
+    const [selectedLLM, setSelectedLLM] = useState('llama3-8b-8192');
+
     const Game: GameType = {
         grid: gridHandler,
         score: score,
@@ -57,6 +59,11 @@ const Board = (
         if (boardRef.current){
             (boardRef.current as HTMLElement).focus();
         }
+
+        // Cleanup function to remove the event listener when the component unmounts
+        return () => {
+            document.getElementById('root')!.removeEventListener('click', handleRootClick);
+        }
     }, []); // Empty dependency array means this effect runs once after the first render
 
     const handleRootClick = () => {
@@ -68,7 +75,6 @@ const Board = (
     function setRootOnClickListener() {
         document.getElementById('root')!.addEventListener('click', () => {
             handleRootClick();
-            console.log('root clicked');
         });
       }
       
@@ -176,7 +182,7 @@ const Board = (
             blockMoves.current = isIA ? false : true;
             // IF is necessary, otherwise it would call two times the IA
             if(isIA){
-                gridHandler.requestMoveFromLLM().then((iaMove) => {
+                gridHandler.requestMoveFromLLM(selectedLLM).then((iaMove) => {
                     setAppStatus(APP_STATUS.WAITING);
                     setPlayerAppStatus(APP_STATUS.PLAYING);
                 }).catch((exception) => {
@@ -203,6 +209,11 @@ const Board = (
         }
     }, [appStatus, isIA]);
 
+
+    const handleLLMChange = (newLLM) => {
+        setSelectedLLM(newLLM);
+    };
+
     return (
         <>
             <div className="gameBoard">
@@ -210,9 +221,12 @@ const Board = (
                     <div className="tag">
                         SCORE {Game.score}
                     </div>
-                    <div className="tag" style={isIA ? {display: 'none'} : {}}>
+                    {
+                        !isIA &&
+                        <div className="tag">
                             BEST {bestScore}
-                    </div>
+                        </div>
+                    }
                 </div>
                 {!Game.iaPlayer &&
                     <HotKeys keyMap={keyMap} handlers={handlers}>
@@ -286,6 +300,23 @@ const Board = (
                 <div className="tag" id='playertag'>
                         {Game.iaPlayer ? 'IA' : 'Player'}
                 </div>
+                {
+                    isIA &&
+                    <div id='llmSelector'>
+                        <button 
+                            className={selectedLLM === 'llama3-8b-8192' ? 'enabled' : ''} 
+                            onClick={() => handleLLMChange('llama3-8b-8192')}
+                        >
+                            llama3-8b-8192
+                        </button>
+                        <button 
+                            className={selectedLLM === 'gemma-7b-it' ? 'enabled' : ''} 
+                            onClick={() => handleLLMChange('gemma-7b-it')}
+                        >
+                            gemma-7b-it
+                        </button>
+                    </div>
+                }
             </div>
         </>
     );
