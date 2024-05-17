@@ -36,6 +36,7 @@ Please note that these instructions assume you have Node.js and npm installed on
 - Node.js
 - Express
 - Typescript
+- Docker
 ### Frontend 💻
 - React
 - Typescript
