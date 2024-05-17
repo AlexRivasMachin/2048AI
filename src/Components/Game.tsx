@@ -31,7 +31,7 @@ export const Game = () =>{
     return( 
         <>
         <div className="putadaModeDiv">
-            <h2>Putada Mode</h2>
+            <h3>Handicap Mode</h3>
             <label id='putadaModeSwitch' className="switch">
                 <input type="checkbox" checked={putadaMode} onChange={handleCheckboxChange}/>
                 <span className="slider"></span>

@@ -39,7 +39,7 @@ const Board = (
 
     const [score, setScore] = useState(0);
     const [move, setMove] = useState<MoveOptionsType | null>(null);
-    const [gridHandler, setGridHandler] = useState<GridHandler>(new GridHandler(setAppStatus, setScore, setBestScore, setMove, setForcedUpdate, bestScore, isIA));
+    const [gridHandler, setGridHandler] = useState<GridHandler>(new GridHandler(setAppStatus, setScore, setBestScore, setMove, setForcedUpdate, bestScore, isIA, setPlayerAppStatus));
 
     const blockMoves = useRef(false)
 
@@ -248,6 +248,18 @@ const Board = (
                                     autoFocus>Try again</button>
                             </div>
                         }
+                        {Game.appStatus === APP_STATUS.GAME_WON &&
+                            <div id="game-over-dialog">
+                                <span>You have win!</span>
+                                <button 
+                                    id='try-again-button' 
+                                    onClick={()=>{
+                                        restartGame();
+                                        setGameOver(true);
+                                    } } 
+                                    autoFocus>Play Again</button>
+                            </div>
+                        }
                         {Game.appStatus === APP_STATUS.WAITING && !Game.iaPlayer &&
                             <div id="waiting-dialog">
                                 <span>AI is playing, wait!</span>
@@ -266,6 +278,23 @@ const Board = (
                         tabIndex={-1}
                         onClick={handleRootClick}>
                         <Grid gridHandler={gridHandler}/>
+                        {Game.appStatus === APP_STATUS.GAME_OVER && Game.iaPlayer &&
+                            <div id="game-over-dialog">
+                                <span>Game over!</span>
+                            </div>
+                        }
+                        {Game.appStatus === APP_STATUS.GAME_WON &&
+                            <div id="game-over-dialog">
+                                <span>You have win!</span>
+                                <button 
+                                    id='try-again-button' 
+                                    onClick={()=>{
+                                        restartGame();
+                                        setGameOver(true);
+                                    } } 
+                                    autoFocus>Play Again</button>
+                            </div>
+                        }
                     </div>
                 }
                 <div className="tag" id='playertag'>

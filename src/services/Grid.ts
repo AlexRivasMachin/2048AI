@@ -11,6 +11,7 @@ export class GridHandler {
   setBestScore: React.Dispatch<React.SetStateAction<number>>;
   setMove: React.Dispatch<React.SetStateAction<MoveOptionsType | null>>;
   setForcedUpdate: React.Dispatch<React.SetStateAction<number>>;
+  setPlayerAppStatus?: React.Dispatch<React.SetStateAction<AppStatusType>>;
   lastMove: MoveOptionsType | null;
   currentScore: number;
   cellGenerationEnabled: boolean = true;
@@ -26,7 +27,8 @@ export class GridHandler {
     setMove: React.Dispatch<React.SetStateAction<MoveOptionsType | null>>,
     setForcedUpdate: React.Dispatch<React.SetStateAction<number>>,
     bestScore: number,
-    isAI: boolean
+    isAI: boolean,
+    setPlayerAppStatus?: React.Dispatch<React.SetStateAction<AppStatusType>>,
   ) {
     this.grid = { size: 4, cells: [] };
     this.initializeGrid(this.grid.size);
@@ -36,6 +38,7 @@ export class GridHandler {
     this.setBestScore = setBestScore;
     this.setMove = setMove;
     this.setForcedUpdate = setForcedUpdate;
+    this.setPlayerAppStatus = setPlayerAppStatus;
     this.lastMove = null;
     this.currentScore = 0;
     this.bestScore = bestScore;
@@ -114,6 +117,9 @@ export class GridHandler {
         this.setBestScore(this.currentScore);
       }
       this.setAppStatus(APP_STATUS.GAME_OVER);
+      if(this.isAI && this.setPlayerAppStatus){
+        this.setPlayerAppStatus(APP_STATUS.GAME_WON);
+      }
     }
     if(this.hasWon()) this.wonBoard();
   }
