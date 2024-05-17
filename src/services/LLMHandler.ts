@@ -1,3 +1,9 @@
+/*
+
+Esta clase es solo para testing, no se utiliza en el proyecto. Las llamadas reales se realizand en backend/src/api/services/lmm.service.ts
+
+*/
+
 import {config} from "dotenv";
 import { ChatGroq } from "@langchain/groq";
 import { ChatPromptTemplate } from "@langchain/core/prompts";
