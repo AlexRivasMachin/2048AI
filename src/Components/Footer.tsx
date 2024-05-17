@@ -6,7 +6,7 @@ function Footer() {
             <section>
                 <div className="top">
                     <div className="content">
-                        <p><strong>Github personales:</strong></p>
+                        <p><strong>Personal Githubs:</strong></p>
                         <ul>
                             <li>GitHub:<a target='_blank' href='https://Github.com/MartinLopezDeIpina'> MartinLopezDeIpina</a></li>
                             <li>GitHub: <a target='_blank' href='https://Github.com/gomezbc'> gomezbc</a></li>
@@ -14,7 +14,7 @@ function Footer() {
                         </ul>
                     </div>
                     <div className="content">
-                        <p><strong>Portolios personales:</strong></p>
+                        <p><strong>Personal portfolios:</strong></p>
                         <ul>
                             <li>Portolio: <a target='_blank' href='https://lopezdeipina.eus/'> MartinLopezDeIpina</a></li>
                             <li>Portolio: <a target='_blank' href='https://borjagomez.eus/'> gomezbc</a></li>
@@ -22,16 +22,16 @@ function Footer() {
                         </ul>
                     </div>
                     <div className="content">
-                        <p><strong>Link al repositorio</strong></p>
+                        <p><strong>Link to the repository</strong></p>
                         <ul>
-                            <li>Repositorio: <a> 2048-AI</a></li>
+                            <li>Repository: <a> 2048-AI</a></li>
                         </ul>
                     </div>
                 </div>
             </section>
             <div className="bot">
                 <div className="copy">
-                    <p>© 2024 todos los derechos reservados</p>
+                    <p>© 2024 All rights are reserved</p>
                 </div>
             </div>
         </footer>
