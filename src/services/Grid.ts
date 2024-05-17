@@ -304,7 +304,11 @@ export class GridHandler {
       },
       body: JSON.stringify({ 
         input: tableContext,
-        moves: possibleMoves
+        moves: possibleMoves,
+        config: {
+          temperature: 1,
+          modelName: "llama3-8b-8192",
+        }
       })
     })
       .then(response => response.json())
