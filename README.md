@@ -4,19 +4,48 @@
 ## How to Run
 Follow these steps to run 2048AI:
 
-1. Clone the repository to your local machine using `git clone`.
-2. Navigate to the project directory using `cd 2048AI`.
-3. Install the necessary dependencies. If you're using npm, you can do this by running `npm install`.
-4. Once the dependencies are installed, you can start the project. If you're using npm, you can do this by running `npm start`.
-5. Without closing this terminal,create another one.
-6. In the new terminal navigate to the project directory using `cd backend`. 
-7. Install the necessary dependencies. If you're using npm, you can do this by running `npm install`.
-8. Once the dependencies are installed, you can start the project. If you're using npm, you can do this by running `npm start`.
+1. Clone the repository to your local machine and navigate to the project directory.
+```sh
+git clone && cd ./2048AI
+```
+3. Install the necessary dependencies.
+```sh
+npm install
+```
+4. Once the dependencies are installed. Set `VITE_API_HOST` enviroment variable to the host of the backend. Example in Linux:
+```sh
+export VITE_API_HOST=https://localhost:3001
+```
+5. Once enviroment variable is set, you can build the project.
+```sh
+npm run build
+```
+6. Use a server to serve the files, for development enviroment you can use serve.
+```sh
+npm install -g serve
+serve -d /dist
+```
+7. Without closing this terminal, create another one.
+8. In the new terminal navigate to the project directory using `cd backend`. 
+9. Install the necessary dependencies.
+```sh
+npm install
+```
+10. Once the dependencies are installed, you can build the project.
+```sh
+npm run build
+```
+11. Finally, use node to run the backend.
+```sh
+export NODE_ENV=production
+node ./dist/index.js
+```
+12. The server will be running in port `3001` unless you specify another one using `APP_PORT` enviroment variable.
 
 Please note that these instructions assume you have Node.js and npm installed on your machine. If you don't, you'll need to install those first.
 
 ## Who are we:
-### Sertis Menbers:
+### Sertis Members:
 + AlexRivasMachín 🌶️
 + gomezbc 🥥
 + MartinLopezDeIpina 🍍
@@ -36,6 +65,7 @@ Please note that these instructions assume you have Node.js and npm installed on
 - Node.js
 - Express
 - Typescript
+- LangChain
 - Docker
 ### Frontend 💻
 - React
