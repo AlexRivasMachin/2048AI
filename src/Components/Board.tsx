@@ -285,7 +285,7 @@ const Board = (
                         }
                         {Game.appStatus === APP_STATUS.GAME_WON &&
                             <div id="game-over-dialog">
-                                <span>You have win!</span>
+                                <span>You have won!</span>
                                 <button 
                                     id='try-again-button' 
                                     onClick={()=>{
