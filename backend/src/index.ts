@@ -1,6 +1,4 @@
 import 'reflect-metadata';
-import { fixModuleAlias } from './utils/fix-module-alias';
-fixModuleAlias(__dirname);
 import { appConfig } from '@base/config/app';
 import { Container } from 'typedi';
 import express from 'express';
