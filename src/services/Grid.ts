@@ -301,7 +301,7 @@ export class GridHandler {
     const possibleMoves = this.getPossibleMoves();
 
 
-    await fetch(`http://${API_HOST}/api/llm/call`, {
+    await fetch(`${API_HOST}/api/llm/call`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
