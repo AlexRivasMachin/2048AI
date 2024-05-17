@@ -12,7 +12,7 @@ git clone && cd ./2048AI
 ```sh
 npm install
 ```
-4. Once the dependencies are installed. Set `VITE_API_HOST` enviroment variable to the host of the backend. Example in Linux:
+4. Once the dependencies are installed. Set `VITE_API_HOST` enviroment variable to the host of the backend. Don't use `/` at the end of the host. Example in Linux:
 ```sh
 export VITE_API_HOST=https://localhost:3001
 ```
