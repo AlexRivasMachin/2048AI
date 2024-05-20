@@ -1,6 +1,8 @@
 # 2048AI :robot:
 ![alt text](/public/2048game.png)
 2048AI is an artificial intelligence project that plays the popular game 2048. 
+<br></br>
+Try it at: [https://2048.borjagomez.eus](https://2048.borjagomez.eus)
 ## How to Run
 Follow these steps to run 2048AI:
 
