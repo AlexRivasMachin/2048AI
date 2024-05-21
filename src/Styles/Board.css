@@ -91,3 +91,9 @@
 #llmSelector .enabled{
     background-color: var(--color-secondary-150);
 }
+
+@media screen and (max-width: 800px){
+    .boards{
+        width: auto;
+    }
+}
