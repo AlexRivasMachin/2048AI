@@ -37,13 +37,6 @@ export const Cell: React.FC<CellProps> = observer(({cellHandler }) => {
   }
   , [cellValue, isAppearing, isStarting]);
 
-  // useEffect(() => {
-  //   if (cellValue === 2 || cellValue === 4 && !isMerge) {
-  //     setIsAppearing(true);
-  //     setTimeout(() => setIsAppearing(false), 200);
-  //   }
-  // }, [cellValue]);
-
   useEffect(() => {
     if (cellValue === 777) {
       setIsMoving(true);
