@@ -37,11 +37,10 @@ const Board = (
     }
 
     useEffect(() => {
-        // Board is initially focused
         if (boardRef.current){
             (boardRef.current as HTMLElement).focus();
         }
-    }, []); // Empty dependency array means this effect runs once after the first render
+    }, []);
 
     const handleRootClick = () => {
         if (boardRef.current){
@@ -119,7 +118,7 @@ const Board = (
     });
 
     playerBoard?.addEventListener('touchmove', function(event) {
-        event.preventDefault(); // Evita el desplazamiento de la página mientras se arrastra
+        event.preventDefault();
         endX = event.touches[0].clientX;
         endY = event.touches[0].clientY;
     });
@@ -127,22 +126,18 @@ const Board = (
     playerBoard?.addEventListener('touchend', function(event) {
         const deltaX = endX - startX;
         const deltaY = endY - startY;
-        const threshold = 50; // Umbral para considerar un desplazamiento como un movimiento válido
+        const threshold = 50;
 
         if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > threshold) {
             if (deltaX > 0) {
-                // Deslizamiento hacia la derecha
                 handleMove(MOVE_OPTIONS.RIGHT);
             } else {
-                // Deslizamiento hacia la izquierda
                 handleMove(MOVE_OPTIONS.LEFT);
             }
         } else if (Math.abs(deltaY) > Math.abs(deltaX) && Math.abs(deltaY) > threshold) {
             if (deltaY > 0) {
-                // Deslizamiento hacia abajo
                 handleMove(MOVE_OPTIONS.DOWN);
             } else {
-                // Deslizamiento hacia arriba
                 handleMove(MOVE_OPTIONS.UP);
             }
         }
