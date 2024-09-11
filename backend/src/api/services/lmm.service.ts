@@ -20,7 +20,6 @@ export class LMMService {
       let model = new ChatGroq({
         temperature:  config?.temperature || this.DEFAULT_TEMPRATURE,
         model: config?.modelName || this.DEFAULT_MODEL_NAME,
-        //para ver los tokens gastados
         verbose: VERBOSE,
         apiKey: appConfig.groqAPIKey
       });
@@ -31,7 +30,6 @@ export class LMMService {
       });
       possibleMoves += `</moves>`
 
-      // call the model
       const formattedPrompt = await fewShotPrompt.format({
         input: initalInput,
         moves: moves, 
