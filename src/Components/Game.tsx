@@ -45,6 +45,3 @@ export const Game = () =>{
 }
 
 export default Game;
-
-//<Board isIA={false} setLastPlayerMove={}/>  El jugador siempre asigna su ultimo movimiento
-//<Board isIA={true} lastPlayerMove={}/> La IA es la que la recibe
