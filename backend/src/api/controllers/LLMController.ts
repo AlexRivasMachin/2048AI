@@ -8,12 +8,7 @@ import { ICallRequest } from "../models/call.request.model";
 export class LLMController {
 
     constructor(private service: LMMService) { }
-
-    /**
-     * Calls the langchain model with the given prompt and history id.
-     * @param request 
-     * @returns text response from the model.
-     */
+    
     @Post('/call')
     public async call(@Body() request: ICallRequest): Promise<string> {
         try {
