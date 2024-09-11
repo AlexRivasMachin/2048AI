@@ -1,11 +1,3 @@
-/**
- * 2048 JUEGO
- * TENEMOS UN BOARD QUE TIENE 16 CELDAS 
- * CADA CELDA DE NO  TIENE VALOR
- * POR TANTO CADA CELDA TENEMOS UN VALOR, QUE PUEDE SER 0 O UN VALOR QUE ES UNA POTENCIA DE 2
- * PARA SABER DONDE ESTA CADA CELDA, SE USARA UNA MATRIZ DE 4X4, Y CADA CELDA TIENE FILA Y COLUMNA
- * 
- */
 import React, { useRef, useEffect, useState } from 'react';
 import { HotKeys } from 'react-hotkeys';
 import '../Styles/Board.css'
@@ -55,16 +47,14 @@ const Board = (
     }
 
     useEffect(() => {
-        // Board is initially focused
         if (boardRef.current){
             (boardRef.current as HTMLElement).focus();
         }
 
-        // Cleanup function to remove the event listener when the component unmounts
         return () => {
             document.getElementById('root')!.removeEventListener('click', handleRootClick);
         }
-    }, []); // Empty dependency array means this effect runs once after the first render
+    }, []);
 
     const handleRootClick = () => {
         if (boardRef.current){
@@ -142,7 +132,7 @@ const Board = (
     });
 
     playerBoard?.addEventListener('touchmove', function(event) {
-        event.preventDefault(); // Evita el desplazamiento de la página mientras se arrastra
+        event.preventDefault(); 
         endX = event.touches[0].clientX;
         endY = event.touches[0].clientY;
     });
@@ -150,37 +140,26 @@ const Board = (
     playerBoard?.addEventListener('touchend', function(event) {
         const deltaX = endX - startX;
         const deltaY = endY - startY;
-        const threshold = 50; // Umbral para considerar un desplazamiento como un movimiento válido
-
+        const threshold = 50;
         if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > threshold) {
             if (deltaX > 0) {
-                // Deslizamiento hacia la derecha
                 handleMove(MOVE_OPTIONS.RIGHT);
             } else {
-                // Deslizamiento hacia la izquierda
                 handleMove(MOVE_OPTIONS.LEFT);
             }
         } else if (Math.abs(deltaY) > Math.abs(deltaX) && Math.abs(deltaY) > threshold) {
             if (deltaY > 0) {
-                // Deslizamiento hacia abajo
                 handleMove(MOVE_OPTIONS.DOWN);
             } else {
-                // Deslizamiento hacia arriba
                 handleMove(MOVE_OPTIONS.UP);
             }
         }
     });
 
-    /**
-     * WHEN THE PLAYER MOVES, THIS BLOCK IS TRIGGERS
-     * THE PLAYER GAME WILL BE IN WAITING STATUS UNTIL THE IA MAKES A MOVE
-     * THEN THE IA GAME WILL BE IN WAITING STATUS UNTIL THE PLAYER MAKES A MOVE
-     */
     useEffect(() => {
         if(lastMove !== null && lastMove !== undefined){
             setAppStatus(isIA ? APP_STATUS.PLAYING : APP_STATUS.WAITING);
             blockMoves.current = isIA ? false : true;
-            // IF is necessary, otherwise it would call two times the IA
             if(isIA){
                 gridHandler.requestMoveFromLLM(selectedLLM).then((iaMove) => {
                     setAppStatus(APP_STATUS.WAITING);
@@ -202,7 +181,6 @@ const Board = (
         }
     }, [putadaMove]);
 
-    // WHEN THE IA callback is finished, the player will be able to play
     useEffect(() => {
         if(!isIA && appStatus === APP_STATUS.PLAYING){
             blockMoves.current = false;
