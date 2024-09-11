@@ -87,8 +87,6 @@ export class App {
 
 const app = new App();
 
-
-// === Handle process events to save data before exit ===
 process.on('beforeExit', async (code) => {
   console.log(`Process will exit with code: ${code}`)
   process.exit(0);
