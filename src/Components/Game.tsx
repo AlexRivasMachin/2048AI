@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { MoveOptionsType, APP_STATUS, AppStatusType} from "../enums.ts";
 import { putadaMove } from "../types.ts";
 
-//Craeación del tablero de 2048, es oarte de Game
 export const Game = () =>{
 
     const [lastMove, setLastMove] = useState<MoveOptionsType | null>(null);
@@ -13,7 +12,6 @@ export const Game = () =>{
     const [bestScore, setBestScore] = useState(0);
     const [appStatus, setAppStatus] = useState<AppStatusType>(APP_STATUS.PLAYING);
     const [appStatusIA, setAppStatusIA] = useState<AppStatusType>(APP_STATUS.WAITING);
-    //Si el movimiento es el mismo, se actualizará con el counter
     const [putadaMove, setPutadaMove] = useState<putadaMove>({move: null, counter: 0});
 
     const [putadaMode, setPutadaMode] = useState(false);
